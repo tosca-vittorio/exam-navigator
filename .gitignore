@@ -1,0 +1,98 @@
+# ============================================================
+# PYTHON CORE
+# ============================================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyd
+
+# Distribution / packaging
+build/
+dist/
+/mnt
+/mnt/data/poc_debug.csv
+/edge-agent/
+*.egg-info/
+.eggs/
+*.spec
+
+# ============================================================
+# VIRTUAL ENVIRONMENTS + SECRETES (MAI VERSIONARE)
+# ============================================================
+
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+.env
+.env.local
+.env.*.local
+
+# Local working material: audit snapshots, staging datasets,
+# smoke inputs and desktop build artifacts
+/local/
+
+# Private local reference artifacts
+samples/private/
+
+# ============================================================
+# TESTING / COVERAGE
+# ============================================================
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.mypy_cache/
+
+# Utils
+script.py
+
+# ============================================================
+# IDE / EDITOR
+# ============================================================
+
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+
+
+# ============================================================
+# DOCS
+# ============================================================
+
+# Ignora tutto sotto docs
+docs/**
+
+# Eccezioni
+!docs/
+!docs/target/
+
+!docs/CHANGELOG.md
+!docs/ARCHITECTURE.md
+!docs/TIMELINE.md
+!docs/ROADMAP.md
+# !docs/toDo.md
+
+!docs/requirements/
+!docs/requirements/requirements.txt
+
+# ============================================================
+# TEMPORARY FILES
+# ============================================================
+tmp/
+tmp/**
+**/tmp/**
+*.tmp
+*.bak
+*.swp
+struttura.txt
+
+script.py
