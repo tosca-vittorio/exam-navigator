@@ -1,24 +1,17 @@
 # ============================================================
-# PYTHON CORE
+# .NET / VISUAL STUDIO
 # ============================================================
 
-__pycache__/
-*.py[cod]
-*$py.class
-*.pyd
-
-# Distribution / packaging
-build/
-dist/
-/mnt
-/mnt/data/poc_debug.csv
-/edge-agent/
-*.egg-info/
-.eggs/
-*.spec
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
 # ============================================================
-# VIRTUAL ENVIRONMENTS + SECRETES (MAI VERSIONARE)
+# VIRTUAL ENVIRONMENTS + SECRETES
 # ============================================================
 
 .venv/
@@ -32,23 +25,9 @@ venv.bak/
 .env.local
 .env.*.local
 
-# Local working material: audit snapshots, staging datasets,
-# smoke inputs and desktop build artifacts
-/local/
-
-# Private local reference artifacts
-samples/private/
-
 # ============================================================
 # TESTING / COVERAGE
 # ============================================================
-
-.pytest_cache/
-.coverage
-.coverage.*
-htmlcov/
-.tox/
-.mypy_cache/
 
 # Utils
 script.py
@@ -61,8 +40,6 @@ script.py
 .idea/
 .DS_Store
 Thumbs.db
-
-
 
 # ============================================================
 # DOCS
@@ -81,9 +58,6 @@ docs/**
 !docs/ROADMAP.md
 # !docs/toDo.md
 
-!docs/requirements/
-!docs/requirements/requirements.txt
-
 # ============================================================
 # TEMPORARY FILES
 # ============================================================
@@ -94,5 +68,3 @@ tmp/**
 *.bak
 *.swp
 struttura.txt
-
-script.py
