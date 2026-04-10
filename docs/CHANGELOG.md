@@ -1,9 +1,17 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **shared core + SQL baseline + owner docs sync truth-first pre-WinForms**
+> Scope corrente: **WinForms baseline host + owner docs sync truth-first post-D0**
 
 > Nota privacy: i file sorgente di missione/requisiti restano locali in `docs/target/requirements/` e non sono versionati nel repository pubblico.
+
+#### D — WinForms baseline host
+> Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`37b81ef` — feat(winforms): add baseline desktop host layout**
+  - **Type:** ADDED · **Categoria:** WinForms/Desktop UI
+  - **Cosa cambia:** introduce il progetto `ExamNavigator.WinForms`, lo aggancia alla solution e materializza un `Form1` baseline con area ricerca, tre pannelli affiancati, pulsante di conferma e griglia selezioni.
+  - **Impatto:** apre il primo host desktop richiesto dalla missione e trasforma la soluzione da baseline condivisa+SQL a codebase con UI WinForms compilabile e pronta per il successivo wiring della cascata.
 
 #### C — Database foundation
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.

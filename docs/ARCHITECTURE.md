@@ -40,16 +40,18 @@ Nota:
 3. **Database SQL reference**
    - contiene schema, seed e query SQL di riferimento.
 
-4. **Owner docs**
+4. **Host WinForms**
+   - contiene il primo host desktop della missione con layout statico del form.
+
+5. **Owner docs**
    - governano stato operativo, storia del cambiamento, roadmap e struttura.
 
 ### Sottosistemi richiesti ma non ancora presenti nella codebase
 
-5. host WinForms;
-6. adapter SQL eseguibile / infrastructure layer concreto;
-7. parser `.ini`;
-8. host ASP.NET Core MVC;
-9. test project e quality tooling dedicato.
+5. adapter SQL eseguibile / infrastructure layer concreto;
+6. parser `.ini`;
+7. host ASP.NET Core MVC;
+8. test project e quality tooling dedicato.
 
 ---
 
@@ -58,6 +60,7 @@ Nota:
 - `ExamNavigator.sln` — solution root del progetto
 - `src/ExamNavigator.Domain` — entità di dominio minimali
 - `src/ExamNavigator.Application` — contratti applicativi e interfaccia di servizio
+- `src/ExamNavigator.WinForms` — host desktop WinForms baseline
 - `database/sql/001_schema.sql` — schema SQL Server iniziale
 - `database/sql/002_seed.sql` — dataset demo
 - `database/sql/003_navigation_queries.sql` — query di riferimento per cascata e ricerca
@@ -165,12 +168,24 @@ Stato attuale:
 - utile come specifica operativa per il futuro layer infrastructure.
 
 ### 4. Host layer
+
+#### 4.1 Host WinForms
+Responsabilità correnti:
+- materializzare il form desktop richiesto dalla missione;
+- ospitare il layout statico della ricerca, dei tre pannelli di navigazione e della griglia selezioni;
+- preparare il successivo wiring verso `Application`.
+
+Stato attuale:
+- presente come host desktop baseline;
+- contiene attualmente layout statico;
+- non contiene ancora il wiring della cascata né un adapter SQL concreto.
+
+#### 4.2 Host MVC
 Stato attuale:
 - assente.
 
-Responsabilità future previste:
-- host WinForms per la missione desktop;
-- host MVC per la conversione web.
+Responsabilità futura prevista:
+- conversione web del comportamento desktop senza duplicazione della logica applicativa.
 
 ### 5. Configurazione `.ini`
 Stato attuale:
@@ -190,16 +205,18 @@ Il flusso realmente implementato è di tipo strutturale, non ancora end-to-end r
 - solution `.sln` compila;
 - `Domain` compila;
 - `Application` compila con reference a `Domain`;
+- `ExamNavigator.WinForms` compila come host desktop baseline;
 - baseline SQL esiste come script separati.
 
 In altre parole, la codebase possiede oggi:
 - modello dominio;
 - boundary applicativo;
-- baseline dati.
+- baseline dati;
+- host WinForms statico compilabile.
 
 Non possiede ancora:
 - orchestrazione runtime completa;
-- UI desktop;
+- wiring della cascata desktop;
 - adapter SQL concreto;
 - flusso utente eseguibile dall’inizio alla fine.
 
@@ -230,7 +247,7 @@ Questo flusso è coerente con i confini della codebase, ma oggi è ancora solo p
 
 Rischi reali attuali:
 
-- nessun host WinForms presente;
+- host WinForms presente ma non ancora wired a `Application` e SQL concreto;
 - nessun adapter SQL eseguibile presente;
 - nessun parser `.ini` presente;
 - nessun progetto test presente;

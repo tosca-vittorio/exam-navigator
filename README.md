@@ -23,16 +23,17 @@ Baseline attuale verificata:
 - solution `ExamNavigator.sln` presente;
 - progetto `ExamNavigator.Domain` presente con entità minime del dominio;
 - progetto `ExamNavigator.Application` presente con contratti di navigazione e interfaccia applicativa;
+- progetto `ExamNavigator.WinForms` presente con host desktop baseline e layout statico del form principale;
 - baseline SQL Server presente con:
   - `001_schema.sql`
   - `002_seed.sql`
   - `003_navigation_queries.sql`
-- host WinForms, adapter SQL eseguibile, parser `.ini`, test, lint, coverage e host MVC non ancora introdotti nella codebase.
+- adapter SQL eseguibile, parser `.ini`, test, lint, coverage e host MVC non ancora introdotti nella codebase.
 
 ## Scelte tecniche correnti
 
 - Desktop UI target: WinForms
-- Target desktop previsto: .NET Framework 4.8.1
+- Target desktop previsto: .NET Framework 4.8
 - Layer condivisi correnti: `netstandard2.0`
 - Database: SQL Server
 - Accesso dati previsto: infrastructure SQL dedicata + servizi applicativi
@@ -73,6 +74,7 @@ La soluzione è governata per strati:
 - `ExamNavigator.sln` — solution root del progetto
 - `src/ExamNavigator.Domain` — entità di dominio minime
 - `src/ExamNavigator.Application` — contratti applicativi e interfaccia di servizio
+- `src/ExamNavigator.WinForms` — host desktop WinForms baseline
 - `database/sql` — schema, seed e query SQL di riferimento
 - `docs/TIMELINE.md` — source of truth operativa
 - `docs/CHANGELOG.md` — tracciabilità evolutiva
@@ -96,8 +98,9 @@ Stato corrente della missione principale:
 1. bootstrap repository + governance documentale → completato;
 2. core condiviso (`Domain` + `Application`) → completato;
 3. baseline database (`schema` + `seed` + `query`) → completata;
-4. prossimo blocco mission-critical → implementazione host WinForms;
-5. blocchi successivi → ricerca/config `.ini`, conversione MVC, quality track differiti.
+4. host WinForms baseline (`bootstrap progetto + layout statico form`) → completato;
+5. prossimo blocco mission-critical → wiring desktop della cascata e della navigazione;
+6. blocchi successivi → ricerca/config `.ini`, conversione MVC, quality track differiti.
 
 ## Documentazione owner
 

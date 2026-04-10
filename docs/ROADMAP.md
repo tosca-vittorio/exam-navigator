@@ -9,15 +9,16 @@ Consegnare una soluzione tecnicamente corretta, architetturalmente difendibile e
 Milestone già consolidate:
 1. bootstrap repository + governance documentale;
 2. baseline core condivisa (`Domain` + `Application`);
-3. baseline SQL Server (`schema` + `seed` + `query`).
+3. baseline SQL Server (`schema` + `seed` + `query`);
+4. host WinForms baseline (`bootstrap progetto + layout statico del form`).
 
-Prossima milestone mission-critical:
-4. host WinForms baseline.
+Milestone mission-critical attiva:
+5. WinForms first (wiring cascata, conferma selezione e griglia).
 
 Milestone successive:
-5. integrazione ricerca/configurazione `.ini`;
-6. conversione web MVC;
-7. track qualità / EXTRA differiti.
+6. integrazione ricerca/configurazione `.ini`;
+7. conversione web MVC;
+8. track qualità / EXTRA differiti.
 
 ## Sequenza strategica mission-critical
 
@@ -46,12 +47,12 @@ Obiettivo:
 - introdurre query di riferimento per cascata e ricerca.
 
 ### 4. WinForms first
-Stato: prossimo blocco prioritario.
+Stato: in corso.
 
 Obiettivo:
 - soddisfare integralmente la missione desktop;
-- introdurre il form con tre pannelli, default selection e griglia;
-- collegare il futuro wiring UI al core applicativo e alla baseline dati.
+- consolidare il baseline host WinForms già introdotto;
+- completare il wiring UI verso core applicativo e baseline dati.
 
 ### 5. Ricerca e configurazione
 Stato: successivo al baseline host desktop.

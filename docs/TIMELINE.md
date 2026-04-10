@@ -190,7 +190,7 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## D — ⬜ WinForms implementation
+## D — 🟡 WinForms implementation
 
 **Obiettivo:** implementare il client desktop richiesto dal test.
 
@@ -200,8 +200,14 @@ Quando la soluzione sarà più matura:
 - aggiornamento a cascata corretto;
 - griglia selezioni operativa.
 
-### ⬜ D0 — Layout form
+### ✅ D0 — Layout form
 **Obiettivo:** introdurre il form WinForms base con layout coerente alla missione.
+
+**Evidenze (truth-first):**
+- commit `37b81ef` presente;
+- progetto `ExamNavigator.WinForms` introdotto e aggiunto alla solution;
+- form principale baseline con area ricerca, tre pannelli affiancati, pulsante di conferma e griglia selezioni introdotto;
+- `dotnet build ExamNavigator.sln` verde con compilazione di `ExamNavigator.WinForms`.
 
 ### ⬜ D1 — Cascata ambulatorio -> parti del corpo -> esami
 **Obiettivo:** collegare il layout ai contratti applicativi e al flusso dati.
