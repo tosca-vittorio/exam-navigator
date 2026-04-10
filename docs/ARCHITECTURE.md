@@ -178,7 +178,7 @@ Responsabilità correnti:
 Stato attuale:
 - presente come host desktop wired al boundary `Application`;
 - contiene caricamento iniziale dei tre pannelli, aggiornamento a cascata da ambulatorio a parte del corpo a esami e conferma selezione con append alla griglia tramite servizio bootstrap locale in memoria;
-- non contiene ancora adapter SQL concreto, ricerca wired, delete/reorder della griglia né parser `.ini`.
+- non contiene ancora adapter SQL concreto, ricerca wired, reorder della griglia né parser `.ini`; la cancellazione della riga selezionata nella griglia è invece presente.
 
 #### 4.2 Host MVC
 Stato attuale:
@@ -211,6 +211,7 @@ Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguib
 - la selezione dell’ambulatorio aggiorna parti del corpo ed esami;
 - la selezione della parte del corpo aggiorna gli esami;
 - la conferma della selezione aggiunge una riga alla griglia riepilogativa;
+- la rimozione della riga selezionata elimina elementi già confermati dalla griglia riepilogativa;
 - baseline SQL esiste come script separati di riferimento.
 
 In altre parole, la codebase possiede oggi:
@@ -222,7 +223,7 @@ In altre parole, la codebase possiede oggi:
 Non possiede ancora:
 - adapter SQL concreto;
 - ricerca wired nel form;
-- delete/reorder della griglia;
+- reorder della griglia;
 - parser `.ini`;
 - flusso end-to-end finale sulla persistenza reale.
 

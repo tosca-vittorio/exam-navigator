@@ -229,8 +229,21 @@ Quando la soluzione sarà più matura:
 - la conferma della selezione aggiunge una riga in `dgvSelectedExams` con codice ministeriale, codice interno, descrizione esame, parte del corpo e ambulatorio;
 - smoke manuale verificato sul dataset bootstrap con accumulo coerente di tutte le combinazioni oggi selezionabili nella griglia;
 
-### ⬜ D3 — Reorder e delete righe
-**Obiettivo:** introdurre riordinamento e cancellazione nella griglia.
+### 🟡 D3 — Reorder e delete righe
+**Obiettivo:** completare la gestione operativa delle righe nella griglia selezioni.
+
+### ✅ D3.1 — Delete riga selezionata
+**Obiettivo:** permettere la cancellazione della riga selezionata dalla `dgvSelectedExams`.
+
+**Evidenze (truth-first):**
+- commit `6d50495` presente;
+- `Form1` aggancia `btnRemoveSelected.Click`;
+- `BtnRemoveSelected_Click(...)` rimuove le righe selezionate da `dgvSelectedExams`;
+- `dotnet build ExamNavigator.sln` verde;
+- smoke manuale verificato con creazione di 6 righe e cancellazione sparsa coerente.
+
+### ⬜ D3.2 — Move up / move down righe
+**Obiettivo:** introdurre lo spostamento su e giù delle righe nella griglia selezioni.
 
 ---
 

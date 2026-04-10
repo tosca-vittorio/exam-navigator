@@ -1,12 +1,17 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **WinForms selection grid baseline + owner docs sync truth-first post-D2**
+> Scope corrente: **WinForms selection grid delete baseline + owner docs sync truth-first post-D3.1**
 
 > Nota privacy: i file sorgente di missione/requisiti restano locali in `docs/target/requirements/` e non sono versionati nel repository pubblico.
 
 #### D — WinForms implementation
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`6d50495` — feat(winforms): add selected row deletion to exam grid**
+  - **Type:** ADDED · **Categoria:** WinForms/Desktop UI
+  - **Cosa cambia:** aggancia `btnRemoveSelected` nel wiring degli eventi di `Form1` e introduce l’handler `BtnRemoveSelected_Click(...)` per rimuovere dalla `dgvSelectedExams` le righe selezionate non placeholder.
+  - **Impatto:** chiude la prima metà del blocco `D3`, rendendo operativa la cancellazione delle righe nella griglia riepilogativa e lasciando aperto solo il riordinamento `move up / move down`.
 
 - **`472bed4` — feat(winforms): add selection confirmation grid append**
   - **Type:** ADDED · **Categoria:** WinForms/Desktop UI
