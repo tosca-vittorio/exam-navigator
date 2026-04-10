@@ -1,17 +1,22 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **WinForms baseline host + owner docs sync truth-first post-D0**
+> Scope corrente: **WinForms navigation cascade baseline + owner docs sync truth-first post-D1**
 
 > Nota privacy: i file sorgente di missione/requisiti restano locali in `docs/target/requirements/` e non sono versionati nel repository pubblico.
 
-#### D — WinForms baseline host
+#### D — WinForms implementation
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`f3509c0` — feat(winforms): wire baseline navigation cascade**
+  - **Type:** ADDED · **Categoria:** WinForms/Desktop UI
+  - **Cosa cambia:** collega `ExamNavigator.WinForms` al boundary `ExamNavigator.Application`, introduce un `BootstrapNavigationService` locale in memoria e cabla `Form1` per il caricamento iniziale e l’aggiornamento a cascata dei pannelli ambulatori, parti del corpo ed esami.
+  - **Impatto:** trasforma l’host desktop da layout statico a baseline funzionale di navigazione, verificata da build verde e smoke manuale sul dataset bootstrap, pur restando ancora senza adapter SQL concreto, ricerca wired e griglia operativa.
 
 - **`37b81ef` — feat(winforms): add baseline desktop host layout**
   - **Type:** ADDED · **Categoria:** WinForms/Desktop UI
   - **Cosa cambia:** introduce il progetto `ExamNavigator.WinForms`, lo aggancia alla solution e materializza un `Form1` baseline con area ricerca, tre pannelli affiancati, pulsante di conferma e griglia selezioni.
-  - **Impatto:** apre il primo host desktop richiesto dalla missione e trasforma la soluzione da baseline condivisa+SQL a codebase con UI WinForms compilabile e pronta per il successivo wiring della cascata.
+  - **Impatto:** apre il primo host desktop richiesto dalla missione e prepara il successivo wiring della cascata.
 
 #### C — Database foundation
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.

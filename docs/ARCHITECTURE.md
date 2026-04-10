@@ -41,7 +41,7 @@ Nota:
    - contiene schema, seed e query SQL di riferimento.
 
 4. **Host WinForms**
-   - contiene il primo host desktop della missione con layout statico del form.
+   - contiene il primo host desktop della missione con cascata baseline wired tramite boundary applicativo e bootstrap service locale in memoria.
 
 5. **Owner docs**
    - governano stato operativo, storia del cambiamento, roadmap e struttura.
@@ -60,7 +60,7 @@ Nota:
 - `ExamNavigator.sln` — solution root del progetto
 - `src/ExamNavigator.Domain` — entità di dominio minimali
 - `src/ExamNavigator.Application` — contratti applicativi e interfaccia di servizio
-- `src/ExamNavigator.WinForms` — host desktop WinForms baseline
+- `src/ExamNavigator.WinForms` — host desktop WinForms con wiring baseline della cascata
 - `database/sql/001_schema.sql` — schema SQL Server iniziale
 - `database/sql/002_seed.sql` — dataset demo
 - `database/sql/003_navigation_queries.sql` — query di riferimento per cascata e ricerca
@@ -176,9 +176,9 @@ Responsabilità correnti:
 - preparare il successivo wiring verso `Application`.
 
 Stato attuale:
-- presente come host desktop baseline;
-- contiene attualmente layout statico;
-- non contiene ancora il wiring della cascata né un adapter SQL concreto.
+- presente come host desktop wired al boundary `Application`;
+- contiene caricamento iniziale dei tre pannelli e aggiornamento a cascata da ambulatorio a parte del corpo a esami tramite servizio bootstrap locale in memoria;
+- non contiene ancora adapter SQL concreto, ricerca wired, conferma selezione/griglia operative né parser `.ini`.
 
 #### 4.2 Host MVC
 Stato attuale:
@@ -200,25 +200,30 @@ Responsabilità futura prevista:
 
 ### Flusso realmente implementato oggi
 
-Il flusso realmente implementato è di tipo strutturale, non ancora end-to-end runtime:
+Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguibile:
 
 - solution `.sln` compila;
 - `Domain` compila;
 - `Application` compila con reference a `Domain`;
-- `ExamNavigator.WinForms` compila come host desktop baseline;
-- baseline SQL esiste come script separati.
+- `ExamNavigator.WinForms` referenzia `ExamNavigator.Application`;
+- `Program.cs` costruisce un `BootstrapNavigationService` locale in memoria;
+- `Form1` usa `IExamNavigationService` per popolare all’avvio i tre pannelli;
+- la selezione dell’ambulatorio aggiorna parti del corpo ed esami;
+- la selezione della parte del corpo aggiorna gli esami;
+- baseline SQL esiste come script separati di riferimento.
 
 In altre parole, la codebase possiede oggi:
 - modello dominio;
 - boundary applicativo;
-- baseline dati;
-- host WinForms statico compilabile.
+- baseline dati SQL di riferimento;
+- host WinForms compilabile e con navigazione a cascata baseline su servizio bootstrap locale.
 
 Non possiede ancora:
-- orchestrazione runtime completa;
-- wiring della cascata desktop;
 - adapter SQL concreto;
-- flusso utente eseguibile dall’inizio alla fine.
+- ricerca wired nel form;
+- conferma selezione/griglia operative;
+- parser `.ini`;
+- flusso end-to-end finale sulla persistenza reale.
 
 ### Flusso target già preparato a livello di boundary, ma non ancora implementato end-to-end
 
@@ -247,7 +252,7 @@ Questo flusso è coerente con i confini della codebase, ma oggi è ancora solo p
 
 Rischi reali attuali:
 
-- host WinForms presente ma non ancora wired a `Application` e SQL concreto;
+- host WinForms wired a `Application` solo tramite bootstrap service locale in memoria; manca ancora l’aggancio a un adapter SQL concreto;
 - nessun adapter SQL eseguibile presente;
 - nessun parser `.ini` presente;
 - nessun progetto test presente;

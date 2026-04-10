@@ -23,7 +23,7 @@ Baseline attuale verificata:
 - solution `ExamNavigator.sln` presente;
 - progetto `ExamNavigator.Domain` presente con entità minime del dominio;
 - progetto `ExamNavigator.Application` presente con contratti di navigazione e interfaccia applicativa;
-- progetto `ExamNavigator.WinForms` presente con host desktop baseline e layout statico del form principale;
+- progetto `ExamNavigator.WinForms` presente con host desktop wired al boundary `Application` e cascata baseline in memoria (caricamento iniziale + aggiornamento ambulatorio -> parte del corpo -> esami);
 - baseline SQL Server presente con:
   - `001_schema.sql`
   - `002_seed.sql`
@@ -99,8 +99,8 @@ Stato corrente della missione principale:
 2. core condiviso (`Domain` + `Application`) → completato;
 3. baseline database (`schema` + `seed` + `query`) → completata;
 4. host WinForms baseline (`bootstrap progetto + layout statico form`) → completato;
-5. prossimo blocco mission-critical → wiring desktop della cascata e della navigazione;
-6. blocchi successivi → ricerca/config `.ini`, conversione MVC, quality track differiti.
+5. wiring desktop iniziale della cascata (`Application` boundary + bootstrap service locale + aggiornamento ambulatorio/parte del corpo/esami) → completato;
+6. blocchi successivi → conferma selezione/griglia, ricerca/config `.ini`, conversione MVC, quality track differiti.
 
 ## Documentazione owner
 

@@ -209,8 +209,16 @@ Quando la soluzione sarà più matura:
 - form principale baseline con area ricerca, tre pannelli affiancati, pulsante di conferma e griglia selezioni introdotto;
 - `dotnet build ExamNavigator.sln` verde con compilazione di `ExamNavigator.WinForms`.
 
-### ⬜ D1 — Cascata ambulatorio -> parti del corpo -> esami
+### ✅ D1 — Cascata ambulatorio -> parti del corpo -> esami
 **Obiettivo:** collegare il layout ai contratti applicativi e al flusso dati.
+
+**Evidenze (truth-first):**
+- commit `f3509c0` presente;
+- `ExamNavigator.WinForms` referenzia `ExamNavigator.Application`;
+- `Program.cs` introduce un bootstrap `IExamNavigationService` locale in memoria per sbloccare il wiring host -> Application senza adapter SQL concreto;
+- `Form1` esegue il popolamento iniziale dei tre pannelli e aggiorna in cascata il pannello parti del corpo e il pannello esami su selezione di ambulatorio e parte del corpo;
+- `dotnet build ExamNavigator.sln` verde dopo il wiring;
+- smoke manuale verificato su dataset bootstrap per `EcografiaMassimino`/`EcografiaPrivitera`, `Radiologia` e `Risonanza`.
 
 ### ⬜ D2 — Conferma selezione + griglia
 **Obiettivo:** introdurre la selezione confermata e la griglia delle scelte.
