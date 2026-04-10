@@ -36,6 +36,7 @@ namespace ExamNavigator.WinForms
             lstRooms.SelectedIndexChanged += LstRooms_SelectedIndexChanged;
             lstBodyParts.SelectedIndexChanged += LstBodyParts_SelectedIndexChanged;
             btnConfirmExam.Click += BtnConfirmExam_Click;
+            btnRemoveSelected.Click += BtnRemoveSelected_Click;
         }
 
         private void LstRooms_SelectedIndexChanged(object sender, EventArgs e)
@@ -86,6 +87,22 @@ namespace ExamNavigator.WinForms
                 selectedExam.DescrizioneEsame,
                 selectedBodyPart.Label,
                 selectedRoom.Label);
+        }
+
+        private void BtnRemoveSelected_Click(object sender, EventArgs e)
+        {
+            if (dgvSelectedExams.SelectedRows.Count == 0)
+            {
+                return;
+            }
+        
+            foreach (DataGridViewRow selectedRow in dgvSelectedExams.SelectedRows)
+            {
+                if (!selectedRow.IsNewRow)
+                {
+                    dgvSelectedExams.Rows.Remove(selectedRow);
+                }
+            }
         }
 
         private void InitializeSearchField()
