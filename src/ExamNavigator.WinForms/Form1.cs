@@ -35,6 +35,7 @@ namespace ExamNavigator.WinForms
         {
             lstRooms.SelectedIndexChanged += LstRooms_SelectedIndexChanged;
             lstBodyParts.SelectedIndexChanged += LstBodyParts_SelectedIndexChanged;
+            btnConfirmExam.Click += BtnConfirmExam_Click;
         }
 
         private void LstRooms_SelectedIndexChanged(object sender, EventArgs e)
@@ -58,7 +59,7 @@ namespace ExamNavigator.WinForms
             {
                 return;
             }
-        
+
             LoadNavigation(new ExamNavigationRequest
             {
                 SelectedRoomId = GetSelectedLookupId(lstRooms),
@@ -66,6 +67,25 @@ namespace ExamNavigator.WinForms
                 SearchText = txtSearchTerm.Text,
                 SearchField = GetSelectedSearchField()
             });
+        }
+
+        private void BtnConfirmExam_Click(object sender, EventArgs e)
+        {
+            var selectedExam = lstExams.SelectedItem as ExamListItem;
+            var selectedBodyPart = lstBodyParts.SelectedItem as LookupItem;
+            var selectedRoom = lstRooms.SelectedItem as LookupItem;
+
+            if (selectedExam == null || selectedBodyPart == null || selectedRoom == null)
+            {
+                return;
+            }
+
+            dgvSelectedExams.Rows.Add(
+                selectedExam.CodiceMinisteriale,
+                selectedExam.CodiceInterno,
+                selectedExam.DescrizioneEsame,
+                selectedBodyPart.Label,
+                selectedRoom.Label);
         }
 
         private void InitializeSearchField()
