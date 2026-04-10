@@ -39,6 +39,9 @@ namespace ExamNavigator.WinForms
             btnRemoveSelected.Click += BtnRemoveSelected_Click;
             btnMoveUp.Click += BtnMoveUp_Click;
             btnMoveDown.Click += BtnMoveDown_Click;
+            btnSearch.Click += BtnSearch_Click;
+            btnClearSearch.Click += BtnClearSearch_Click;
+            txtSearchTerm.KeyDown += TxtSearchTerm_KeyDown;
         }
 
         private void LstRooms_SelectedIndexChanged(object sender, EventArgs e)
@@ -171,6 +174,40 @@ namespace ExamNavigator.WinForms
             dgvSelectedExams.Rows.Insert(targetIndex, values);
             dgvSelectedExams.ClearSelection();
             dgvSelectedExams.Rows[targetIndex].Selected = true;
+        }
+
+         private void BtnSearch_Click(object sender, EventArgs e)
+        {
+            ApplySearch();
+        }
+
+        private void BtnClearSearch_Click(object sender, EventArgs e)
+        {
+            txtSearchTerm.Text = string.Empty;
+            ApplySearch();
+        }
+
+        private void TxtSearchTerm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter)
+            {
+                return;
+            }
+
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+            ApplySearch();
+        }
+
+        private void ApplySearch()
+        {
+            LoadNavigation(new ExamNavigationRequest
+            {
+                SelectedRoomId = GetSelectedLookupId(lstRooms),
+                SelectedBodyPartId = GetSelectedLookupId(lstBodyParts),
+                SearchText = txtSearchTerm.Text,
+                SearchField = GetSelectedSearchField()
+            });
         }
         
         private void InitializeSearchField()
