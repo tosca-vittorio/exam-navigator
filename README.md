@@ -1,6 +1,6 @@
 # Exam Navigator System
 
-Progetto tecnico realizzato per il test di programmazione NOLEX.
+Progetto tecnico realizzato come test di programmazione.
 
 ## Obiettivo
 
@@ -23,7 +23,7 @@ Baseline attuale verificata:
 - solution `ExamNavigator.sln` presente;
 - progetto `ExamNavigator.Domain` presente con entità minime del dominio;
 - progetto `ExamNavigator.Application` presente con contratti di navigazione e interfaccia applicativa;
-- progetto `ExamNavigator.WinForms` presente con host desktop wired al boundary `Application`, cascata baseline in memoria, append delle selezioni confermate nella griglia riepilogativa e cancellazione della riga selezionata;
+- progetto `ExamNavigator.WinForms` presente con host desktop wired al boundary `Application`, cascata baseline in memoria, append delle selezioni confermate nella griglia riepilogativa, cancellazione della riga selezionata e riordinamento `move up / move down`;
 - baseline SQL Server presente con:
   - `001_schema.sql`
   - `002_seed.sql`
@@ -100,7 +100,7 @@ Stato corrente della missione principale:
 3. baseline database (`schema` + `seed` + `query`) → completata;
 4. host WinForms baseline (`bootstrap progetto + layout statico form`) → completato;
 5. wiring desktop iniziale della cascata (`Application` boundary + bootstrap service locale + aggiornamento ambulatorio/parte del corpo/esami) → completato;
-6. blocchi successivi → reorder della griglia, ricerca/config `.ini`, conversione MVC, quality track differiti.
+6. blocchi successivi → ricerca/config `.ini`, conversione MVC, quality track differiti.
 
 ## Documentazione owner
 

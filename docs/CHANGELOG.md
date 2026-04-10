@@ -1,12 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **WinForms selection grid delete baseline + owner docs sync truth-first post-D3.1**
-
-> Nota privacy: i file sorgente di missione/requisiti restano locali in `docs/target/requirements/` e non sono versionati nel repository pubblico.
+> Scope corrente: **WinForms selection grid reorder baseline + owner docs sync truth-first post-D3**
 
 #### D — WinForms implementation
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`bb85c7a` — feat(winforms): add selection grid row reorder actions**
+  - **Type:** ADDED · **Categoria:** WinForms/Desktop UI
+  - **Cosa cambia:** aggancia `btnMoveUp` e `btnMoveDown` nel wiring degli eventi di `Form1` e introduce gli handler `BtnMoveUp_Click(...)` e `BtnMoveDown_Click(...)` per riordinare di una posizione la riga selezionata nella `dgvSelectedExams`.
+  - **Impatto:** chiude il blocco `D3`, rendendo operativa la gestione completa delle righe della griglia tramite cancellazione e riordinamento `move up / move down`.
 
 - **`6d50495` — feat(winforms): add selected row deletion to exam grid**
   - **Type:** ADDED · **Categoria:** WinForms/Desktop UI

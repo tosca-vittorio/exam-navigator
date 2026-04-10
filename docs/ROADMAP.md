@@ -11,12 +11,12 @@ Milestone già consolidate:
 2. baseline core condivisa (`Domain` + `Application`);
 3. baseline SQL Server (`schema` + `seed` + `query`);
 4. host WinForms baseline (`bootstrap progetto + layout statico del form`).
+5. WinForms first (`wiring` cascata, conferma selezione, delete/reorder della griglia).
 
 Milestone mission-critical attiva:
-5. WinForms first (wiring cascata, conferma selezione e griglia).
+6. integrazione ricerca/configurazione `.ini`.
 
 Milestone successive:
-6. integrazione ricerca/configurazione `.ini`;
 7. conversione web MVC;
 8. track qualità / EXTRA differiti.
 
@@ -47,7 +47,7 @@ Obiettivo:
 - introdurre query di riferimento per cascata e ricerca.
 
 ### 4. WinForms first
-Stato: in corso.
+Stato: completato.
 
 Obiettivo:
 - soddisfare integralmente la missione desktop;
@@ -55,7 +55,7 @@ Obiettivo:
 - completare il wiring UI verso core applicativo e baseline dati.
 
 ### 5. Ricerca e configurazione
-Stato: successivo al baseline host desktop.
+Stato: prossimo blocco mission-critical.
 
 Obiettivo:
 - completare il servizio di ricerca;

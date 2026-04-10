@@ -190,7 +190,7 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## D — 🟡 WinForms implementation
+## D — ☑️ WinForms implementation
 
 **Obiettivo:** implementare il client desktop richiesto dal test.
 
@@ -229,7 +229,7 @@ Quando la soluzione sarà più matura:
 - la conferma della selezione aggiunge una riga in `dgvSelectedExams` con codice ministeriale, codice interno, descrizione esame, parte del corpo e ambulatorio;
 - smoke manuale verificato sul dataset bootstrap con accumulo coerente di tutte le combinazioni oggi selezionabili nella griglia;
 
-### 🟡 D3 — Reorder e delete righe
+### ✅ D3 — Reorder e delete righe
 **Obiettivo:** completare la gestione operativa delle righe nella griglia selezioni.
 
 ### ✅ D3.1 — Delete riga selezionata
@@ -242,8 +242,15 @@ Quando la soluzione sarà più matura:
 - `dotnet build ExamNavigator.sln` verde;
 - smoke manuale verificato con creazione di 6 righe e cancellazione sparsa coerente.
 
-### ⬜ D3.2 — Move up / move down righe
+### ✅ D3.2 — Move up / move down righe
 **Obiettivo:** introdurre lo spostamento su e giù delle righe nella griglia selezioni.
+
+**Evidenze (truth-first):**
+- commit `bb85c7a` presente;
+- `Form1` aggancia `btnMoveUp.Click` e `btnMoveDown.Click`;
+- `BtnMoveUp_Click(...)` e `BtnMoveDown_Click(...)` riordinano di una posizione la riga selezionata in `dgvSelectedExams`;
+- `dotnet build ExamNavigator.sln` verde;
+- smoke manuale verificato con spostamento in alto, spostamento in basso ed eliminazione coerente.
 
 ---
 
