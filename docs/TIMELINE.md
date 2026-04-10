@@ -20,14 +20,49 @@ Principi:
 ---
 
 ## Baseline / Evidenze standard richieste
-Minimo iniziale:
+Minimo corrente:
 - `git status -sb`
-- `git log --oneline --decorate -5`
+- `git log --oneline --decorate -10`
+- `dotnet build ExamNavigator.sln`
 
-Quando la soluzione esisterà:
-- build desktop
-- test core applicativo
+Quando la soluzione sarà più matura:
+- lint
+- test unitari
+- coverage
 - smoke run funzionale
+
+---
+
+## EXTRA — ⬜ Tracce differite / non prioritarie rispetto alla missione
+
+**Regola di governance:**
+- gli EXTRA sono congelati e tracciati;
+- non sovrascrivono la priorità della missione corrente;
+- restano non attivati finché la baseline mission-critical non giustifica la loro apertura operativa.
+
+### ⬜ EXTRA_0 — Documentazione estesa A→Z per preparazione colloquio
+**Obiettivo:** produrre una documentazione estesa, difendibile e studiabile su requisiti, sintassi, struttura, architettura, logica e funzionamento del progetto.
+
+### ⬜ EXTRA_1 — Congelamento formale requisiti + riverifica futura
+**Obiettivo:** mantenere un tracciamento esplicito dei requisiti della missione e introdurre una successiva riverifica implementativa/funzionale.
+
+### ⬜ EXTRA_2 — Introduzione lint
+**Obiettivo:** introdurre una baseline di lint coerente con lo stack .NET scelto.
+
+### ⬜ EXTRA_3 — Introduzione test unitari minimi
+**Obiettivo:** introdurre test minimi sui blocchi core condivisi.
+
+### ⬜ EXTRA_4 — Coverage baseline
+**Obiettivo:** introdurre raccolta coverage sulla baseline stabile.
+
+### ⬜ EXTRA_5 — Smoke test di progressione / non regressione
+**Obiettivo:** introdurre verifiche smoke ripetibili per constatare progressioni e non regressioni.
+
+### ⬜ EXTRA_6 — Quality campaign successiva
+**Obiettivo:** eseguire una campagna qualità su baseline stabile dopo il consolidamento del flusso mission-critical.
+
+### ⬜ EXTRA_7 — Ambiente isolato / centralizzazione dipendenze
+**Obiettivo:** valutare e introdurre un ambiente isolato coerente con lo stack per contenere dipendenze e tooling di progetto.
 
 ---
 
@@ -43,18 +78,19 @@ Quando la soluzione esisterà:
 - documenti owner minimi creati e coerenti.
 
 ### ✅ A0 — Congelamento missione sorgente
-**Obiettivo:** copiare il testo originale del test in `docs/target/requirements/01_original_mission.md`.
+**Obiettivo:** mantenere il testo originale del test in un artefatto locale dedicato.
 
 **Evidenze (truth-first):**
-- file presente nel repository;
-- missione NOLEX congelata in forma grezza.
+- artefatto locale presente in `docs/target/requirements/01_original_mission.md`;
+- mantenuto fuori dal repo pubblico per privacy.
 
 ### ✅ A1 — Freeze requisiti strutturato
-**Obiettivo:** derivare il documento `02_requirements_freeze.md` dalla missione grezza.
+**Obiettivo:** derivare il documento di freeze requisiti dalla missione grezza.
 
 **Evidenze (truth-first):**
-- `docs/target/requirements/02_requirements_freeze.md` presente;
-- requisiti funzionali e non funzionali estratti in forma strutturata.
+- freeze locale presente in `docs/target/requirements/02_requirements_freeze.md`;
+- mantenuto fuori dal repo pubblico per privacy;
+- requisiti funzionali e non funzionali congelati nel working environment.
 
 ### ✅ A2 — Bootstrap owner docs
 **Obiettivo:** introdurre `README.md`, `TIMELINE.md`, `CHANGELOG.md`, `ROADMAP.md`.
@@ -67,14 +103,13 @@ Quando la soluzione esisterà:
 **Obiettivo:** inizializzare Git, creare baseline stabile e aprire `development`.
 
 **Evidenze (truth-first):**
-- root commit `1bf84d6` presente;
+- root commit `feda771` presente;
 - branch `main` e `development` creati;
-- push remoto eseguito su entrambi i branch;
-- working tree dichiarata pulita nello snapshot fornito.
+- push remoto eseguito su entrambi i branch.
 
 ---
 
-## B — ⬜ Solution skeleton + dominio condiviso
+## B — ☑️ Solution skeleton + dominio condiviso
 
 **Obiettivo:** creare la solution e il core condiviso.
 
@@ -84,13 +119,36 @@ Quando la soluzione esisterà:
 - entità dominio definite;
 - contratti applicativi definiti.
 
-### ⬜ B0 — Solution bootstrap
-### ⬜ B1 — Domain model
-### ⬜ B2 — Application services contracts
+### ✅ B0 — Solution bootstrap
+**Obiettivo:** creare la solution e il primo modulo condiviso.
+
+**Evidenze (truth-first):**
+- commit `1c6b30f` presente;
+- `ExamNavigator.sln` presente;
+- `ExamNavigator.Domain` introdotto;
+- `dotnet build ExamNavigator.sln` eseguito con esito verde.
+
+### ✅ B1 — Domain model
+**Obiettivo:** definire il modello di dominio minimo coerente con la missione.
+
+**Evidenze (truth-first):**
+- commit `c5e9f07` presente;
+- entità `BodyPart`, `Room`, `Exam`, `ExamRoom` introdotte;
+- build verde confermata sulla solution.
+
+### ✅ B2 — Application services contracts
+**Obiettivo:** introdurre i contratti applicativi minimi per navigazione e ricerca.
+
+**Evidenze (truth-first):**
+- commit `e68cca0` presente;
+- `ExamNavigator.Application` introdotto e referenziato dalla solution;
+- contratti `ExamNavigationRequest`, `ExamNavigationResult`, `ExamListItem`, `LookupItem`, `ExamSearchField` presenti;
+- interfaccia `IExamNavigationService` presente;
+- build verde confermata sulla solution.
 
 ---
 
-## C — ⬜ Database SQL Server + seed
+## C — ☑️ Database SQL Server + seed
 
 **Obiettivo:** modellare e popolare il database.
 
@@ -98,11 +156,37 @@ Quando la soluzione esisterà:
 - schema SQL presente;
 - seed coerente;
 - relazioni molti-a-molti operative;
-- dataset demo utilizzabile.
+- dataset demo utilizzabile;
+- query di filtro e ricerca presenti.
 
-### ⬜ C0 — Schema iniziale
-### ⬜ C1 — Seed demo
-### ⬜ C2 — Query di filtro e ricerca
+### ✅ C0 — Schema iniziale
+**Obiettivo:** introdurre lo schema SQL Server iniziale.
+
+**Evidenze (truth-first):**
+- commit `55ecc96` presente;
+- `database/sql/001_schema.sql` presente;
+- PK, FK, vincoli univoci e tabella ponte molti-a-molti introdotti.
+
+### ✅ C1 — Seed demo
+**Obiettivo:** introdurre un dataset demo realistico e riusabile.
+
+**Evidenze (truth-first):**
+- commit `762fd4c` presente;
+- `database/sql/002_seed.sql` presente;
+- dataset demo con più parti del corpo, più ambulatori e più esami introdotto;
+- relazioni molti-a-molti coperte dal seed.
+
+### ✅ C2 — Query di filtro e ricerca
+**Obiettivo:** introdurre query di riferimento per la navigazione a cascata e la ricerca.
+
+**Evidenze (truth-first):**
+- commit `ad8f56d` presente;
+- `database/sql/003_navigation_queries.sql` presente;
+- query separate per:
+  - pannello ambulatori;
+  - pannello parti del corpo;
+  - pannello esami;
+- ricerca resa esplicitamente case-insensitive tramite `UPPER(...)`.
 
 ---
 
@@ -117,9 +201,16 @@ Quando la soluzione esisterà:
 - griglia selezioni operativa.
 
 ### ⬜ D0 — Layout form
+**Obiettivo:** introdurre il form WinForms base con layout coerente alla missione.
+
 ### ⬜ D1 — Cascata ambulatorio -> parti del corpo -> esami
+**Obiettivo:** collegare il layout ai contratti applicativi e al flusso dati.
+
 ### ⬜ D2 — Conferma selezione + griglia
+**Obiettivo:** introdurre la selezione confermata e la griglia delle scelte.
+
 ### ⬜ D3 — Reorder e delete righe
+**Obiettivo:** introdurre riordinamento e cancellazione nella griglia.
 
 ---
 
@@ -135,9 +226,16 @@ Quando la soluzione esisterà:
 - default ricerca caricabili da configurazione.
 
 ### ⬜ E0 — Search service
+**Obiettivo:** introdurre il servizio applicativo concreto di ricerca/navigazione.
+
 ### ⬜ E1 — Wiring UI ricerca
+**Obiettivo:** collegare la ricerca al futuro host desktop.
+
 ### ⬜ E2 — Ini parser
+**Obiettivo:** introdurre il caricatore `.ini` riflessivo.
+
 ### ⬜ E3 — Default search configuration
+**Obiettivo:** supportare ricerca predefinita e tipo di ricerca predefinito da configurazione.
 
 ---
 
@@ -158,5 +256,7 @@ Quando la soluzione esisterà:
 ---
 
 ## Note di governance
-- `ARCHITECTURE.md` verrà attivato solo dopo la creazione reale della solution e dei moduli.
-- La timeline è la source of truth operativa.
+- `ARCHITECTURE.md` è ora attivo perché la struttura del repository è diventata abbastanza stabile da meritare una fotografia AS-IS dedicata.
+- I file requisito sorgente restano locali e non versionati nel repo pubblico.
+- Gli EXTRA sono congelati ma non attivati; non sovrascrivono il flusso mission-critical.
+- La timeline resta la source of truth operativa.

@@ -14,60 +14,94 @@ Realizzare un sistema desktop WinForms per la selezione guidata di esami medici,
 - griglia di riepilogo delle scelte;
 - caricamento opzionale di configurazione `.ini`.
 
-Il progetto viene impostato fin dall’inizio in modo da essere convertibile a web tramite ASP.NET Core MVC, evitando logiche applicative duplicate.
+Il progetto viene impostato fin dall’inizio in modo da essere convertibile a web tramite ASP.NET Core MVC, evitando logiche applicative duplicate e preservando un core condiviso tra dominio, contratti applicativi e host futuri.
 
-## Scelte tecniche iniziali
+## Stato corrente della codebase
 
-- Desktop UI: WinForms
-- Target desktop: .NET Framework 4.8.1
+Baseline attuale verificata:
+
+- solution `ExamNavigator.sln` presente;
+- progetto `ExamNavigator.Domain` presente con entità minime del dominio;
+- progetto `ExamNavigator.Application` presente con contratti di navigazione e interfaccia applicativa;
+- baseline SQL Server presente con:
+  - `001_schema.sql`
+  - `002_seed.sql`
+  - `003_navigation_queries.sql`
+- host WinForms, adapter SQL eseguibile, parser `.ini`, test, lint, coverage e host MVC non ancora introdotti nella codebase.
+
+## Scelte tecniche correnti
+
+- Desktop UI target: WinForms
+- Target desktop previsto: .NET Framework 4.8.1
+- Layer condivisi correnti: `netstandard2.0`
 - Database: SQL Server
-- Accesso dati: SQL essenziale + repository/query service
+- Accesso dati previsto: infrastructure SQL dedicata + servizi applicativi
 - Web conversion target: ASP.NET Core MVC
 - Architettura: core condiviso + host desktop + host web
 
 ## Strategia architetturale
 
-La soluzione verrà costruita in modo stratificato:
+La soluzione è governata per strati:
 
-1. **Core di dominio**
-   - entità;
-   - value object / enum;
-   - regole base.
+1. **Domain**
+   - entità di dominio minime;
+   - modello dati indipendente da UI e persistenza.
 
-2. **Application layer**
-   - servizi di selezione;
-   - servizi di ricerca;
-   - orchestrazione della cascata:
-     - ambulatorio -> parti del corpo -> esami;
-   - gestione della configurazione applicativa.
+2. **Application**
+   - contratti di input/output per la navigazione;
+   - interfacce di servizio applicativo;
+   - orchestrazione della cascata e della ricerca.
 
-3. **Infrastructure layer**
-   - accesso SQL Server;
-   - seed dati;
-   - lettore `.ini` riflessivo.
+3. **Database / Infrastructure baseline**
+   - schema SQL Server;
+   - seed demo;
+   - query di riferimento per navigazione e ricerca;
+   - futura implementazione adapter SQL separata dal dominio.
 
 4. **Host WinForms**
-   - presentazione desktop;
-   - griglia selezioni;
-   - gestione eventi UI.
+   - interfaccia desktop richiesta dalla missione;
+   - wiring UI -> Application;
+   - griglia selezioni e gestione eventi.
 
 5. **Host Web**
-   - conversione a MVC;
+   - futuro secondo host;
    - riuso del core applicativo;
-   - interfaccia web equivalente.
+   - adattamento MVC senza duplicazione di logica.
 
-## Stato iniziale repository
+## Repository layout
 
-Repository bootstrap:
-- governance documentale iniziale presente;
-- missione congelata in `docs/target/requirements`;
-- timeline pronta per l’esecuzione;
-- roadmap iniziale definita.
+- `ExamNavigator.sln` — solution root del progetto
+- `src/ExamNavigator.Domain` — entità di dominio minime
+- `src/ExamNavigator.Application` — contratti applicativi e interfaccia di servizio
+- `database/sql` — schema, seed e query SQL di riferimento
+- `docs/TIMELINE.md` — source of truth operativa
+- `docs/CHANGELOG.md` — tracciabilità evolutiva
+- `docs/ROADMAP.md` — traiettoria e milestone
+- `docs/ARCHITECTURE.md` — fotografia AS-IS della struttura corrente
 
-## Documentazione
+## Privacy e fonti requisito
+
+Le fonti requisito originali e il freeze requisito sorgente sono mantenuti localmente in:
+
+- `docs/target/requirements/01_original_mission.md`
+- `docs/target/requirements/02_requirements_freeze.md`
+
+Questi file **non sono versionati nel repository pubblico** per ragioni di privacy.  
+Gli owner docs versionati devono quindi restare coerenti con il fatto che tali sorgenti esistono nel working environment locale, ma non fanno parte della superficie pubblica del repo.
+
+## Stato missione
+
+Stato corrente della missione principale:
+
+1. bootstrap repository + governance documentale → completato;
+2. core condiviso (`Domain` + `Application`) → completato;
+3. baseline database (`schema` + `seed` + `query`) → completata;
+4. prossimo blocco mission-critical → implementazione host WinForms;
+5. blocchi successivi → ricerca/config `.ini`, conversione MVC, quality track differiti.
+
+## Documentazione owner
 
 - `docs/TIMELINE.md` -> stato operativo reale
 - `docs/CHANGELOG.md` -> tracciabilità evolutiva
 - `docs/ROADMAP.md` -> traiettoria e milestone
-- `docs/target/requirements/01_original_mission.md` -> missione grezza
-- `docs/target/requirements/02_requirements_freeze.md` -> estrazione strutturata dei requisiti
+- `docs/ARCHITECTURE.md` -> struttura reale del sistema
