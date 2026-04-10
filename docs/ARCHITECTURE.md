@@ -177,8 +177,8 @@ Responsabilità correnti:
 
 Stato attuale:
 - presente come host desktop wired al boundary `Application`;
-- contiene caricamento iniziale dei tre pannelli e aggiornamento a cascata da ambulatorio a parte del corpo a esami tramite servizio bootstrap locale in memoria;
-- non contiene ancora adapter SQL concreto, ricerca wired, conferma selezione/griglia operative né parser `.ini`.
+- contiene caricamento iniziale dei tre pannelli, aggiornamento a cascata da ambulatorio a parte del corpo a esami e conferma selezione con append alla griglia tramite servizio bootstrap locale in memoria;
+- non contiene ancora adapter SQL concreto, ricerca wired, delete/reorder della griglia né parser `.ini`.
 
 #### 4.2 Host MVC
 Stato attuale:
@@ -210,6 +210,7 @@ Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguib
 - `Form1` usa `IExamNavigationService` per popolare all’avvio i tre pannelli;
 - la selezione dell’ambulatorio aggiorna parti del corpo ed esami;
 - la selezione della parte del corpo aggiorna gli esami;
+- la conferma della selezione aggiunge una riga alla griglia riepilogativa;
 - baseline SQL esiste come script separati di riferimento.
 
 In altre parole, la codebase possiede oggi:
@@ -221,7 +222,7 @@ In altre parole, la codebase possiede oggi:
 Non possiede ancora:
 - adapter SQL concreto;
 - ricerca wired nel form;
-- conferma selezione/griglia operative;
+- delete/reorder della griglia;
 - parser `.ini`;
 - flusso end-to-end finale sulla persistenza reale.
 

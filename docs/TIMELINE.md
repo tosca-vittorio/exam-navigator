@@ -220,8 +220,14 @@ Quando la soluzione sarà più matura:
 - `dotnet build ExamNavigator.sln` verde dopo il wiring;
 - smoke manuale verificato su dataset bootstrap per `EcografiaMassimino`/`EcografiaPrivitera`, `Radiologia` e `Risonanza`.
 
-### ⬜ D2 — Conferma selezione + griglia
+### ✅ D2 — Conferma selezione + griglia
 **Obiettivo:** introdurre la selezione confermata e la griglia delle scelte.
+
+**Evidenze (truth-first):**
+- commit `472bed4` presente;
+- `Form1` aggancia `btnConfirmExam.Click`;
+- la conferma della selezione aggiunge una riga in `dgvSelectedExams` con codice ministeriale, codice interno, descrizione esame, parte del corpo e ambulatorio;
+- smoke manuale verificato sul dataset bootstrap con accumulo coerente di tutte le combinazioni oggi selezionabili nella griglia;
 
 ### ⬜ D3 — Reorder e delete righe
 **Obiettivo:** introdurre riordinamento e cancellazione nella griglia.

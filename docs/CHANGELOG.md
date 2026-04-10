@@ -1,12 +1,17 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **WinForms navigation cascade baseline + owner docs sync truth-first post-D1**
+> Scope corrente: **WinForms selection grid baseline + owner docs sync truth-first post-D2**
 
 > Nota privacy: i file sorgente di missione/requisiti restano locali in `docs/target/requirements/` e non sono versionati nel repository pubblico.
 
 #### D — WinForms implementation
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`472bed4` — feat(winforms): add selection confirmation grid append**
+  - **Type:** ADDED · **Categoria:** WinForms/Desktop UI
+  - **Cosa cambia:** aggancia il pulsante di conferma selezione e aggiunge alla `dgvSelectedExams` una riga per ogni esame confermato, riportando codice ministeriale, codice interno, descrizione, parte del corpo e ambulatorio correnti.
+  - **Impatto:** rende operativa la griglia riepilogativa come accumulatore delle selezioni confermate e chiude il baseline della conferma selezione lato host desktop, lasciando ancora aperti solo delete/reorder, ricerca wired e persistenza SQL concreta.
 
 - **`f3509c0` — feat(winforms): wire baseline navigation cascade**
   - **Type:** ADDED · **Categoria:** WinForms/Desktop UI
