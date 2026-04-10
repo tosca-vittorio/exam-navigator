@@ -1,10 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **WinForms exam search wiring baseline + owner docs sync truth-first post-E1**
+> Scope corrente: **WinForms search/configuration baseline + static defaults foundation post-E2.3**
 
 #### E — Search and configuration
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`b0ef0c2` — feat(winforms): add static search defaults container**
+  - **Type:** ADDED · **Categoria:** WinForms/Configuration
+  - **Cosa cambia:** introduce `Predefiniti_Ricerca` come classe statica nel progetto `ExamNavigator.WinForms` e aggiorna il `.csproj` per includerla nel build, centralizzando i default di `SearchText` e `SearchField`.
+  - **Impatto:** apre la prima fondazione concreta per la configurazione della ricerca e prepara il successivo loader `.ini` riflessivo senza cambiare ancora bootstrap runtime, `Form1` o adapter SQL.
 
 - **`05fff07` — feat(winforms): wire exam search actions**
   - **Type:** ADDED · **Categoria:** WinForms/Desktop UI

@@ -284,8 +284,17 @@ Quando la soluzione sarà più matura:
 - `dotnet build ExamNavigator.sln` verde;
 - smoke manuale verificato con ricerca `eco` via pulsante `Cerca`, ricerca `rmn` via tasto Invio e reset `Vedi tutti` coerente sui tre pannelli.
 
-### ⬜ E2 — Ini parser
+### 🟡 E2 — Ini parser
 **Obiettivo:** introdurre il caricatore `.ini` riflessivo.
+
+**Evidenze (truth-first):**
+- audit configurativo su `App.config`, `Program.cs`, `ExamNavigationRequest`, `Form1`, `Properties/Settings.settings` e `Properties/Settings.Designer.cs` eseguito;
+- verificato che `App.config` e `Properties/Settings` non rappresentano il boundary corretto per soddisfare la missione `.ini`;
+- commit `b0ef0c2` presente;
+- introdotta la classe statica `Predefiniti_Ricerca` nel progetto `ExamNavigator.WinForms`;
+- `ExamNavigator.WinForms.csproj` aggiornato per includere il nuovo file nel build;
+- `dotnet build ExamNavigator.sln` verde dopo l’introduzione del contenitore statico;
+- loader `.ini` riflessivo e consumo runtime dei default non ancora introdotti.
 
 ### ⬜ E3 — Default search configuration
 **Obiettivo:** supportare ricerca predefinita e tipo di ricerca predefinito da configurazione.
