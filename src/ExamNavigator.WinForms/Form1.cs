@@ -37,6 +37,8 @@ namespace ExamNavigator.WinForms
             lstBodyParts.SelectedIndexChanged += LstBodyParts_SelectedIndexChanged;
             btnConfirmExam.Click += BtnConfirmExam_Click;
             btnRemoveSelected.Click += BtnRemoveSelected_Click;
+            btnMoveUp.Click += BtnMoveUp_Click;
+            btnMoveDown.Click += BtnMoveDown_Click;
         }
 
         private void LstRooms_SelectedIndexChanged(object sender, EventArgs e)
@@ -105,6 +107,72 @@ namespace ExamNavigator.WinForms
             }
         }
 
+        private void BtnMoveUp_Click(object sender, EventArgs e)
+        {
+            if (dgvSelectedExams.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var selectedRow = dgvSelectedExams.SelectedRows[0];
+            if (selectedRow.IsNewRow)
+            {
+                return;
+            }
+
+            var selectedIndex = selectedRow.Index;
+            if (selectedIndex <= 0)
+            {
+                return;
+            }
+
+            var targetIndex = selectedIndex - 1;
+            var values = new object[selectedRow.Cells.Count];
+
+            for (var i = 0; i < selectedRow.Cells.Count; i++)
+            {
+                values[i] = selectedRow.Cells[i].Value;
+            }
+
+            dgvSelectedExams.Rows.RemoveAt(selectedIndex);
+            dgvSelectedExams.Rows.Insert(targetIndex, values);
+            dgvSelectedExams.ClearSelection();
+            dgvSelectedExams.Rows[targetIndex].Selected = true;
+        }
+
+        private void BtnMoveDown_Click(object sender, EventArgs e)
+        {
+            if (dgvSelectedExams.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var selectedRow = dgvSelectedExams.SelectedRows[0];
+            if (selectedRow.IsNewRow)
+            {
+                return;
+            }
+
+            var selectedIndex = selectedRow.Index;
+            if (selectedIndex < 0 || selectedIndex >= dgvSelectedExams.Rows.Count - 1)
+            {
+                return;
+            }
+
+            var targetIndex = selectedIndex + 1;
+            var values = new object[selectedRow.Cells.Count];
+
+            for (var i = 0; i < selectedRow.Cells.Count; i++)
+            {
+                values[i] = selectedRow.Cells[i].Value;
+            }
+
+            dgvSelectedExams.Rows.RemoveAt(selectedIndex);
+            dgvSelectedExams.Rows.Insert(targetIndex, values);
+            dgvSelectedExams.ClearSelection();
+            dgvSelectedExams.Rows[targetIndex].Selected = true;
+        }
+        
         private void InitializeSearchField()
         {
             if (cmbSearchField.Items.Count > 0 && cmbSearchField.SelectedIndex < 0)
