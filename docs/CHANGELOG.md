@@ -1,7 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **WinForms selection grid reorder baseline + owner docs sync truth-first post-D3**
+> Scope corrente: **WinForms exam search wiring baseline + owner docs sync truth-first post-E1**
+
+#### E — Search and configuration
+> Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`05fff07` — feat(winforms): wire exam search actions**
+  - **Type:** ADDED · **Categoria:** WinForms/Desktop UI
+  - **Cosa cambia:** aggancia nel `Form1` gli eventi `btnSearch.Click`, `btnClearSearch.Click` e `txtSearchTerm.KeyDown`, introducendo gli handler dedicati e il metodo `ApplySearch()` per applicare il filtro tramite `ExamNavigationRequest`.
+  - **Impatto:** chiude il baseline di wiring UI della ricerca desktop, rendendo operativi il pulsante `Cerca`, il tasto Invio e il reset `Vedi tutti` sul dataset bootstrap senza introdurre ancora parser `.ini` né adapter SQL concreto.
 
 #### D — WinForms implementation
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.

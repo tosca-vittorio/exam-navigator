@@ -254,7 +254,7 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## E — ⬜ Ricerca e configurazione `.ini`
+## E — 🟡 Ricerca e configurazione `.ini`
 
 **Obiettivo:** completare filtro testuale e configurazione esterna.
 
@@ -265,11 +265,24 @@ Quando la soluzione sarà più matura:
 - loader `.ini` riflessivo operativo;
 - default ricerca caricabili da configurazione.
 
-### ⬜ E0 — Search service
-**Obiettivo:** introdurre il servizio applicativo concreto di ricerca/navigazione.
+### ✅ E0 — Preflight search service
+**Obiettivo:** congelare la superficie reale della ricerca prima di introdurre nuove patch implementative.
 
-### ⬜ E1 — Wiring UI ricerca
-**Obiettivo:** collegare la ricerca al futuro host desktop.
+**Evidenze (truth-first):**
+- audit su `Form1`, `Program.cs` e contratti `Application` eseguito;
+- verificato che `ExamNavigationRequest` e `IExamNavigationService` erano già sufficienti per la ricerca;
+- verificato che il bootstrap `IExamNavigationService` locale in memoria implementava già il filtro case-insensitive per `CodiceMinisteriale`, `CodiceInterno` e `DescrizioneEsame`;
+- emerso come gap reale il solo wiring UI della ricerca lato WinForms, non il boundary applicativo.
+
+### ✅ E1 — Wiring UI ricerca
+**Obiettivo:** collegare la ricerca al host desktop WinForms.
+
+**Evidenze (truth-first):**
+- commit `05fff07` presente;
+- `Form1` aggancia `btnSearch.Click`, `btnClearSearch.Click` e `txtSearchTerm.KeyDown`;
+- introdotti `BtnSearch_Click(...)`, `BtnClearSearch_Click(...)`, `TxtSearchTerm_KeyDown(...)` e `ApplySearch()`;
+- `dotnet build ExamNavigator.sln` verde;
+- smoke manuale verificato con ricerca `eco` via pulsante `Cerca`, ricerca `rmn` via tasto Invio e reset `Vedi tutti` coerente sui tre pannelli.
 
 ### ⬜ E2 — Ini parser
 **Obiettivo:** introdurre il caricatore `.ini` riflessivo.

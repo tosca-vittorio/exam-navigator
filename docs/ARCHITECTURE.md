@@ -177,8 +177,8 @@ Responsabilità correnti:
 
 Stato attuale:
 - presente come host desktop wired al boundary `Application`;
-- contiene caricamento iniziale dei tre pannelli, aggiornamento a cascata da ambulatorio a parte del corpo a esami e conferma selezione con append alla griglia tramite servizio bootstrap locale in memoria;
-- non contiene ancora adapter SQL concreto, ricerca wired né parser `.ini`; la griglia supporta invece conferma selezione, cancellazione della riga selezionata e riordinamento `move up / move down`.
+- contiene caricamento iniziale dei tre pannelli, aggiornamento a cascata da ambulatorio a parte del corpo a esami, ricerca testuale wired tramite pulsante `Cerca`, tasto Invio e reset `Vedi tutti`, oltre alla conferma selezione con append alla griglia tramite servizio bootstrap locale in memoria;
+- non contiene ancora adapter SQL concreto né parser `.ini`; la griglia supporta conferma selezione, cancellazione della riga selezionata e riordinamento `move up / move down`.
 
 #### 4.2 Host MVC
 Stato attuale:
@@ -210,6 +210,7 @@ Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguib
 - `Form1` usa `IExamNavigationService` per popolare all’avvio i tre pannelli;
 - la selezione dell’ambulatorio aggiorna parti del corpo ed esami;
 - la selezione della parte del corpo aggiorna gli esami;
+- la ricerca testuale filtra i tre pannelli sul bootstrap runtime tramite `SearchText` e `SearchField`, con attivazione da pulsante `Cerca`, tasto Invio e reset `Vedi tutti`;
 - la conferma della selezione aggiunge una riga alla griglia riepilogativa;
 - la rimozione della riga selezionata elimina elementi già confermati dalla griglia riepilogativa;
 - lo spostamento su e giù riordina di una posizione la riga selezionata nella griglia riepilogativa mantenendo la selezione sul record spostato;
@@ -223,7 +224,6 @@ In altre parole, la codebase possiede oggi:
 
 Non possiede ancora:
 - adapter SQL concreto;
-- ricerca wired nel form;
 - parser `.ini`;
 - flusso end-to-end finale sulla persistenza reale.
 
