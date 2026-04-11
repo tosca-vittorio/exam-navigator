@@ -28,7 +28,7 @@ Baseline attuale verificata:
   - `001_schema.sql`
   - `002_seed.sql`
   - `003_navigation_queries.sql`
-- adapter SQL eseguibile, test, lint, coverage e host MVC non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono ora presenti per la baseline della ricerca.
+- adapter SQL eseguibile, test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca e un primo host MVC è ora presente nella solution.
 
 ## Scelte tecniche correnti
 
@@ -65,9 +65,9 @@ La soluzione è governata per strati:
    - griglia selezioni e gestione eventi.
 
 5. **Host Web**
-   - futuro secondo host;
-   - riuso del core applicativo;
-   - adattamento MVC senza duplicazione di logica.
+   - primo host ASP.NET Core MVC presente in baseline;
+   - riuso del core applicativo avviato tramite reference ad `ExamNavigator.Application`;
+   - adattamento MVC senza duplicazione di logica ancora da completare.
 
 ## Repository layout
 
@@ -101,7 +101,7 @@ Stato corrente della missione principale:
 4. host WinForms baseline (`bootstrap progetto + layout statico form`) → completato;
 5. wiring desktop iniziale della cascata (`Application` boundary + bootstrap service locale + aggiornamento ambulatorio/parte del corpo/esami) → completato;
 6. blocco ricerca desktop baseline (`wiring` UI) → completato;
-7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca; conversione MVC e quality track ancora differiti.
+7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC avviata con host baseline dedicato, quality track ancora differito.
 
 ## Documentazione owner
 

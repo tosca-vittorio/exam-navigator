@@ -13,11 +13,13 @@ Milestone già consolidate:
 4. host WinForms baseline (`bootstrap progetto + layout statico del form`).
 5. WinForms first (`wiring` cascata, conferma selezione, delete/reorder della griglia).
 
-Milestone mission-critical attiva:
+Milestone mission-critical consolidata più recente:
 6. integrazione ricerca/configurazione `.ini`.
 
+Milestone attiva:
+7. conversione web MVC.
+
 Milestone successive:
-7. conversione web MVC;
 8. track qualità / EXTRA differiti.
 
 ## Sequenza strategica mission-critical
@@ -55,7 +57,7 @@ Obiettivo:
 - completare il wiring UI verso core applicativo e baseline dati.
 
 ### 5. Ricerca e configurazione
-Stato: prossimo blocco mission-critical.
+Stato: completato.
 
 Obiettivo:
 - completare il servizio di ricerca;
@@ -63,7 +65,7 @@ Obiettivo:
 - introdurre il loader `.ini` riflessivo e i default configurabili.
 
 ### 6. Web conversion
-Stato: differito dopo baseline desktop abbastanza stabile.
+Stato: attivato con host MVC baseline già presente.
 
 Obiettivo:
 - riutilizzare il core applicativo;

@@ -254,7 +254,7 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## E — 🟡 Ricerca e configurazione `.ini`
+## E — ☑️ Ricerca e configurazione `.ini`
 
 **Obiettivo:** completare filtro testuale e configurazione esterna.
 
@@ -328,7 +328,7 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## F — ⬜ Conversione web MVC
+## F — 🟡 Conversione web MVC
 
 **Obiettivo:** portare la stessa logica funzionale su host web.
 
@@ -338,7 +338,17 @@ Quando la soluzione sarà più matura:
 - stessa logica di filtro e ricerca;
 - interfaccia web dimostrativa coerente col desktop.
 
-### ⬜ F0 — Web host bootstrap
+### ✅ F0 — Web host bootstrap
+**Obiettivo:** introdurre il primo host ASP.NET Core MVC e agganciarlo alla solution con riferimento al core condiviso.
+
+**Evidenze (truth-first):**
+- commit `c1ba47f` presente;
+- creato `src/ExamNavigator.Mvc` tramite template `mvc`;
+- `ExamNavigator.Mvc.csproj` aggiunto a `ExamNavigator.sln`;
+- `ExamNavigator.Mvc.csproj` referenzia `..\ExamNavigator.Application\ExamNavigator.Application.csproj`;
+- `dotnet build ExamNavigator.sln` verde con compilazione di `ExamNavigator.Mvc` su `net9.0`;
+- host MVC presente in baseline come scaffold tecnico, non ancora allineato al comportamento funzionale del client WinForms.
+
 ### ⬜ F1 — Controller e view model
 ### ⬜ F2 — UI web equivalente
 

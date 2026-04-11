@@ -1,10 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **WinForms search/configuration baseline + runtime-configurable search defaults post-E3**
+> Scope corrente: **MVC conversion baseline opened with dedicated ASP.NET Core host post-F0**
 
 #### E — Search and configuration
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`c1ba47f` — feat(mvc): add baseline aspnet core mvc host**
+  - **Type:** ADDED · **Categoria:** MVC/Web Host
+  - **Cosa cambia:** introduce `src/ExamNavigator.Mvc` come nuovo host ASP.NET Core MVC, lo aggiunge alla solution e lo collega al core condiviso tramite reference a `ExamNavigator.Application`.
+  - **Impatto:** apre il ciclo di conversione web con un host dedicato già compilabile, separato dal client WinForms e pronto ai successivi allineamenti funzionali.
 
 - **`8344dcc` — feat(winforms): wire configurable search defaults at startup**
   - **Type:** ADDED · **Categoria:** WinForms/Configuration

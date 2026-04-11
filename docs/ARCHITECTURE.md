@@ -43,13 +43,16 @@ Nota:
 4. **Host WinForms**
    - contiene il primo host desktop della missione con cascata baseline wired tramite boundary applicativo, bootstrap service locale in memoria e foundation configurative tramite contenitore statico dei default di ricerca, parser raw del documento `.ini`, binder riflessivo type-safe e baseline runtime dei default di ricerca.
 
-5. **Owner docs**
+5. **Host MVC**
+   - contiene il primo host ASP.NET Core MVC della soluzione, introdotto come scaffold compilabile e già referenziato al core condiviso.
+
+6. **Owner docs**
    - governano stato operativo, storia del cambiamento, roadmap e struttura.
 
 ### Sottosistemi richiesti ma non ancora presenti nella codebase
 
 5. adapter SQL eseguibile / infrastructure layer concreto;
-6. host ASP.NET Core MVC;
+6. allineamento funzionale del nuovo host MVC al comportamento del client WinForms;
 7. test project e quality tooling dedicato.
 
 ---
@@ -184,7 +187,10 @@ Stato attuale:
 
 #### 4.2 Host MVC
 Stato attuale:
-- assente.
+- presente come scaffold ASP.NET Core MVC su `net9.0`;
+- aggiunto alla solution;
+- referenziato al core condiviso tramite `ExamNavigator.Application`;
+- ancora non allineato al comportamento funzionale del client WinForms.
 
 Responsabilità futura prevista:
 - conversione web del comportamento desktop senza duplicazione della logica applicativa.
@@ -212,7 +218,8 @@ Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguib
 - `Domain` compila;
 - `Application` compila con reference a `Domain`;
 - `ExamNavigator.WinForms` referenzia `ExamNavigator.Application`;
-- `Program.cs` carica, se presente, un file `.ini`, applica i default verso `Predefiniti_*` e costruisce un `BootstrapNavigationService` locale in memoria;
+- `ExamNavigator.Mvc` referenzia `ExamNavigator.Application`;
+- `Program.cs` del client WinForms carica, se presente, un file `.ini`, applica i default verso `Predefiniti_*` e costruisce un `BootstrapNavigationService` locale in memoria;
 - `ExamNavigator.WinForms` contiene `Predefiniti_Ricerca` come contenitore statico dei default di ricerca, consumato dal bootstrap runtime per la baseline configurabile della ricerca;
 - `ExamNavigator.WinForms` contiene `IniConfigurationDocument` come parser raw del file `.ini`;
 - `ExamNavigator.WinForms` contiene `IniConfigurationBinder` come binder riflessivo type-safe dei default verso `Predefiniti_*`, wired nel bootstrap runtime per la baseline configurabile della ricerca;
@@ -229,10 +236,12 @@ In altre parole, la codebase possiede oggi:
 - modello dominio;
 - boundary applicativo;
 - baseline dati SQL di riferimento;
-- host WinForms compilabile e con navigazione a cascata baseline su servizio bootstrap locale.
+- host WinForms compilabile e con navigazione a cascata baseline su servizio bootstrap locale;
+- host MVC compilabile, ancora in baseline scaffold.
 
 Non possiede ancora:
 - adapter SQL concreto;
+- allineamento funzionale dell'host MVC al comportamento del client WinForms;
 - flusso end-to-end finale sulla persistenza reale.
 
 ### Flusso target già preparato a livello di boundary, ma non ancora implementato end-to-end
