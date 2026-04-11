@@ -349,7 +349,18 @@ Quando la soluzione sarà più matura:
 - `dotnet build ExamNavigator.sln` verde con compilazione di `ExamNavigator.Mvc` su `net9.0`;
 - host MVC presente in baseline come scaffold tecnico, non ancora allineato al comportamento funzionale del client WinForms.
 
-### ⬜ F1 — Controller e view model
+### ✅ F1 — Controller e view model
+**Obiettivo:** introdurre il primo riallineamento MVC al core condiviso senza ancora completare tutta la UI web equivalente.
+
+**Evidenze (truth-first):**
+- commit `af3711c` presente;
+- `HomeController` consuma `IExamNavigationService` e costruisce `ExamNavigationRequest` a partire dai parametri GET della pagina;
+- `Program.cs` registra `BootstrapNavigationService` come implementazione locale in memoria di `IExamNavigationService` nel container DI del nuovo host MVC;
+- `Models/ErrorViewModel.cs` ospita anche `ExamNavigationPageViewModel` come primo view model dedicato al caso d'uso;
+- `Views/Home/Index.cshtml` sostituisce la pagina demo scaffold con una baseline MVC di navigazione esami, ricerca GET e tre sezioni `Ambulatori` / `Parti del corpo` / `Esami`;
+- `dotnet build ExamNavigator.sln` verde dopo il wiring MVC;
+- smoke manuale verificato con `dotnet run --project src/ExamNavigator.Mvc --urls http://localhost:5099` e controllo `curl` dei marker funzionali della pagina `/`.
+
 ### ⬜ F2 — UI web equivalente
 
 ---

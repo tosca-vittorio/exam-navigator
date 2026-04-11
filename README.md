@@ -28,7 +28,7 @@ Baseline attuale verificata:
   - `001_schema.sql`
   - `002_seed.sql`
   - `003_navigation_queries.sql`
-- adapter SQL eseguibile, test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca e un primo host MVC è ora presente nella solution.
+- adapter SQL eseguibile, test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC è ora presente anche con un primo baseline funzionale di navigazione esami, controller/view model dedicati, bootstrap service locale in memoria e pagina web iniziale wired al core condiviso.
 
 ## Scelte tecniche correnti
 
@@ -65,9 +65,10 @@ La soluzione è governata per strati:
    - griglia selezioni e gestione eventi.
 
 5. **Host Web**
-   - primo host ASP.NET Core MVC presente in baseline;
-   - riuso del core applicativo avviato tramite reference ad `ExamNavigator.Application`;
-   - adattamento MVC senza duplicazione di logica ancora da completare.
+   - host ASP.NET Core MVC presente nella solution e referenziato al core condiviso;
+   - primo baseline funzionale di navigazione esami introdotto tramite controller dedicato, page view model e bootstrap service locale in memoria;
+   - ricerca GET e rendering iniziale di ambulatori, parti del corpo ed esami già presenti;
+   - adattamento MVC ancora non completo rispetto alla parità funzionale del client WinForms.
 
 ## Repository layout
 
@@ -75,6 +76,7 @@ La soluzione è governata per strati:
 - `src/ExamNavigator.Domain` — entità di dominio minime
 - `src/ExamNavigator.Application` — contratti applicativi e interfaccia di servizio
 - `src/ExamNavigator.WinForms` — host desktop WinForms baseline
+- `src/ExamNavigator.Mvc` — host web ASP.NET Core MVC baseline
 - `database/sql` — schema, seed e query SQL di riferimento
 - `docs/TIMELINE.md` — source of truth operativa
 - `docs/CHANGELOG.md` — tracciabilità evolutiva
@@ -101,7 +103,7 @@ Stato corrente della missione principale:
 4. host WinForms baseline (`bootstrap progetto + layout statico form`) → completato;
 5. wiring desktop iniziale della cascata (`Application` boundary + bootstrap service locale + aggiornamento ambulatorio/parte del corpo/esami) → completato;
 6. blocco ricerca desktop baseline (`wiring` UI) → completato;
-7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC avviata con host baseline dedicato, quality track ancora differito.
+7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC avanzata con host dedicato (`F0`) e primo riallineamento funzionale di controller/view model/pagina (`F1`) completati, quality track ancora differito.
 
 ## Documentazione owner
 

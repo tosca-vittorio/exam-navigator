@@ -44,7 +44,7 @@ Nota:
    - contiene il primo host desktop della missione con cascata baseline wired tramite boundary applicativo, bootstrap service locale in memoria e foundation configurative tramite contenitore statico dei default di ricerca, parser raw del documento `.ini`, binder riflessivo type-safe e baseline runtime dei default di ricerca.
 
 5. **Host MVC**
-   - contiene il primo host ASP.NET Core MVC della soluzione, introdotto come scaffold compilabile e già referenziato al core condiviso.
+   - contiene il primo host ASP.NET Core MVC della soluzione, inizialmente introdotto come scaffold compilabile e ora riallineato a un primo baseline funzionale di navigazione tramite controller, page view model, bootstrap service locale in memoria e view web iniziale wired al core condiviso.
 
 6. **Owner docs**
    - governano stato operativo, storia del cambiamento, roadmap e struttura.
@@ -52,7 +52,7 @@ Nota:
 ### Sottosistemi richiesti ma non ancora presenti nella codebase
 
 5. adapter SQL eseguibile / infrastructure layer concreto;
-6. allineamento funzionale del nuovo host MVC al comportamento del client WinForms;
+6. allineamento funzionale completo del nuovo host MVC al comportamento del client WinForms, inclusa la UI equivalente completa;
 7. test project e quality tooling dedicato.
 
 ---
@@ -63,6 +63,7 @@ Nota:
 - `src/ExamNavigator.Domain` — entità di dominio minimali
 - `src/ExamNavigator.Application` — contratti applicativi e interfaccia di servizio
 - `src/ExamNavigator.WinForms` — host desktop WinForms con wiring baseline della cascata
+- `src/ExamNavigator.Mvc` — host web ASP.NET Core MVC con primo baseline funzionale di navigazione
 - `database/sql/001_schema.sql` — schema SQL Server iniziale
 - `database/sql/002_seed.sql` — dataset demo
 - `database/sql/003_navigation_queries.sql` — query di riferimento per cascata e ricerca
@@ -187,10 +188,13 @@ Stato attuale:
 
 #### 4.2 Host MVC
 Stato attuale:
-- presente come scaffold ASP.NET Core MVC su `net9.0`;
+- presente come host ASP.NET Core MVC su `net9.0`;
 - aggiunto alla solution;
 - referenziato al core condiviso tramite `ExamNavigator.Application`;
-- ancora non allineato al comportamento funzionale del client WinForms.
+- `Program.cs` registra un `BootstrapNavigationService` locale in memoria come implementazione di `IExamNavigationService`;
+- `HomeController` costruisce `ExamNavigationRequest` dai parametri GET e restituisce la pagina `Index` tramite `ExamNavigationPageViewModel`;
+- `Index.cshtml` espone una prima baseline web con ricerca GET e tre sezioni per ambulatori, parti del corpo ed esami;
+- non ancora equivalente in modo completo al comportamento del client WinForms.
 
 Responsabilità futura prevista:
 - conversione web del comportamento desktop senza duplicazione della logica applicativa.
@@ -230,6 +234,9 @@ Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguib
 - la conferma della selezione aggiunge una riga alla griglia riepilogativa;
 - la rimozione della riga selezionata elimina elementi già confermati dalla griglia riepilogativa;
 - lo spostamento su e giù riordina di una posizione la riga selezionata nella griglia riepilogativa mantenendo la selezione sul record spostato;
+- `Program.cs` dell'host MVC registra un `BootstrapNavigationService` locale in memoria nel container DI;
+- `HomeController` usa `IExamNavigationService` per risolvere la navigazione a cascata e mappa il risultato in `ExamNavigationPageViewModel`;
+- `Index.cshtml` rende una baseline web con ricerca GET e tre sezioni `Ambulatori` / `Parti del corpo` / `Esami`;
 - baseline SQL esiste come script separati di riferimento.
 
 In altre parole, la codebase possiede oggi:
@@ -237,11 +244,11 @@ In altre parole, la codebase possiede oggi:
 - boundary applicativo;
 - baseline dati SQL di riferimento;
 - host WinForms compilabile e con navigazione a cascata baseline su servizio bootstrap locale;
-- host MVC compilabile, ancora in baseline scaffold.
+- host MVC compilabile e già riallineato a una prima baseline funzionale di navigazione, ancora parziale rispetto al client WinForms.
 
 Non possiede ancora:
 - adapter SQL concreto;
-- allineamento funzionale dell'host MVC al comportamento del client WinForms;
+- allineamento funzionale completo dell'host MVC al comportamento del client WinForms, inclusi conferma selezione, griglia e UI web equivalente completa;
 - flusso end-to-end finale sulla persistenza reale.
 
 ### Flusso target già preparato a livello di boundary, ma non ancora implementato end-to-end
@@ -274,6 +281,7 @@ Rischi reali attuali:
 - host WinForms wired a `Application` solo tramite bootstrap service locale in memoria; manca ancora l’aggancio a un adapter SQL concreto;
 - nessun adapter SQL eseguibile presente;
 - configurazione `.ini` oggi limitata alla baseline della ricerca e ancora appoggiata al bootstrap service locale in memoria;
+- host MVC oggi usa ancora un bootstrap service locale in memoria lato host e non copre ancora la parità completa con la UI WinForms;
 - nessun progetto test presente;
 - nessun lint / coverage / smoke automatizzato presente;
 - possibile drift documentale se gli owner docs non restano esplicitamente allineati al fatto che i requisiti sorgente sono locali e non versionati.

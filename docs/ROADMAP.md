@@ -65,12 +65,13 @@ Obiettivo:
 - introdurre il loader `.ini` riflessivo e i default configurabili.
 
 ### 6. Web conversion
-Stato: attivato con host MVC baseline già presente.
+Stato: attivato; host MVC baseline introdotto e primo riallineamento funzionale `F1` chiuso.
 
 Obiettivo:
 - riutilizzare il core applicativo;
-- esporre lo stesso comportamento in MVC;
-- evitare riscrittura della logica del caso d’uso.
+- esporre progressivamente lo stesso comportamento in MVC;
+- evitare riscrittura della logica del caso d’uso;
+- completare la UI web equivalente nel blocco successivo.
 
 ## Track EXTRA congelati ma non attivati
 

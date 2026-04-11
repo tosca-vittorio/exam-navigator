@@ -1,15 +1,23 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **MVC conversion baseline opened with dedicated ASP.NET Core host post-F0**
+> Scope corrente: **MVC conversion advanced with first exam navigation page wired post-F1**
 
-#### E — Search and configuration
+#### F — MVC conversion
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`af3711c` — feat(mvc): wire baseline exam navigation page**
+  - **Type:** ADDED · **Categoria:** MVC/Web Host
+  - **Cosa cambia:** aggiorna `Program.cs`, `HomeController.cs`, `Models/ErrorViewModel.cs` e `Views/Home/Index.cshtml` per registrare un `BootstrapNavigationService` MVC in DI, introdurre un page view model dedicato e renderizzare una prima pagina di navigazione esami con ricerca GET e sezioni `Ambulatori` / `Parti del corpo` / `Esami`.
+  - **Impatto:** chiude `F1` con il primo riallineamento funzionale dell'host web al core condiviso, superando lo scaffold demo e preparando `F2` senza introdurre ancora adapter SQL, griglia web o parità completa col client WinForms.
 
 - **`c1ba47f` — feat(mvc): add baseline aspnet core mvc host**
   - **Type:** ADDED · **Categoria:** MVC/Web Host
   - **Cosa cambia:** introduce `src/ExamNavigator.Mvc` come nuovo host ASP.NET Core MVC, lo aggiunge alla solution e lo collega al core condiviso tramite reference a `ExamNavigator.Application`.
   - **Impatto:** apre il ciclo di conversione web con un host dedicato già compilabile, separato dal client WinForms e pronto ai successivi allineamenti funzionali.
+
+#### E — Search and configuration
+> Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
 
 - **`8344dcc` — feat(winforms): wire configurable search defaults at startup**
   - **Type:** ADDED · **Categoria:** WinForms/Configuration
