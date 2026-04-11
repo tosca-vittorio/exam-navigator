@@ -148,16 +148,17 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## C — ☑️ Database SQL Server + seed
+## C — ☑️ Database baseline di riferimento + bootstrap runtime locale
 
-**Obiettivo:** modellare e popolare il database.
+**Obiettivo:** modellare la baseline dati di riferimento e congelare il bootstrap runtime locale PostgreSQL.
 
 **DoD (C):**
 - schema SQL presente;
 - seed coerente;
 - relazioni molti-a-molti operative;
 - dataset demo utilizzabile;
-- query di filtro e ricerca presenti.
+- query di filtro e ricerca presenti;
+- artefatti PostgreSQL locali presenti e verificati.
 
 ### ✅ C0 — Schema iniziale
 **Obiettivo:** introdurre lo schema SQL Server iniziale.
@@ -187,6 +188,21 @@ Quando la soluzione sarà più matura:
   - pannello parti del corpo;
   - pannello esami;
 - ricerca resa esplicitamente case-insensitive tramite `UPPER(...)`.
+
+### ✅ C3 — PostgreSQL local runtime bootstrap artifacts
+**Obiettivo:** congelare il pivot PostgreSQL locale con documento tecnico, schema e seed dedicati.
+
+**Evidenze (truth-first):**
+- commit `3a95d60` presente;
+- `database/postgresql/postgresql.md` presente con scelta PostgreSQL locale, parametri runtime, stato reale raggiunto, scope/rischi e traiettoria di wiring futura;
+- `database/postgresql/001_schema.sql` presente come traduzione PostgreSQL dello schema baseline;
+- `database/postgresql/002_seed.sql` presente come seed PostgreSQL coerente col dataset demo;
+- verifica locale eseguita con `psql` sul database `exam_navigator` e utente `exam_navigator_app`, con conteggi finali:
+  - `body_part = 4`
+  - `room = 7`
+  - `exam = 6`
+  - `exam_room = 8`
+- il percorso SQL Server runtime esplorato è stato archiviato come strada non proseguita; PostgreSQL è ora la scelta runtime locale attiva e documentata.
 
 ---
 
@@ -384,31 +400,38 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## G — 🟡 Chiusura V1 mission-critical (SQL runtime)
+## G — 🟡 Chiusura V1 mission-critical (PostgreSQL runtime concreto)
 
-**Obiettivo:** chiudere la V1 in aderenza letterale alla mail e al freeze requisiti, sostituendo i bootstrap service in memoria con una persistenza SQL Server runtime concreta condivisa tra WinForms e MVC.
+**Obiettivo:** chiudere la V1 sul runtime PostgreSQL locale scelto, mantenendo la divergenza rispetto al requisito SQL Server originario esplicitamente documentata, auditabile e difendibile.
 
 **DoD (G):**
-- adapter / infrastructure SQL concreta presente;
-- host WinForms wired a runtime SQL;
-- host MVC wired a runtime SQL;
-- coerenza finale verificata rispetto a RF-01..RF-17 e RNF-01..RNF-04;
-- baseline V1 concreta, robusta, affidabile, solida, consegnabile, valutabile.
+- adapter / infrastructure PostgreSQL concreta presente;
+- host WinForms wired a runtime PostgreSQL;
+- host MVC wired a runtime PostgreSQL;
+- coerenza finale verificata rispetto al freeze requisiti, con divergenza SQL Server dichiarata nei documenti owner;
+- baseline V1 concreta, robusta, affidabile, solida, consegnabile e valutabile.
 
-### ⬜ G0 — Preflight strategia SQL runtime + documento tecnico di setup
-**Obiettivo:** scegliere e congelare il boundary tecnico corretto per SQL Server runtime, includendo la struttura del documento tecnico di setup/infrastruttura.
+### ✅ G0 — Preflight strategia PostgreSQL runtime + documento tecnico di setup
+**Obiettivo:** congelare il boundary tecnico corretto per PostgreSQL runtime e il documento tecnico di setup locale.
 
-### ⬜ G1 — Adapter SQL Server concreto
-**Obiettivo:** introdurre uno strato infrastructure SQL Server reale, separato da `Domain` e `Application`, senza riaprire i blocchi UI già chiusi.
+**Evidenze (truth-first):**
+- commit `3a95d60` presente;
+- documento tecnico `database/postgresql/postgresql.md` presente e versionato;
+- artefatti `database/postgresql/001_schema.sql` e `database/postgresql/002_seed.sql` presenti e coerenti con il dataset demo;
+- setup locale verificato tramite `psql`, con database `exam_navigator`, utente `exam_navigator_app` e conteggi finali coerenti sul seed;
+- percorso SQL Server/LocalDB esplicitamente superato come runtime locale attivo.
 
-### ⬜ G2 — Wiring WinForms su runtime SQL
-**Obiettivo:** sostituire nel client desktop il bootstrap service in memoria con la sorgente dati SQL concreta.
+### ⬜ G1 — Adapter PostgreSQL concreto
+**Obiettivo:** introdurre uno strato infrastructure PostgreSQL reale, separato da `Domain` e `Application`, senza riaprire i blocchi UI già chiusi.
 
-### ⬜ G3 — Wiring MVC su runtime SQL
-**Obiettivo:** sostituire nell'host MVC il bootstrap service in memoria con la stessa sorgente dati SQL concreta del client WinForms.
+### ⬜ G2 — Wiring WinForms su runtime PostgreSQL
+**Obiettivo:** sostituire nel client desktop il bootstrap service in memoria con la sorgente dati PostgreSQL concreta.
+
+### ⬜ G3 — Wiring MVC su runtime PostgreSQL
+**Obiettivo:** sostituire nell'host MVC il bootstrap service in memoria con la stessa sorgente dati PostgreSQL concreta del client WinForms.
 
 ### ⬜ G4 — Verifica formale chiusura V1
-**Obiettivo:** verificare in modo esplicito la copertura del perimetro mail/freeze e congelare la baseline V1 come richiesta cliente.
+**Obiettivo:** verificare in modo esplicito la copertura del perimetro mail/freeze, dichiarare la divergenza rispetto alla richiesta SQL Server e congelare la baseline V1 come richiesta cliente.
 
 ---
 

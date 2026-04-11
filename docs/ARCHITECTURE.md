@@ -1,4 +1,4 @@
-# ARCHITECTURE — Exam Navigator System (.NET / SQL Server)
+# ARCHITECTURE — Exam Navigator System (.NET / PostgreSQL local runtime + SQL Server reference heritage)
 
 Documento architetturale truth-first che descrive lo stato corrente del repository.
 
@@ -37,8 +37,8 @@ Nota:
 2. **Application**
    - contiene contratti applicativi e interfacce di servizio.
 
-3. **Database SQL reference**
-   - contiene schema, seed e query SQL di riferimento.
+3. **Database artifacts**
+   - contiene la baseline SQL Server di riferimento e il bootstrap runtime locale PostgreSQL.
 
 4. **Host WinForms**
    - contiene il primo host desktop della missione con cascata baseline wired tramite boundary applicativo, bootstrap service locale in memoria e foundation configurative tramite contenitore statico dei default di ricerca, parser raw del documento `.ini`, binder riflessivo type-safe e baseline runtime dei default di ricerca.
@@ -51,8 +51,8 @@ Nota:
 
 ### Sottosistemi richiesti ma non ancora presenti nella codebase
 
-5. adapter SQL eseguibile / infrastructure layer concreto;
-6. allineamento del runtime dati dei due host a una stessa fonte SQL concreta condivisa;
+5. adapter PostgreSQL eseguibile / infrastructure layer concreto;
+6. allineamento del runtime dati dei due host a una stessa fonte PostgreSQL concreta condivisa;
 7. test project e quality tooling dedicato.
 
 ---
@@ -64,9 +64,12 @@ Nota:
 - `src/ExamNavigator.Application` — contratti applicativi e interfaccia di servizio
 - `src/ExamNavigator.WinForms` — host desktop WinForms con wiring baseline della cascata
 - `src/ExamNavigator.Mvc` — host web ASP.NET Core MVC con baseline funzionale completa di navigazione e selezione
-- `database/sql/001_schema.sql` — schema SQL Server iniziale
-- `database/sql/002_seed.sql` — dataset demo
-- `database/sql/003_navigation_queries.sql` — query di riferimento per cascata e ricerca
+- `database/sql/001_schema.sql` — schema SQL Server iniziale di riferimento
+- `database/sql/002_seed.sql` — dataset demo SQL Server di riferimento
+- `database/sql/003_navigation_queries.sql` — query SQL Server di riferimento per cascata e ricerca
+- `database/postgresql/001_schema.sql` — schema PostgreSQL per il runtime locale scelto
+- `database/postgresql/002_seed.sql` — seed PostgreSQL per il runtime locale scelto
+- `database/postgresql/postgresql.md` — documento tecnico di setup e pivot PostgreSQL
 - `docs/TIMELINE.md` — source of truth operativa
 - `docs/CHANGELOG.md` — tracciabilità evolutiva
 - `docs/ROADMAP.md` — traiettoria e milestone
@@ -159,16 +162,17 @@ Stato attuale:
 - non contiene ancora implementazioni concrete di servizio;
 - non contiene codice SQL o dettagli di host.
 
-### 3. Database SQL reference
+### 3. Database artifacts
 Responsabilità correnti:
-- formalizzare la baseline dati SQL Server;
-- mantenere uno schema relazionale coerente con il dominio;
-- mantenere seed e query di riferimento.
+- formalizzare la baseline dati di riferimento SQL Server;
+- mantenere un bootstrap runtime locale PostgreSQL coerente con il dominio;
+- mantenere schema, seed e query di riferimento utili al futuro layer infrastructure.
 
 Stato attuale:
-- presente come artefatto SQL separato;
-- non ancora agganciato a un adapter C# eseguibile;
-- utile come specifica operativa per il futuro layer infrastructure.
+- baseline SQL Server presente come reference storica/compatibility track;
+- bootstrap runtime locale PostgreSQL presente come scelta tecnica attiva e documentata;
+- nessuno dei due percorsi è ancora agganciato a un adapter C# eseguibile;
+- gli artefatti PostgreSQL sono il punto di partenza reale per il wiring infrastructure successivo.
 
 ### 4. Host layer
 
@@ -257,7 +261,7 @@ Non possiede ancora:
 
 Host desktop/web
 -> Application (`IExamNavigationService`)
--> Infrastructure SQL futura
+-> Infrastructure PostgreSQL futura
 -> script/query SQL coerenti con schema e seed
 -> `ExamNavigationResult`
 -> rendering host
@@ -280,8 +284,9 @@ Questo flusso è coerente con i confini della codebase, ma oggi è ancora solo p
 
 Rischi reali attuali:
 
-- host WinForms e host MVC sono ancora cablati a bootstrap service locali in memoria; manca ancora l’aggancio a un adapter SQL concreto condiviso;
-- nessun adapter SQL eseguibile presente;
+- host WinForms e host MVC sono ancora cablati a bootstrap service locali in memoria; manca ancora l’aggancio a un adapter PostgreSQL concreto condiviso;
+- nessun adapter PostgreSQL eseguibile presente;
+- la scelta PostgreSQL diverge dal requisito SQL Server originario e richiede documentazione owner rigorosa per restare difendibile;
 - configurazione `.ini` oggi limitata alla baseline della ricerca e ancora appoggiata al bootstrap service locale in memoria;
 - nessun progetto test presente;
 - nessun lint / coverage / smoke automatizzato presente;

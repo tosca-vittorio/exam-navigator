@@ -17,7 +17,7 @@ Milestone mission-critical consolidata più recente:
 7. conversione web MVC baseline funzionale demo archiviata.
 
 Milestone attiva:
-8. chiusura V1 mission-critical su SQL Server runtime concreto.
+8. chiusura V1 mission-critical su PostgreSQL runtime concreto, con divergenza SQL Server esplicitamente governata.
 
 Milestone successive:
 9. preparazione consegna / rilascio / demo V1;
@@ -42,13 +42,14 @@ Obiettivo:
 - evitare duplicazione di logica tra desktop e web;
 - preparare il perimetro comune da cui dipenderanno gli host.
 
-### 3. Persistenza SQL Server
+### 3. Persistenza baseline e bootstrap runtime locale
 Stato: completato.
 
 Obiettivo:
 - introdurre schema minimale ma corretto;
 - introdurre seed demo realistico;
-- introdurre query di riferimento per cascata e ricerca.
+- introdurre query di riferimento per cascata e ricerca;
+- congelare il bootstrap runtime locale PostgreSQL come scelta tecnica attiva.
 
 ### 4. WinForms first
 Stato: completato.
@@ -79,9 +80,10 @@ Obiettivo:
 Stato: attiva.
 
 Obiettivo:
-- soddisfare integralmente il perimetro della mail/freeze requisiti;
-- sostituire i bootstrap service in memoria con persistenza SQL Server runtime concreta;
+- chiudere il runtime concreto sul database PostgreSQL locale scelto;
+- sostituire i bootstrap service in memoria con persistenza PostgreSQL runtime concreta;
 - mantenere WinForms e MVC coerenti sulla stessa fonte dati reale;
+- documentare in modo esplicito e difendibile la divergenza rispetto al requisito SQL Server originario;
 - arrivare a una V1 concreta, robusta, affidabile, consegnabile e valutabile.
 
 ### 8. Preparazione consegna / rilascio / demo V1

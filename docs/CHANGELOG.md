@@ -1,7 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **F archived; active focus shifted to V1 closure on concrete SQL runtime**
+> Scope corrente: **F archived; active focus shifted to PostgreSQL local runtime concrete wiring, with explicit SQL Server deviation tracking**
+
+#### G — PostgreSQL runtime pivot bootstrap
+> Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`3a95d60` — docs(db): add postgresql local runtime bootstrap artifacts**
+  - **Type:** ADDED · **Categoria:** Database/PostgreSQL
+  - **Cosa cambia:** introduce `database/postgresql/001_schema.sql`, `database/postgresql/002_seed.sql` e `database/postgresql/postgresql.md`, congelando il setup locale PostgreSQL, la traduzione dello schema/seed e la decisione tecnica di adottare PostgreSQL come runtime locale.
+  - **Impatto:** archivia il percorso SQL Server/LocalDB esplorato come non proseguito, rende auditabile il pivot runtime e apre il successivo wiring applicativo verso PostgreSQL concreto.
 
 #### F — MVC conversion
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.

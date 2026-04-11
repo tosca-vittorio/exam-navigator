@@ -24,19 +24,25 @@ Baseline attuale verificata:
 - progetto `ExamNavigator.Domain` presente con entità minime del dominio;
 - progetto `ExamNavigator.Application` presente con contratti di navigazione e interfaccia applicativa;
 - progetto `ExamNavigator.WinForms` presente con host desktop wired al boundary `Application`, cascata baseline in memoria, ricerca testuale wired (pulsante `Cerca`, tasto Invio e reset `Vedi tutti`), append delle selezioni confermate nella griglia riepilogativa, cancellazione della riga selezionata, riordinamento `move up / move down`, primo contenitore statico `Predefiniti_Ricerca` per i default della ricerca, parser raw `IniConfigurationDocument` per il documento `.ini` e binder riflessivo type-safe `IniConfigurationBinder` verso `Predefiniti_*`;
-- baseline SQL Server presente con:
-  - `001_schema.sql`
-  - `002_seed.sql`
-  - `003_navigation_queries.sql`
-- adapter SQL eseguibile, test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC è ora presente con baseline web funzionale completa in memoria per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, sempre wired al core condiviso.
+- baseline database presente con:
+  - reference SQL Server in `database/sql`:
+    - `001_schema.sql`
+    - `002_seed.sql`
+    - `003_navigation_queries.sql`
+  - bootstrap runtime locale PostgreSQL in `database/postgresql`:
+    - `001_schema.sql`
+    - `002_seed.sql`
+    - `postgresql.md`
+- adapter database eseguibile, test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC è ora presente con baseline web funzionale completa in memoria per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, sempre wired al core condiviso.
 
 ## Scelte tecniche correnti
 
 - Desktop UI target: WinForms
 - Target desktop previsto: .NET Framework 4.8
 - Layer condivisi correnti: `netstandard2.0`
-- Database: SQL Server
-- Accesso dati previsto: infrastructure SQL dedicata + servizi applicativi
+- Database runtime locale: PostgreSQL
+- Baseline SQL legacy/reference: SQL Server
+- Accesso dati previsto: infrastructure PostgreSQL dedicata + servizi applicativi, con divergenza rispetto al requisito SQL Server originario esplicitamente documentata
 - Web conversion target: ASP.NET Core MVC
 - Architettura: core condiviso + host desktop + host web
 
@@ -54,10 +60,9 @@ La soluzione è governata per strati:
    - orchestrazione della cascata e della ricerca.
 
 3. **Database / Infrastructure baseline**
-   - schema SQL Server;
-   - seed demo;
-   - query di riferimento per navigazione e ricerca;
-   - futura implementazione adapter SQL separata dal dominio.
+   - baseline SQL Server mantenuta come reference storica/di compatibilità;
+   - bootstrap runtime locale PostgreSQL presente con schema, seed e documento tecnico dedicato;
+   - futura implementazione adapter database separata dal dominio.
 
 4. **Host WinForms**
    - interfaccia desktop richiesta dalla missione;
@@ -77,7 +82,8 @@ La soluzione è governata per strati:
 - `src/ExamNavigator.Application` — contratti applicativi e interfaccia di servizio
 - `src/ExamNavigator.WinForms` — host desktop WinForms baseline
 - `src/ExamNavigator.Mvc` — host web ASP.NET Core MVC baseline
-- `database/sql` — schema, seed e query SQL di riferimento
+- `database/sql` — schema, seed e query SQL Server di riferimento
+- `database/postgresql` — bootstrap runtime locale PostgreSQL (schema, seed, documento tecnico)
 - `docs/TIMELINE.md` — source of truth operativa
 - `docs/CHANGELOG.md` — tracciabilità evolutiva
 - `docs/ROADMAP.md` — traiettoria e milestone
@@ -99,11 +105,11 @@ Stato corrente della missione principale:
 
 1. bootstrap repository + governance documentale → completato;
 2. core condiviso (`Domain` + `Application`) → completato;
-3. baseline database (`schema` + `seed` + `query`) → completata;
+3. baseline database di riferimento SQL Server (`schema` + `seed` + `query`) + bootstrap runtime locale PostgreSQL → completata;
 4. host WinForms baseline (`bootstrap progetto + layout statico form`) → completato;
 5. wiring desktop iniziale della cascata (`Application` boundary + bootstrap service locale + aggiornamento ambulatorio/parte del corpo/esami) → completato;
 6. blocco ricerca desktop baseline (`wiring` UI) → completato;
-7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC archiviata come baseline demo con host dedicato (`F0`), primo riallineamento funzionale di controller/view model (`F1`) e UI web equivalente con griglia selezioni e polish (`F2`); V1 mission-critical ancora aperta sulla persistenza SQL Server runtime concreta condivisa tra i due host.
+7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC archiviata come baseline demo con host dedicato (`F0`), primo riallineamento funzionale di controller/view model (`F1`) e UI web equivalente con griglia selezioni e polish (`F2`); bootstrap runtime locale PostgreSQL documentato e consolidato; V1 mission-critical ancora aperta sul wiring di una persistenza PostgreSQL runtime concreta condivisa tra i due host, con divergenza rispetto al requisito SQL Server originario esplicitamente governata nella documentazione.
 
 ## Perimetro V1
 
