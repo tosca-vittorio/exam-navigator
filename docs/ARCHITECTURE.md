@@ -41,7 +41,7 @@ Nota:
    - contiene schema, seed e query SQL di riferimento.
 
 4. **Host WinForms**
-   - contiene il primo host desktop della missione con cascata baseline wired tramite boundary applicativo, bootstrap service locale in memoria e prime foundation configurative tramite contenitore statico dei default di ricerca e parser raw del documento `.ini`.
+   - contiene il primo host desktop della missione con cascata baseline wired tramite boundary applicativo, bootstrap service locale in memoria e foundation configurative tramite contenitore statico dei default di ricerca, parser raw del documento `.ini`, binder riflessivo type-safe e baseline runtime dei default di ricerca.
 
 5. **Owner docs**
    - governano stato operativo, storia del cambiamento, roadmap e struttura.
@@ -49,9 +49,8 @@ Nota:
 ### Sottosistemi richiesti ma non ancora presenti nella codebase
 
 5. adapter SQL eseguibile / infrastructure layer concreto;
-6. caricamento runtime dei default da configurazione e relativo consumo nel bootstrap/UI;
-7. host ASP.NET Core MVC;
-8. test project e quality tooling dedicato.
+6. host ASP.NET Core MVC;
+7. test project e quality tooling dedicato.
 
 ---
 
@@ -181,7 +180,7 @@ Stato attuale:
 - contiene anche `Predefiniti_Ricerca` come primo contenitore statico dei default di `SearchText` e `SearchField`;
 - contiene anche `IniConfigurationDocument` come parser raw di sezioni e coppie `chiave = valore` del file `.ini`;
 - contiene anche `IniConfigurationBinder` come binder riflessivo type-safe verso `Predefiniti_*`;
-- non contiene ancora adapter SQL concreto né caricamento runtime dei default né consumo runtime dei default nel bootstrap/UI; la griglia supporta conferma selezione, cancellazione della riga selezionata e riordinamento `move up / move down`.
+- non contiene ancora adapter SQL concreto; il caricamento runtime dei default di ricerca e il relativo consumo nel bootstrap/UI sono presenti in baseline; la griglia supporta conferma selezione, cancellazione della riga selezionata e riordinamento `move up / move down`.
 
 #### 4.2 Host MVC
 Stato attuale:
@@ -196,10 +195,10 @@ Stato attuale:
 - la classe statica `Predefiniti_Ricerca` centralizza i default di `SearchText` e `SearchField`;
 - `IniConfigurationDocument` esegue il parsing raw di sezioni e coppie `chiave = valore` del file `.ini`;
 - `IniConfigurationBinder` esegue il binding riflessivo type-safe sezione -> classe `Predefiniti_*` e proprietà -> valore;
-- non esistono ancora il caricamento runtime dei default da file `.ini` né il consumo runtime dei default nel bootstrap/UI.
+- il caricamento runtime dei default da file `.ini` e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca.
 
 Responsabilità futura prevista:
-- caricamento riflessivo dei default da file `.ini` nel bootstrap runtime senza contaminare il dominio.
+- estendere il caricamento riflessivo dei default oltre la baseline della ricerca senza contaminare il dominio.
 
 ---
 
@@ -213,11 +212,11 @@ Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguib
 - `Domain` compila;
 - `Application` compila con reference a `Domain`;
 - `ExamNavigator.WinForms` referenzia `ExamNavigator.Application`;
-- `Program.cs` costruisce un `BootstrapNavigationService` locale in memoria;
-- `ExamNavigator.WinForms` contiene `Predefiniti_Ricerca` come contenitore statico dei default di ricerca, non ancora consumato dal bootstrap runtime;
+- `Program.cs` carica, se presente, un file `.ini`, applica i default verso `Predefiniti_*` e costruisce un `BootstrapNavigationService` locale in memoria;
+- `ExamNavigator.WinForms` contiene `Predefiniti_Ricerca` come contenitore statico dei default di ricerca, consumato dal bootstrap runtime per la baseline configurabile della ricerca;
 - `ExamNavigator.WinForms` contiene `IniConfigurationDocument` come parser raw del file `.ini`;
-- `ExamNavigator.WinForms` contiene `IniConfigurationBinder` come binder riflessivo type-safe dei default verso `Predefiniti_*`, non ancora wired nel bootstrap runtime;
-- `Form1` usa `IExamNavigationService` per popolare all’avvio i tre pannelli;
+- `ExamNavigator.WinForms` contiene `IniConfigurationBinder` come binder riflessivo type-safe dei default verso `Predefiniti_*`, wired nel bootstrap runtime per la baseline configurabile della ricerca;
+- `Form1` inizializza la ricerca dai default configurati e usa `IExamNavigationService` per popolare all’avvio i tre pannelli;
 - la selezione dell’ambulatorio aggiorna parti del corpo ed esami;
 - la selezione della parte del corpo aggiorna gli esami;
 - la ricerca testuale filtra i tre pannelli sul bootstrap runtime tramite `SearchText` e `SearchField`, con attivazione da pulsante `Cerca`, tasto Invio e reset `Vedi tutti`;
@@ -234,7 +233,6 @@ In altre parole, la codebase possiede oggi:
 
 Non possiede ancora:
 - adapter SQL concreto;
-- caricamento runtime dei default da configurazione e consumo runtime dei default nel bootstrap/UI;
 - flusso end-to-end finale sulla persistenza reale.
 
 ### Flusso target già preparato a livello di boundary, ma non ancora implementato end-to-end
@@ -266,7 +264,7 @@ Rischi reali attuali:
 
 - host WinForms wired a `Application` solo tramite bootstrap service locale in memoria; manca ancora l’aggancio a un adapter SQL concreto;
 - nessun adapter SQL eseguibile presente;
-- nessun binding riflessivo type-safe presente; il parsing raw `.ini` e i default di ricerca esistono ma non sono ancora applicati al bootstrap runtime;
+- configurazione `.ini` oggi limitata alla baseline della ricerca e ancora appoggiata al bootstrap service locale in memoria;
 - nessun progetto test presente;
 - nessun lint / coverage / smoke automatizzato presente;
 - possibile drift documentale se gli owner docs non restano esplicitamente allineati al fatto che i requisiti sorgente sono locali e non versionati.

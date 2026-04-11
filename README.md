@@ -28,7 +28,7 @@ Baseline attuale verificata:
   - `001_schema.sql`
   - `002_seed.sql`
   - `003_navigation_queries.sql`
-- adapter SQL eseguibile, caricamento runtime dei default da configurazione, consumo runtime dei default nel bootstrap/UI, test, lint, coverage e host MVC non ancora introdotti nella codebase.
+- adapter SQL eseguibile, test, lint, coverage e host MVC non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono ora presenti per la baseline della ricerca.
 
 ## Scelte tecniche correnti
 
@@ -101,7 +101,7 @@ Stato corrente della missione principale:
 4. host WinForms baseline (`bootstrap progetto + layout statico form`) → completato;
 5. wiring desktop iniziale della cascata (`Application` boundary + bootstrap service locale + aggiornamento ambulatorio/parte del corpo/esami) → completato;
 6. blocco ricerca desktop baseline (`wiring` UI) → completato;
-7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento e binder riflessivo type-safe; caricamento runtime dei default, consumo runtime, conversione MVC e quality track ancora differiti.
+7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca; conversione MVC e quality track ancora differiti.
 
 ## Documentazione owner
 

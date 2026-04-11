@@ -1,10 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **WinForms search/configuration baseline + reflective ini binder post-E2.5**
+> Scope corrente: **WinForms search/configuration baseline + runtime-configurable search defaults post-E3**
 
 #### E — Search and configuration
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`8344dcc` — feat(winforms): wire configurable search defaults at startup**
+  - **Type:** ADDED · **Categoria:** WinForms/Configuration
+  - **Cosa cambia:** aggiorna `Program.cs` e `Form1.cs` per caricare all'avvio un file `.ini`, applicare i default tramite `IniConfigurationBinder` e inizializzare la ricerca WinForms con `Predefiniti_Ricerca.SearchText` e `Predefiniti_Ricerca.SearchField`.
+  - **Impatto:** chiude la baseline runtime della ricerca configurabile richiesta dalla missione `.ini`, mantenendo ancora separati adapter SQL concreto, test/quality track e conversione MVC.
 
 - **`c1c6170` — feat(winforms): add reflective ini configuration binder**
   - **Type:** ADDED · **Categoria:** WinForms/Configuration

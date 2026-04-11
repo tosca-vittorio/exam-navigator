@@ -314,8 +314,17 @@ Quando la soluzione sarà più matura:
 - `ExamNavigator.WinForms.csproj` aggiornato per includere il nuovo file nel build;
 - `dotnet build ExamNavigator.sln` verde dopo l’introduzione del binder.
 
-### ⬜ E3 — Default search configuration
+### ✅ E3 — Default search configuration
 **Obiettivo:** supportare ricerca predefinita e tipo di ricerca predefinito da configurazione.
+
+**Evidenze (truth-first):**
+- commit `8344dcc` presente;
+- `Program.cs` carica all'avvio un file `.ini`, se presente nella cartella del programma, e applica i default tramite `IniConfigurationDocument` + `IniConfigurationBinder`;
+- `Form1` inizializza `txtSearchTerm` da `Predefiniti_Ricerca.SearchText`;
+- `Form1` inizializza `cmbSearchField` da `Predefiniti_Ricerca.SearchField`, con fallback al default legacy se il valore configurato non è rappresentabile nella combo;
+- il primo `LoadNavigation(...)` usa i default configurati di `SearchText` e `SearchField` già in fase di avvio del form;
+- `dotnet build ExamNavigator.sln` verde dopo il wiring runtime dei default di ricerca;
+- il caricamento resta su bootstrap service locale in memoria e non introduce ancora adapter SQL concreto né host MVC.
 
 ---
 
