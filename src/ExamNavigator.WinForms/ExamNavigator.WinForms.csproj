@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="IniConfigurationDocument.cs" />
+    <Compile Include="IniConfigurationBinder.cs" />
     <Compile Include="Predefiniti_Ricerca.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
