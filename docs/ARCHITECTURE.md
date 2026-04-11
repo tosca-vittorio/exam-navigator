@@ -41,7 +41,7 @@ Nota:
    - contiene schema, seed e query SQL di riferimento.
 
 4. **Host WinForms**
-   - contiene il primo host desktop della missione con cascata baseline wired tramite boundary applicativo, bootstrap service locale in memoria e prima foundation dei default di ricerca tramite contenitore statico.
+   - contiene il primo host desktop della missione con cascata baseline wired tramite boundary applicativo, bootstrap service locale in memoria e prime foundation configurative tramite contenitore statico dei default di ricerca e parser raw del documento `.ini`.
 
 5. **Owner docs**
    - governano stato operativo, storia del cambiamento, roadmap e struttura.
@@ -49,7 +49,7 @@ Nota:
 ### Sottosistemi richiesti ma non ancora presenti nella codebase
 
 5. adapter SQL eseguibile / infrastructure layer concreto;
-6. loader `.ini` riflessivo e binding runtime dei default;
+6. binding riflessivo type-safe dei valori `.ini` verso `Predefiniti_*` e consumo runtime dei default;
 7. host ASP.NET Core MVC;
 8. test project e quality tooling dedicato.
 
@@ -179,7 +179,8 @@ Stato attuale:
 - presente come host desktop wired al boundary `Application`;
 - contiene caricamento iniziale dei tre pannelli, aggiornamento a cascata da ambulatorio a parte del corpo a esami, ricerca testuale wired tramite pulsante `Cerca`, tasto Invio e reset `Vedi tutti`, oltre alla conferma selezione con append alla griglia tramite servizio bootstrap locale in memoria;
 - contiene anche `Predefiniti_Ricerca` come primo contenitore statico dei default di `SearchText` e `SearchField`;
-- non contiene ancora adapter SQL concreto né loader `.ini` riflessivo; la griglia supporta conferma selezione, cancellazione della riga selezionata e riordinamento `move up / move down`.
+- contiene anche `IniConfigurationDocument` come parser raw di sezioni e coppie `chiave = valore` del file `.ini`;
+- non contiene ancora adapter SQL concreto né binding riflessivo type-safe verso `Predefiniti_*` né consumo runtime dei default; la griglia supporta conferma selezione, cancellazione della riga selezionata e riordinamento `move up / move down`.
 
 #### 4.2 Host MVC
 Stato attuale:
@@ -190,9 +191,10 @@ Responsabilità futura prevista:
 
 ### 5. Configurazione `.ini`
 Stato attuale:
-- presente solo come foundation parziale lato host WinForms;
+- presente come foundation parziale lato host WinForms;
 - la classe statica `Predefiniti_Ricerca` centralizza i default di `SearchText` e `SearchField`;
-- non esistono ancora il loader `.ini` riflessivo, il binding automatico sezione -> classe `Predefiniti_*` né il consumo runtime dei default nel bootstrap/UI.
+- `IniConfigurationDocument` esegue il parsing raw di sezioni e coppie `chiave = valore` del file `.ini`;
+- non esistono ancora il binding riflessivo type-safe sezione -> classe `Predefiniti_*` né il consumo runtime dei default nel bootstrap/UI.
 
 Responsabilità futura prevista:
 - caricamento riflessivo dei default da file `.ini` senza contaminare il dominio.
@@ -211,6 +213,7 @@ Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguib
 - `ExamNavigator.WinForms` referenzia `ExamNavigator.Application`;
 - `Program.cs` costruisce un `BootstrapNavigationService` locale in memoria;
 - `ExamNavigator.WinForms` contiene `Predefiniti_Ricerca` come contenitore statico dei default di ricerca, non ancora consumato dal bootstrap runtime;
+- `ExamNavigator.WinForms` contiene `IniConfigurationDocument` come parser raw del file `.ini`, non ancora collegato al binding riflessivo dei default;
 - `Form1` usa `IExamNavigationService` per popolare all’avvio i tre pannelli;
 - la selezione dell’ambulatorio aggiorna parti del corpo ed esami;
 - la selezione della parte del corpo aggiorna gli esami;
@@ -228,7 +231,7 @@ In altre parole, la codebase possiede oggi:
 
 Non possiede ancora:
 - adapter SQL concreto;
-- loader `.ini` riflessivo e consumo runtime dei default da configurazione;
+- binding riflessivo type-safe dei valori `.ini` verso `Predefiniti_*` e consumo runtime dei default da configurazione;
 - flusso end-to-end finale sulla persistenza reale.
 
 ### Flusso target già preparato a livello di boundary, ma non ancora implementato end-to-end
@@ -260,7 +263,7 @@ Rischi reali attuali:
 
 - host WinForms wired a `Application` solo tramite bootstrap service locale in memoria; manca ancora l’aggancio a un adapter SQL concreto;
 - nessun adapter SQL eseguibile presente;
-- nessun loader `.ini` riflessivo presente; i default di ricerca sono centralizzati ma non ancora applicati al bootstrap runtime;
+- nessun binding riflessivo type-safe presente; il parsing raw `.ini` e i default di ricerca esistono ma non sono ancora applicati al bootstrap runtime;
 - nessun progetto test presente;
 - nessun lint / coverage / smoke automatizzato presente;
 - possibile drift documentale se gli owner docs non restano esplicitamente allineati al fatto che i requisiti sorgente sono locali e non versionati.
@@ -273,7 +276,7 @@ Rischi reali attuali:
 - l’accesso SQL Server deve essere introdotto come adapter separato;
 - il futuro host WinForms deve orchestrare il caso d’uso tramite `Application`;
 - il futuro host MVC deve riusare lo stesso perimetro applicativo, evitando duplicazione di logica;
-- il loader `.ini` riflessivo deve entrare come boundary infrastrutturale/configurativo, non nel dominio;
+- il binding riflessivo `.ini` verso `Predefiniti_*` deve restare un boundary infrastrutturale/configurativo, non nel dominio;
 - test, lint, coverage e smoke devono essere aggiunti come track qualità su baseline stabile.
 
 ---

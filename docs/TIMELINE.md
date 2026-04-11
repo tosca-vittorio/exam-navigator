@@ -292,9 +292,11 @@ Quando la soluzione sarà più matura:
 - verificato che `App.config` e `Properties/Settings` non rappresentano il boundary corretto per soddisfare la missione `.ini`;
 - commit `b0ef0c2` presente;
 - introdotta la classe statica `Predefiniti_Ricerca` nel progetto `ExamNavigator.WinForms`;
-- `ExamNavigator.WinForms.csproj` aggiornato per includere il nuovo file nel build;
-- `dotnet build ExamNavigator.sln` verde dopo l’introduzione del contenitore statico;
-- loader `.ini` riflessivo e consumo runtime dei default non ancora introdotti.
+- commit `8e1fa21` presente;
+- introdotto `IniConfigurationDocument` come parser raw del file `.ini`, con supporto a sezioni `[Sezione]`, coppie `chiave = valore`, commenti `#` e righe vuote;
+- `ExamNavigator.WinForms.csproj` aggiornato per includere i nuovi file di configurazione nel build;
+- `dotnet build ExamNavigator.sln` verde dopo l’introduzione del contenitore statico e del parser raw;
+- binding riflessivo type-safe verso `Predefiniti_*` e consumo runtime dei default non ancora introdotti.
 
 ### ⬜ E3 — Default search configuration
 **Obiettivo:** supportare ricerca predefinita e tipo di ricerca predefinito da configurazione.

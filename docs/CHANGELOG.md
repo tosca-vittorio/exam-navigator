@@ -1,10 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **WinForms search/configuration baseline + static defaults foundation post-E2.3**
+> Scope corrente: **WinForms search/configuration baseline + raw ini parser foundation post-E2.4**
 
 #### E — Search and configuration
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`8e1fa21` — feat(winforms): add raw ini configuration document parser**
+  - **Type:** ADDED · **Categoria:** WinForms/Configuration
+  - **Cosa cambia:** introduce `IniConfigurationDocument` nel progetto `ExamNavigator.WinForms` e aggiorna il `.csproj` per includerlo nel build, aggiungendo il parsing raw di sezioni e coppie `chiave = valore` dal file `.ini`.
+  - **Impatto:** consolida il primo boundary di lettura del documento `.ini` e prepara il successivo binding riflessivo verso le classi `Predefiniti_*` senza consumare ancora i default nel bootstrap runtime.
 
 - **`b0ef0c2` — feat(winforms): add static search defaults container**
   - **Type:** ADDED · **Categoria:** WinForms/Configuration
