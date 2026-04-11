@@ -49,7 +49,7 @@ Nota:
 ### Sottosistemi richiesti ma non ancora presenti nella codebase
 
 5. adapter SQL eseguibile / infrastructure layer concreto;
-6. binding riflessivo type-safe dei valori `.ini` verso `Predefiniti_*` e consumo runtime dei default;
+6. caricamento runtime dei default da configurazione e relativo consumo nel bootstrap/UI;
 7. host ASP.NET Core MVC;
 8. test project e quality tooling dedicato.
 
@@ -180,7 +180,8 @@ Stato attuale:
 - contiene caricamento iniziale dei tre pannelli, aggiornamento a cascata da ambulatorio a parte del corpo a esami, ricerca testuale wired tramite pulsante `Cerca`, tasto Invio e reset `Vedi tutti`, oltre alla conferma selezione con append alla griglia tramite servizio bootstrap locale in memoria;
 - contiene anche `Predefiniti_Ricerca` come primo contenitore statico dei default di `SearchText` e `SearchField`;
 - contiene anche `IniConfigurationDocument` come parser raw di sezioni e coppie `chiave = valore` del file `.ini`;
-- non contiene ancora adapter SQL concreto né binding riflessivo type-safe verso `Predefiniti_*` né consumo runtime dei default; la griglia supporta conferma selezione, cancellazione della riga selezionata e riordinamento `move up / move down`.
+- contiene anche `IniConfigurationBinder` come binder riflessivo type-safe verso `Predefiniti_*`;
+- non contiene ancora adapter SQL concreto né caricamento runtime dei default né consumo runtime dei default nel bootstrap/UI; la griglia supporta conferma selezione, cancellazione della riga selezionata e riordinamento `move up / move down`.
 
 #### 4.2 Host MVC
 Stato attuale:
@@ -194,10 +195,11 @@ Stato attuale:
 - presente come foundation parziale lato host WinForms;
 - la classe statica `Predefiniti_Ricerca` centralizza i default di `SearchText` e `SearchField`;
 - `IniConfigurationDocument` esegue il parsing raw di sezioni e coppie `chiave = valore` del file `.ini`;
-- non esistono ancora il binding riflessivo type-safe sezione -> classe `Predefiniti_*` né il consumo runtime dei default nel bootstrap/UI.
+- `IniConfigurationBinder` esegue il binding riflessivo type-safe sezione -> classe `Predefiniti_*` e proprietà -> valore;
+- non esistono ancora il caricamento runtime dei default da file `.ini` né il consumo runtime dei default nel bootstrap/UI.
 
 Responsabilità futura prevista:
-- caricamento riflessivo dei default da file `.ini` senza contaminare il dominio.
+- caricamento riflessivo dei default da file `.ini` nel bootstrap runtime senza contaminare il dominio.
 
 ---
 
@@ -213,7 +215,8 @@ Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguib
 - `ExamNavigator.WinForms` referenzia `ExamNavigator.Application`;
 - `Program.cs` costruisce un `BootstrapNavigationService` locale in memoria;
 - `ExamNavigator.WinForms` contiene `Predefiniti_Ricerca` come contenitore statico dei default di ricerca, non ancora consumato dal bootstrap runtime;
-- `ExamNavigator.WinForms` contiene `IniConfigurationDocument` come parser raw del file `.ini`, non ancora collegato al binding riflessivo dei default;
+- `ExamNavigator.WinForms` contiene `IniConfigurationDocument` come parser raw del file `.ini`;
+- `ExamNavigator.WinForms` contiene `IniConfigurationBinder` come binder riflessivo type-safe dei default verso `Predefiniti_*`, non ancora wired nel bootstrap runtime;
 - `Form1` usa `IExamNavigationService` per popolare all’avvio i tre pannelli;
 - la selezione dell’ambulatorio aggiorna parti del corpo ed esami;
 - la selezione della parte del corpo aggiorna gli esami;
@@ -231,7 +234,7 @@ In altre parole, la codebase possiede oggi:
 
 Non possiede ancora:
 - adapter SQL concreto;
-- binding riflessivo type-safe dei valori `.ini` verso `Predefiniti_*` e consumo runtime dei default da configurazione;
+- caricamento runtime dei default da configurazione e consumo runtime dei default nel bootstrap/UI;
 - flusso end-to-end finale sulla persistenza reale.
 
 ### Flusso target già preparato a livello di boundary, ma non ancora implementato end-to-end

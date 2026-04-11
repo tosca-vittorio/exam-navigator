@@ -1,10 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **WinForms search/configuration baseline + raw ini parser foundation post-E2.4**
+> Scope corrente: **WinForms search/configuration baseline + reflective ini binder post-E2.5**
 
 #### E — Search and configuration
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`c1c6170` — feat(winforms): add reflective ini configuration binder**
+  - **Type:** ADDED · **Categoria:** WinForms/Configuration
+  - **Cosa cambia:** introduce `IniConfigurationBinder` nel progetto `ExamNavigator.WinForms` e aggiorna il `.csproj` per includerlo nel build, aggiungendo il binding riflessivo type-safe dal documento `.ini` verso le classi statiche `Predefiniti_*`.
+  - **Impatto:** chiude il blocco tecnico del binder configurativo richiesto dalla missione `.ini`, mantenendo ancora separato e differito il consumo runtime dei default nel bootstrap/UI.
 
 - **`8e1fa21` — feat(winforms): add raw ini configuration document parser**
   - **Type:** ADDED · **Categoria:** WinForms/Configuration

@@ -23,12 +23,12 @@ Baseline attuale verificata:
 - solution `ExamNavigator.sln` presente;
 - progetto `ExamNavigator.Domain` presente con entità minime del dominio;
 - progetto `ExamNavigator.Application` presente con contratti di navigazione e interfaccia applicativa;
-- progetto `ExamNavigator.WinForms` presente con host desktop wired al boundary `Application`, cascata baseline in memoria, ricerca testuale wired (pulsante `Cerca`, tasto Invio e reset `Vedi tutti`), append delle selezioni confermate nella griglia riepilogativa, cancellazione della riga selezionata, riordinamento `move up / move down`, primo contenitore statico `Predefiniti_Ricerca` per i default della ricerca e parser raw `IniConfigurationDocument` per il documento `.ini`;
+- progetto `ExamNavigator.WinForms` presente con host desktop wired al boundary `Application`, cascata baseline in memoria, ricerca testuale wired (pulsante `Cerca`, tasto Invio e reset `Vedi tutti`), append delle selezioni confermate nella griglia riepilogativa, cancellazione della riga selezionata, riordinamento `move up / move down`, primo contenitore statico `Predefiniti_Ricerca` per i default della ricerca, parser raw `IniConfigurationDocument` per il documento `.ini` e binder riflessivo type-safe `IniConfigurationBinder` verso `Predefiniti_*`;
 - baseline SQL Server presente con:
   - `001_schema.sql`
   - `002_seed.sql`
   - `003_navigation_queries.sql`
-- adapter SQL eseguibile, binding riflessivo `.ini` verso `Predefiniti_*`, consumo runtime dei default da configurazione, test, lint, coverage e host MVC non ancora introdotti nella codebase.
+- adapter SQL eseguibile, caricamento runtime dei default da configurazione, consumo runtime dei default nel bootstrap/UI, test, lint, coverage e host MVC non ancora introdotti nella codebase.
 
 ## Scelte tecniche correnti
 
@@ -101,7 +101,7 @@ Stato corrente della missione principale:
 4. host WinForms baseline (`bootstrap progetto + layout statico form`) → completato;
 5. wiring desktop iniziale della cascata (`Application` boundary + bootstrap service locale + aggiornamento ambulatorio/parte del corpo/esami) → completato;
 6. blocco ricerca desktop baseline (`wiring` UI) → completato;
-7. blocchi successivi → configurazione `.ini` avviata con fondazione dei default di ricerca e parser raw del documento; binding riflessivo, consumo runtime, conversione MVC e quality track ancora differiti.
+7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento e binder riflessivo type-safe; caricamento runtime dei default, consumo runtime, conversione MVC e quality track ancora differiti.
 
 ## Documentazione owner
 

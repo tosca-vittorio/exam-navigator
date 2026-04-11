@@ -284,7 +284,7 @@ Quando la soluzione sarà più matura:
 - `dotnet build ExamNavigator.sln` verde;
 - smoke manuale verificato con ricerca `eco` via pulsante `Cerca`, ricerca `rmn` via tasto Invio e reset `Vedi tutti` coerente sui tre pannelli.
 
-### 🟡 E2 — Ini parser
+### ✅ E2 — Ini parser
 **Obiettivo:** introdurre il caricatore `.ini` riflessivo.
 
 **Evidenze (truth-first):**
@@ -294,9 +294,25 @@ Quando la soluzione sarà più matura:
 - introdotta la classe statica `Predefiniti_Ricerca` nel progetto `ExamNavigator.WinForms`;
 - commit `8e1fa21` presente;
 - introdotto `IniConfigurationDocument` come parser raw del file `.ini`, con supporto a sezioni `[Sezione]`, coppie `chiave = valore`, commenti `#` e righe vuote;
+- commit `c1c6170` presente;
+- introdotto `IniConfigurationBinder` come binder riflessivo type-safe verso le classi statiche `Predefiniti_*`;
+- il binder risolve la classe `Predefiniti_<Sezione>`, cerca proprietà statiche pubbliche per nome, ignora sezioni/chiavi non riconosciute e mantiene i default dichiarati per le proprietà assenti;
+- conversione type-safe presente per `string` con virgolette obbligatorie, `int`, `bool` (`1/0`, `true/false`) ed `enum`;
 - `ExamNavigator.WinForms.csproj` aggiornato per includere i nuovi file di configurazione nel build;
-- `dotnet build ExamNavigator.sln` verde dopo l’introduzione del contenitore statico e del parser raw;
-- binding riflessivo type-safe verso `Predefiniti_*` e consumo runtime dei default non ancora introdotti.
+- `dotnet build ExamNavigator.sln` verde dopo l’introduzione del contenitore statico, del parser raw e del binder riflessivo;
+- caricamento runtime in `Program.cs` e consumo runtime dei default nel bootstrap/UI ancora assenti e differiti al blocco successivo.
+
+### ✅ E2.5 — Binding riflessivo type-safe verso `Predefiniti_*`
+**Obiettivo:** introdurre il binder riflessivo minimale per applicare i valori del documento `.ini` alle classi statiche `Predefiniti_*`.
+
+**Evidenze (truth-first):**
+- commit `c1c6170` presente;
+- introdotto `IniConfigurationBinder` nel progetto `ExamNavigator.WinForms`;
+- il binder risolve riflessivamente la classe `Predefiniti_<Sezione>`;
+- il binder cerca proprietà statiche pubbliche per nome e ignora chiavi non riconosciute;
+- conversione type-safe presente per `string` con virgolette obbligatorie, `int`, `bool` (`1/0`, `true/false`) ed `enum`;
+- `ExamNavigator.WinForms.csproj` aggiornato per includere il nuovo file nel build;
+- `dotnet build ExamNavigator.sln` verde dopo l’introduzione del binder.
 
 ### ⬜ E3 — Default search configuration
 **Obiettivo:** supportare ricerca predefinita e tipo di ricerca predefinito da configurazione.
