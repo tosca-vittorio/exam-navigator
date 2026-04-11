@@ -14,13 +14,15 @@ Milestone già consolidate:
 5. WinForms first (`wiring` cascata, conferma selezione, delete/reorder della griglia).
 
 Milestone mission-critical consolidata più recente:
-6. integrazione ricerca/configurazione `.ini`.
+7. conversione web MVC baseline funzionale demo archiviata.
 
 Milestone attiva:
-7. conversione web MVC.
+8. chiusura V1 mission-critical su SQL Server runtime concreto.
 
 Milestone successive:
-8. track qualità / EXTRA differiti.
+9. preparazione consegna / rilascio / demo V1;
+10. preparazione colloquio #2;
+11. EXTRA e sviluppi futuri post-colloquio.
 
 ## Sequenza strategica mission-critical
 
@@ -65,13 +67,49 @@ Obiettivo:
 - introdurre il loader `.ini` riflessivo e i default configurabili.
 
 ### 6. Web conversion
-Stato: attivato; host MVC baseline introdotto e primo riallineamento funzionale `F1` chiuso.
+Stato: archiviata come baseline funzionale demo con `F0` / `F1` / `F2` chiusi.
 
 Obiettivo:
 - riutilizzare il core applicativo;
 - esporre progressivamente lo stesso comportamento in MVC;
 - evitare riscrittura della logica del caso d’uso;
-- completare la UI web equivalente nel blocco successivo.
+- chiudere la parte di conversione web senza riaprire il blocco nei passi successivi.
+
+### 7. Chiusura V1 mission-critical
+Stato: attiva.
+
+Obiettivo:
+- soddisfare integralmente il perimetro della mail/freeze requisiti;
+- sostituire i bootstrap service in memoria con persistenza SQL Server runtime concreta;
+- mantenere WinForms e MVC coerenti sulla stessa fonte dati reale;
+- arrivare a una V1 concreta, robusta, affidabile, consegnabile e valutabile.
+
+### 8. Preparazione consegna / rilascio / demo V1
+Stato: congelata, attivabile solo dopo la chiusura della V1.
+
+Obiettivo:
+- preparare il formato di consegna più opportuno (`.exe`, script SQL, bundle demo, eventuale Docker solo se realmente utile);
+- produrre tag dedicato alla consegna cliente;
+- eseguire merge su `main` e release di baseline;
+- congelare il punto di rilascio della richiesta cliente prima di ulteriori ottimizzazioni.
+
+### 9. Preparazione colloquio #2
+Stato: congelata, attivabile solo dopo la chiusura della V1 e la preparazione della consegna.
+
+Obiettivo:
+- costruire documentazione di studio, presentazione progetto e materiale di difesa tecnica;
+- spiegare timeline, scelte, sintassi, architettura, database, moduli e responsabilità;
+- preparare domande plausibili di colloquio e relative risposte;
+- usare la V1 come base di studio su MVC, controller, SQL e architettura.
+
+### 10. Sviluppi futuri / EXTRA post-colloquio
+Stato: congelati, attivabili solo dopo la fase di preparazione colloquio.
+
+Obiettivo:
+- refactor pulito e possibile introduzione di pattern GOF o equivalenti;
+- best practices più spinte di qualità, programmazione, ingegneria e architettura del software;
+- eventuale UI moderna React/TypeScript collegata a backend .NET;
+- region ordinate, commenti XML estesi e ulteriori miglioramenti non mission-critical.
 
 ## Track EXTRA congelati ma non attivati
 

@@ -28,7 +28,7 @@ Baseline attuale verificata:
   - `001_schema.sql`
   - `002_seed.sql`
   - `003_navigation_queries.sql`
-- adapter SQL eseguibile, test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC è ora presente anche con un primo baseline funzionale di navigazione esami, controller/view model dedicati, bootstrap service locale in memoria e pagina web iniziale wired al core condiviso.
+- adapter SQL eseguibile, test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC è ora presente con baseline web funzionale completa in memoria per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, sempre wired al core condiviso.
 
 ## Scelte tecniche correnti
 
@@ -66,9 +66,9 @@ La soluzione è governata per strati:
 
 5. **Host Web**
    - host ASP.NET Core MVC presente nella solution e referenziato al core condiviso;
-   - primo baseline funzionale di navigazione esami introdotto tramite controller dedicato, page view model e bootstrap service locale in memoria;
-   - ricerca GET e rendering iniziale di ambulatori, parti del corpo ed esami già presenti;
-   - adattamento MVC ancora non completo rispetto alla parità funzionale del client WinForms.
+   - baseline funzionale web equivalente alla demo WinForms introdotta tramite controller dedicato, page view model e bootstrap service locale in memoria;
+   - ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX presenti;
+   - adattamento MVC ancora appoggiato a dataset demo in memoria e non a un adapter SQL concreto.
 
 ## Repository layout
 
@@ -103,7 +103,19 @@ Stato corrente della missione principale:
 4. host WinForms baseline (`bootstrap progetto + layout statico form`) → completato;
 5. wiring desktop iniziale della cascata (`Application` boundary + bootstrap service locale + aggiornamento ambulatorio/parte del corpo/esami) → completato;
 6. blocco ricerca desktop baseline (`wiring` UI) → completato;
-7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC avanzata con host dedicato (`F0`) e primo riallineamento funzionale di controller/view model/pagina (`F1`) completati, quality track ancora differito.
+7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC archiviata come baseline demo con host dedicato (`F0`), primo riallineamento funzionale di controller/view model (`F1`) e UI web equivalente con griglia selezioni e polish (`F2`); V1 mission-critical ancora aperta sulla persistenza SQL Server runtime concreta condivisa tra i due host.
+
+## Perimetro V1
+
+La V1 mission-critical coincide esclusivamente con i requisiti funzionali e non funzionali della mail, congelati nel freeze locale dei requisiti.
+
+Per la V1 il criterio è:
+- soluzione concreta;
+- robusta, affidabile e solida;
+- consegnabile, valutabile e difendibile;
+- aderente ai requisiti della mail senza introdurre dipendenze dagli EXTRA.
+
+Tutto ciò che non rientra in questo perimetro resta post-V1 oppure EXTRA congelato.
 
 ## Documentazione owner
 

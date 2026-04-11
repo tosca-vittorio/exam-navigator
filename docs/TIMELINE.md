@@ -328,7 +328,7 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## F — 🟡 Conversione web MVC
+## F — ☑️ Conversione web MVC
 
 **Obiettivo:** portare la stessa logica funzionale su host web.
 
@@ -361,7 +361,95 @@ Quando la soluzione sarà più matura:
 - `dotnet build ExamNavigator.sln` verde dopo il wiring MVC;
 - smoke manuale verificato con `dotnet run --project src/ExamNavigator.Mvc --urls http://localhost:5099` e controllo `curl` dei marker funzionali della pagina `/`.
 
-### ⬜ F2 — UI web equivalente
+### ✅ F2 — UI web equivalente
+**Obiettivo:** completare una baseline web equivalente al comportamento demo del client WinForms, includendo shell UI, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish visivo minimo.
+
+**Evidenze (truth-first):**
+- commit `4c45148` presente;
+- `Views/Shared/_Layout.cshtml` e `wwwroot/css/site.css` non sono più scaffold generico e materializzano una shell visiva coerente col progetto;
+- `HomeController` introduce `ApplySelectionCommand(...)`, gestione dei comandi `confirm` / `up` / `down` / `remove` e serializzazione minimale dello stato della griglia selezioni nella pagina;
+- `Models/ErrorViewModel.cs` ospita anche `ExamNavigationCommandInputModel`, `SelectedExamRowViewModel` e l'estensione di `ExamNavigationPageViewModel` per supportare selezione esame e griglia web;
+- `Views/Home/Index.cshtml` introduce selezione esame nel pannello `Esami`, pulsante `Conferma selezione`, griglia `Esami selezionati`, radio di selezione riga e azioni `Sposta su` / `Sposta giù` / `Elimina riga`;
+- `Program.cs` normalizza anche il naming demo degli ambulatori MVC (`Ecografia Massimino`, `Ecografia Privitera`);
+- il campo ricerca lato MVC usa etichette leggibili (`Codice ministeriale`, `Codice interno`, `Descrizione esame`) e la leggibilità dello stato selezionato nei pannelli è stata migliorata;
+- `dotnet build ExamNavigator.sln` verde dopo il completamento di `F2`;
+- smoke manuale verificato su browser con ricerca, conferma selezione, aggiunta righe in griglia, riordino, eliminazione e verifica UI/UX complessivamente positiva.
+
+
+
+**Nota di stato (F):**
+- il blocco `F` è archiviato;
+- non deve essere riaperto per completare la V1;
+- i residui mission-critical sono ora tracciati nel blocco `G`.
+
+---
+
+## G — 🟡 Chiusura V1 mission-critical (SQL runtime)
+
+**Obiettivo:** chiudere la V1 in aderenza letterale alla mail e al freeze requisiti, sostituendo i bootstrap service in memoria con una persistenza SQL Server runtime concreta condivisa tra WinForms e MVC.
+
+**DoD (G):**
+- adapter / infrastructure SQL concreta presente;
+- host WinForms wired a runtime SQL;
+- host MVC wired a runtime SQL;
+- coerenza finale verificata rispetto a RF-01..RF-17 e RNF-01..RNF-04;
+- baseline V1 concreta, robusta, affidabile, solida, consegnabile, valutabile.
+
+### ⬜ G0 — Preflight strategia SQL runtime + documento tecnico di setup
+**Obiettivo:** scegliere e congelare il boundary tecnico corretto per SQL Server runtime, includendo la struttura del documento tecnico di setup/infrastruttura.
+
+### ⬜ G1 — Adapter SQL Server concreto
+**Obiettivo:** introdurre uno strato infrastructure SQL Server reale, separato da `Domain` e `Application`, senza riaprire i blocchi UI già chiusi.
+
+### ⬜ G2 — Wiring WinForms su runtime SQL
+**Obiettivo:** sostituire nel client desktop il bootstrap service in memoria con la sorgente dati SQL concreta.
+
+### ⬜ G3 — Wiring MVC su runtime SQL
+**Obiettivo:** sostituire nell'host MVC il bootstrap service in memoria con la stessa sorgente dati SQL concreta del client WinForms.
+
+### ⬜ G4 — Verifica formale chiusura V1
+**Obiettivo:** verificare in modo esplicito la copertura del perimetro mail/freeze e congelare la baseline V1 come richiesta cliente.
+
+---
+
+## H — ⬜ Preparazione consegna / rilascio / demo V1
+
+**Obiettivo:** preparare il rilascio della baseline V1 nel formato più opportuno, con tag dedicato, merge su `main`, release e materiale di demo coerente con la richiesta cliente.
+
+**Note operative congelate:**
+- valutare il formato di consegna più opportuno (`.exe`, script SQL, bundle demo, eventuale Docker solo se realmente utile);
+- creare tag dedicato alla consegna cliente;
+- eseguire merge + release su `main`;
+- usare questo punto come freeze del rilascio cliente prima di ulteriori ottimizzazioni su `development`.
+
+---
+
+## I — ⬜ Preparazione colloquio #2
+
+**Obiettivo:** costruire il materiale di studio e presentazione dopo la chiusura completa della V1.
+
+**Note operative congelate:**
+- analizzare modo, scelte, logiche di sviluppo e relativa sintassi;
+- spiegare passi temporali e percorso in timeline in modo esteso e dettagliato;
+- creare domande plausibili sulla base del codice realizzato;
+- descrivere ideazione, progettazione, analisi, scelte e architettura;
+- descrivere moduli, responsabilità e mansioni;
+- analizzare e spiegare `database/sql/*.sql`;
+- spiegare architettura, pattern e scelte riconducibili;
+- ripassare MVC usando il codice della V1 come caso di studio;
+- chiarire esempi base su controller MVC e sui concetti di stato in UI moderne.
+
+---
+
+## J — ⬜ Sviluppi futuri / EXTRA post-colloquio
+
+**Obiettivo:** continuare a migliorare la soluzione solo dopo la fase di preparazione colloquio.
+
+**Note operative congelate:**
+- refactor pulito e possibile introduzione di pattern GOF o equivalenti;
+- best practices più spinte di qualità, programmazione, ingegneria e architettura del software;
+- eventuale UI React/TypeScript collegata a backend .NET;
+- region ordinate e commenti XML estesi.
 
 ---
 

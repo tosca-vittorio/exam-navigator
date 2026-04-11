@@ -1,10 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **MVC conversion advanced with first exam navigation page wired post-F1**
+> Scope corrente: **F archived; active focus shifted to V1 closure on concrete SQL runtime**
 
 #### F — MVC conversion
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`4c45148` — feat(mvc): complete web exam navigation baseline**
+  - **Type:** ADDED · **Categoria:** MVC/Web Host
+  - **Cosa cambia:** aggiorna `Program.cs`, `HomeController.cs`, `Models/ErrorViewModel.cs`, `Views/Home/Index.cshtml`, `Views/Shared/_Layout.cshtml` e `wwwroot/css/site.css` per completare la baseline web con conferma selezione, griglia riepilogativa, riordino, eliminazione riga, naming demo più leggibile e shell UI/UX coerente col progetto.
+  - **Impatto:** chiude `F2` e porta l'host MVC a una baseline demo funzionale coerente con il client WinForms, pur lasciando ancora differiti adapter SQL concreto e track qualità.
 
 - **`af3711c` — feat(mvc): wire baseline exam navigation page**
   - **Type:** ADDED · **Categoria:** MVC/Web Host
