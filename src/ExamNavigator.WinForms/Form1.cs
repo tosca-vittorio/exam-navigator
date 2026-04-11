@@ -28,7 +28,11 @@ namespace ExamNavigator.WinForms
             base.OnLoad(e);
 
             InitializeSearchField();
-            LoadNavigation(new ExamNavigationRequest());
+            LoadNavigation(new ExamNavigationRequest
+            {
+                SearchText = txtSearchTerm.Text,
+                SearchField = GetSelectedSearchField()
+            });
         }
 
         private void WireEvents()
@@ -212,7 +216,21 @@ namespace ExamNavigator.WinForms
         
         private void InitializeSearchField()
         {
-            if (cmbSearchField.Items.Count > 0 && cmbSearchField.SelectedIndex < 0)
+            txtSearchTerm.Text = Predefiniti_Ricerca.SearchText ?? string.Empty;
+
+            if (cmbSearchField.Items.Count == 0)
+            {
+                return;
+            }
+
+            var configuredSearchField = Predefiniti_Ricerca.SearchField.ToString();
+            if (cmbSearchField.Items.Contains(configuredSearchField))
+            {
+                cmbSearchField.SelectedItem = configuredSearchField;
+                return;
+            }
+
+            if (cmbSearchField.SelectedIndex < 0)
             {
                 cmbSearchField.SelectedItem = ExamSearchField.DescrizioneEsame.ToString();
             }

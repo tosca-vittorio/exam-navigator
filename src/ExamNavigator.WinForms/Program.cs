@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ExamNavigator.Application.Contracts;
 using ExamNavigator.Application.Services;
@@ -173,17 +174,51 @@ namespace ExamNavigator.WinForms
 
     internal static class Program
     {
+        private const string DefaultIniSearchPattern = "*.ini";
+
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            LoadConfigurationDefaults();
+
             var navigationService = new BootstrapNavigationService();
 
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             System.Windows.Forms.Application.Run(new Form1(navigationService));
+        }
+
+        private static void LoadConfigurationDefaults()
+        {
+            var configurationFilePath = ResolveConfigurationFilePath();
+            if (string.IsNullOrWhiteSpace(configurationFilePath))
+            {
+                return;
+            }
+
+            var document = IniConfigurationDocument.Load(configurationFilePath);
+            IniConfigurationBinder.Apply(document);
+        }
+
+        private static string ResolveConfigurationFilePath()
+        {
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            if (string.IsNullOrWhiteSpace(baseDirectory) || !Directory.Exists(baseDirectory))
+            {
+                return null;
+            }
+
+            var configurationFiles = Directory.GetFiles(baseDirectory, DefaultIniSearchPattern);
+            if (configurationFiles.Length == 0)
+            {
+                return null;
+            }
+
+            Array.Sort(configurationFiles, StringComparer.OrdinalIgnoreCase);
+            return configurationFiles[0];
         }
     }
 }
