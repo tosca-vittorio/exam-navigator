@@ -1,8 +1,151 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using ExamNavigator.Application.Contracts
+@model ExamNavigator.Mvc.Models.ExamNavigationPageViewModel
+
+@{
+    ViewData["Title"] = "Exam Navigator";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-4">
+    <div class="mb-4">
+        <h1 class="display-6">Exam Navigator</h1>
+        <p class="text-muted mb-0">
+            Baseline MVC del caso d'uso di navigazione esami, allineato al core condiviso.
+        </p>
+    </div>
+
+    <form method="get" asp-action="Index" class="row g-3 align-items-end mb-4">
+        <input type="hidden" name="selectedRoomId" value="@(Model.SelectedRoomId?.ToString() ?? string.Empty)" />
+        <input type="hidden" name="selectedBodyPartId" value="@(Model.SelectedBodyPartId?.ToString() ?? string.Empty)" />
+
+        <div class="col-md-5">
+            <label class="form-label" for="searchText">Ricerca testuale</label>
+            <input id="searchText"
+                   name="searchText"
+                   class="form-control"
+                   value="@Model.SearchText"
+                   placeholder="Inserisci testo di ricerca" />
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label" for="searchField">Campo di ricerca</label>
+            <select id="searchField" name="searchField" class="form-select">
+                @foreach (var field in Enum.GetValues<ExamSearchField>())
+                {
+                    if (field == Model.SearchField)
+                    {
+                        <option value="@field" selected>@field</option>
+                    }
+                    else
+                    {
+                        <option value="@field">@field</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary flex-fill">Cerca</button>
+            <a asp-action="Index"
+               asp-route-selectedRoomId="@Model.SelectedRoomId"
+               asp-route-selectedBodyPartId="@Model.SelectedBodyPartId"
+               asp-route-searchField="@Model.SearchField"
+               class="btn btn-outline-secondary flex-fill">Vedi tutti</a>
+        </div>
+    </form>
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    Ambulatori
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        @if (Model.Rooms.Count == 0)
+                        {
+                            <div class="list-group-item text-muted">Nessun ambulatorio disponibile.</div>
+                        }
+                        else
+                        {
+                            foreach (var room in Model.Rooms)
+                            {
+                                var isSelected = room.Id == Model.SelectedRoomId;
+
+                                <a asp-action="Index"
+                                   asp-route-selectedRoomId="@room.Id"
+                                   asp-route-searchText="@Model.SearchText"
+                                   asp-route-searchField="@Model.SearchField"
+                                   class="list-group-item list-group-item-action @(isSelected ? "active" : string.Empty)">
+                                    @room.Label
+                                </a>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    Parti del corpo
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        @if (Model.BodyParts.Count == 0)
+                        {
+                            <div class="list-group-item text-muted">Nessuna parte del corpo disponibile.</div>
+                        }
+                        else
+                        {
+                            foreach (var bodyPart in Model.BodyParts)
+                            {
+                                var isSelected = bodyPart.Id == Model.SelectedBodyPartId;
+
+                                <a asp-action="Index"
+                                   asp-route-selectedRoomId="@Model.SelectedRoomId"
+                                   asp-route-selectedBodyPartId="@bodyPart.Id"
+                                   asp-route-searchText="@Model.SearchText"
+                                   asp-route-searchField="@Model.SearchField"
+                                   class="list-group-item list-group-item-action @(isSelected ? "active" : string.Empty)">
+                                    @bodyPart.Label
+                                </a>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    Esami
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        @if (Model.Exams.Count == 0)
+                        {
+                            <div class="list-group-item text-muted">Nessun esame disponibile.</div>
+                        }
+                        else
+                        {
+                            foreach (var exam in Model.Exams)
+                            {
+                                <div class="list-group-item">
+                                    <div class="fw-semibold">@exam.DescrizioneEsame</div>
+                                    <div class="small text-muted">
+                                        Cod. Min.: @exam.CodiceMinisteriale
+                                    </div>
+                                    <div class="small text-muted">
+                                        Cod. Int.: @exam.CodiceInterno
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
