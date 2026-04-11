@@ -39,8 +39,8 @@ internal sealed class BootstrapNavigationService : IExamNavigationService
 {
     private readonly List<LookupItem> _rooms = new()
     {
-        new LookupItem { Id = 1, Label = "EcografiaMassimino" },
-        new LookupItem { Id = 2, Label = "EcografiaPrivitera" },
+        new LookupItem { Id = 1, Label = "Ecografia Massimino" },
+        new LookupItem { Id = 2, Label = "Ecografia Privitera" },
         new LookupItem { Id = 3, Label = "Radiologia" },
         new LookupItem { Id = 4, Label = "Risonanza" }
     };
