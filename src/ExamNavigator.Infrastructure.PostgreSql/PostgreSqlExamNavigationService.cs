@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ExamNavigator.Application.Contracts;
 using ExamNavigator.Application.Services;
 using Npgsql;
+using NpgsqlTypes;
 
 namespace ExamNavigator.Infrastructure.PostgreSql
 {
@@ -130,8 +131,8 @@ ORDER BY e.descrizione_esame, e.codice_interno;";
             using (var connection = new NpgsqlConnection(_connectionString))
             using (var command = new NpgsqlCommand(SelectVisibleRoomsSql, connection))
             {
-                command.Parameters.AddWithValue("search_text", (object)normalizedSearchText ?? DBNull.Value);
-                command.Parameters.AddWithValue("search_field", searchField.ToString());
+                command.Parameters.Add("search_text", NpgsqlDbType.Text).Value = (object)normalizedSearchText ?? DBNull.Value;
+                command.Parameters.Add("search_field", NpgsqlDbType.Text).Value = searchField.ToString();
 
                 connection.Open();
 
@@ -161,9 +162,9 @@ ORDER BY e.descrizione_esame, e.codice_interno;";
             using (var connection = new NpgsqlConnection(_connectionString))
             using (var command = new NpgsqlCommand(SelectVisibleBodyPartsSql, connection))
             {
-                command.Parameters.AddWithValue("search_text", (object)normalizedSearchText ?? DBNull.Value);
-                command.Parameters.AddWithValue("search_field", searchField.ToString());
-                command.Parameters.AddWithValue("selected_room_id", (object)selectedRoomId ?? DBNull.Value);
+                command.Parameters.Add("search_text", NpgsqlDbType.Text).Value = (object)normalizedSearchText ?? DBNull.Value;
+                command.Parameters.Add("search_field", NpgsqlDbType.Text).Value = searchField.ToString();
+                command.Parameters.Add("selected_room_id", NpgsqlDbType.Integer).Value = (object)selectedRoomId ?? DBNull.Value;
 
                 connection.Open();
 
@@ -194,10 +195,10 @@ ORDER BY e.descrizione_esame, e.codice_interno;";
             using (var connection = new NpgsqlConnection(_connectionString))
             using (var command = new NpgsqlCommand(SelectVisibleExamsSql, connection))
             {
-                command.Parameters.AddWithValue("search_text", (object)normalizedSearchText ?? DBNull.Value);
-                command.Parameters.AddWithValue("search_field", searchField.ToString());
-                command.Parameters.AddWithValue("selected_room_id", (object)selectedRoomId ?? DBNull.Value);
-                command.Parameters.AddWithValue("selected_body_part_id", (object)selectedBodyPartId ?? DBNull.Value);
+                command.Parameters.Add("search_text", NpgsqlDbType.Text).Value = (object)normalizedSearchText ?? DBNull.Value;
+                command.Parameters.Add("search_field", NpgsqlDbType.Text).Value = searchField.ToString();
+                command.Parameters.Add("selected_room_id", NpgsqlDbType.Integer).Value = (object)selectedRoomId ?? DBNull.Value;
+                command.Parameters.Add("selected_body_part_id", NpgsqlDbType.Integer).Value = (object)selectedBodyPartId ?? DBNull.Value;
 
                 connection.Open();
 

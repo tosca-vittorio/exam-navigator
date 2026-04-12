@@ -10,7 +10,8 @@
     <AssemblyName>ExamNavigator.WinForms</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -81,6 +82,53 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExamNavigator.Application\ExamNavigator.Application.csproj" />
+    <ProjectReference Include="..\ExamNavigator.Infrastructure.PostgreSql\ExamNavigator.Infrastructure.PostgreSql.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="8.0.8" GeneratePathProperty="true" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" GeneratePathProperty="true" />
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" GeneratePathProperty="true" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" GeneratePathProperty="true" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" GeneratePathProperty="true" />
+    <PackageReference Include="System.Buffers" Version="4.5.1" GeneratePathProperty="true" />
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0" GeneratePathProperty="true" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.0" GeneratePathProperty="true" />
+    <PackageReference Include="System.Memory" Version="4.5.5" GeneratePathProperty="true" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" GeneratePathProperty="true" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" GeneratePathProperty="true" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" GeneratePathProperty="true" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" GeneratePathProperty="true" />
+    <PackageReference Include="System.Threading.Channels" Version="8.0.0" GeneratePathProperty="true" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" GeneratePathProperty="true" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" GeneratePathProperty="true" />
+  </ItemGroup>
+
+  <Target Name="CopyPostgreSqlRuntimeClosure" AfterTargets="Build">
+    <ItemGroup>
+      <PostgreSqlRuntimeAssemblies Include="$(PkgNpgsql)\lib\netstandard2.0\Npgsql.dll" Condition="Exists('$(PkgNpgsql)\lib\netstandard2.0\Npgsql.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgMicrosoft_Bcl_AsyncInterfaces)\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll" Condition="Exists('$(PkgMicrosoft_Bcl_AsyncInterfaces)\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgMicrosoft_Bcl_HashCode)\lib\net461\Microsoft.Bcl.HashCode.dll" Condition="Exists('$(PkgMicrosoft_Bcl_HashCode)\lib\net461\Microsoft.Bcl.HashCode.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgMicrosoft_Extensions_DependencyInjection_Abstractions)\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll" Condition="Exists('$(PkgMicrosoft_Extensions_DependencyInjection_Abstractions)\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgMicrosoft_Extensions_Logging_Abstractions)\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll" Condition="Exists('$(PkgMicrosoft_Extensions_Logging_Abstractions)\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgSystem_Buffers)\lib\net461\System.Buffers.dll" Condition="Exists('$(PkgSystem_Buffers)\lib\net461\System.Buffers.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgSystem_Collections_Immutable)\lib\net462\System.Collections.Immutable.dll" Condition="Exists('$(PkgSystem_Collections_Immutable)\lib\net462\System.Collections.Immutable.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgSystem_Diagnostics_DiagnosticSource)\lib\net462\System.Diagnostics.DiagnosticSource.dll" Condition="Exists('$(PkgSystem_Diagnostics_DiagnosticSource)\lib\net462\System.Diagnostics.DiagnosticSource.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgSystem_Memory)\lib\net461\System.Memory.dll" Condition="Exists('$(PkgSystem_Memory)\lib\net461\System.Memory.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgSystem_Numerics_Vectors)\lib\net46\System.Numerics.Vectors.dll" Condition="Exists('$(PkgSystem_Numerics_Vectors)\lib\net46\System.Numerics.Vectors.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgSystem_Runtime_CompilerServices_Unsafe)\lib\net461\System.Runtime.CompilerServices.Unsafe.dll" Condition="Exists('$(PkgSystem_Runtime_CompilerServices_Unsafe)\lib\net461\System.Runtime.CompilerServices.Unsafe.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgSystem_Text_Encodings_Web)\lib\net462\System.Text.Encodings.Web.dll" Condition="Exists('$(PkgSystem_Text_Encodings_Web)\lib\net462\System.Text.Encodings.Web.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgSystem_Text_Json)\lib\net462\System.Text.Json.dll" Condition="Exists('$(PkgSystem_Text_Json)\lib\net462\System.Text.Json.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgSystem_Threading_Channels)\lib\net462\System.Threading.Channels.dll" Condition="Exists('$(PkgSystem_Threading_Channels)\lib\net462\System.Threading.Channels.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgSystem_Threading_Tasks_Extensions)\lib\net461\System.Threading.Tasks.Extensions.dll" Condition="Exists('$(PkgSystem_Threading_Tasks_Extensions)\lib\net461\System.Threading.Tasks.Extensions.dll')" />
+      <PostgreSqlRuntimeAssemblies Include="$(PkgSystem_ValueTuple)\lib\net47\System.ValueTuple.dll" Condition="Exists('$(PkgSystem_ValueTuple)\lib\net47\System.ValueTuple.dll')" />
+    </ItemGroup>
+
+    <Copy
+      SourceFiles="@(PostgreSqlRuntimeAssemblies)"
+      DestinationFolder="$(OutputPath)"
+      SkipUnchangedFiles="true"
+      Condition="'@(PostgreSqlRuntimeAssemblies)' != ''" />
+  </Target>
+
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

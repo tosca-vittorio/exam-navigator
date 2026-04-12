@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using ExamNavigator.Application.Contracts;
 using ExamNavigator.Application.Services;
+using ExamNavigator.Infrastructure.PostgreSql;
 
 namespace ExamNavigator.WinForms
 {
@@ -175,6 +176,11 @@ namespace ExamNavigator.WinForms
     internal static class Program
     {
         private const string DefaultIniSearchPattern = "*.ini";
+        private const string PostgreSqlHost = "localhost";
+        private const int PostgreSqlPort = 5432;
+        private const string PostgreSqlDatabase = "exam_navigator";
+        private const string PostgreSqlUsername = "exam_navigator_app";
+        private const string PostgreSqlPasswordEnvironmentVariable = "EXAM_NAVIGATOR_PG_PASSWORD";
 
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
@@ -184,11 +190,27 @@ namespace ExamNavigator.WinForms
         {
             LoadConfigurationDefaults();
 
-            var navigationService = new BootstrapNavigationService();
+            var navigationService = new PostgreSqlExamNavigationService(BuildPostgreSqlConnectionString());
 
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             System.Windows.Forms.Application.Run(new Form1(navigationService));
+        }
+
+        private static string BuildPostgreSqlConnectionString()
+        {
+            var password = Environment.GetEnvironmentVariable(PostgreSqlPasswordEnvironmentVariable);
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new InvalidOperationException(
+                    "Set the EXAM_NAVIGATOR_PG_PASSWORD environment variable before starting the WinForms host.");
+            }
+
+            return "Host=" + PostgreSqlHost
+                + ";Port=" + PostgreSqlPort
+                + ";Database=" + PostgreSqlDatabase
+                + ";Username=" + PostgreSqlUsername
+                + ";Password=" + password;
         }
 
         private static void LoadConfigurationDefaults()
