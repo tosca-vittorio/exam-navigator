@@ -421,8 +421,17 @@ Quando la soluzione sarà più matura:
 - setup locale verificato tramite `psql`, con database `exam_navigator`, utente `exam_navigator_app` e conteggi finali coerenti sul seed;
 - percorso SQL Server/LocalDB esplicitamente superato come runtime locale attivo.
 
-### ⬜ G1 — Adapter PostgreSQL concreto
+### ✅ G1 — Adapter PostgreSQL concreto
 **Obiettivo:** introdurre uno strato infrastructure PostgreSQL reale, separato da `Domain` e `Application`, senza riaprire i blocchi UI già chiusi.
+
+**Evidenze (truth-first):**
+- commit `6166345` presente;
+- introdotto progetto `src/ExamNavigator.Infrastructure.PostgreSql` aggiunto a `ExamNavigator.sln` e referenziato a `ExamNavigator.Application`;
+- aggiunto package `Npgsql` versione `8.0.8`;
+- introdotta classe `PostgreSqlExamNavigationService` come implementazione concreta di `IExamNavigationService`;
+- query PostgreSQL reali presenti per ambulatori, parti del corpo ed esami, con fallback di `SelectedRoomId` e `SelectedBodyPartId` nel layer infrastructure;
+- `dotnet build ExamNavigator.sln` verde dopo l’introduzione dell’adapter;
+- host WinForms e host MVC ancora volutamente cablati ai bootstrap service in memoria; wiring differito rispettivamente a `G2` e `G3`.
 
 ### ⬜ G2 — Wiring WinForms su runtime PostgreSQL
 **Obiettivo:** sostituire nel client desktop il bootstrap service in memoria con la sorgente dati PostgreSQL concreta.

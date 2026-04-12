@@ -33,7 +33,7 @@ Baseline attuale verificata:
     - `001_schema.sql`
     - `002_seed.sql`
     - `postgresql.md`
-- adapter database eseguibile, test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC è ora presente con baseline web funzionale completa in memoria per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, sempre wired al core condiviso.
+- progetto `ExamNavigator.Infrastructure.PostgreSql` presente con adapter PostgreSQL concreto `PostgreSqlExamNavigationService`, query reali per ambulatori, parti del corpo ed esami e fallback di selezione `SelectedRoomId` / `SelectedBodyPartId`; host WinForms e host MVC ancora wired ai bootstrap service locali in memoria; test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC è ora presente con baseline web funzionale completa in memoria per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, sempre wired al core condiviso.
 
 ## Scelte tecniche correnti
 
@@ -62,7 +62,7 @@ La soluzione è governata per strati:
 3. **Database / Infrastructure baseline**
    - baseline SQL Server mantenuta come reference storica/di compatibilità;
    - bootstrap runtime locale PostgreSQL presente con schema, seed e documento tecnico dedicato;
-   - futura implementazione adapter database separata dal dominio.
+   - progetto `ExamNavigator.Infrastructure.PostgreSql` presente come layer infrastructure dedicato, separato da `Domain` e `Application`, con `PostgreSqlExamNavigationService` come prima implementazione concreta del boundary applicativo su runtime PostgreSQL.
 
 4. **Host WinForms**
    - interfaccia desktop richiesta dalla missione;
@@ -80,6 +80,7 @@ La soluzione è governata per strati:
 - `ExamNavigator.sln` — solution root del progetto
 - `src/ExamNavigator.Domain` — entità di dominio minime
 - `src/ExamNavigator.Application` — contratti applicativi e interfaccia di servizio
+- `src/ExamNavigator.Infrastructure.PostgreSql` — infrastructure PostgreSQL concreta con adapter di navigazione esami
 - `src/ExamNavigator.WinForms` — host desktop WinForms baseline
 - `src/ExamNavigator.Mvc` — host web ASP.NET Core MVC baseline
 - `database/sql` — schema, seed e query SQL Server di riferimento
@@ -109,7 +110,7 @@ Stato corrente della missione principale:
 4. host WinForms baseline (`bootstrap progetto + layout statico form`) → completato;
 5. wiring desktop iniziale della cascata (`Application` boundary + bootstrap service locale + aggiornamento ambulatorio/parte del corpo/esami) → completato;
 6. blocco ricerca desktop baseline (`wiring` UI) → completato;
-7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC archiviata come baseline demo con host dedicato (`F0`), primo riallineamento funzionale di controller/view model (`F1`) e UI web equivalente con griglia selezioni e polish (`F2`); bootstrap runtime locale PostgreSQL documentato e consolidato; V1 mission-critical ancora aperta sul wiring di una persistenza PostgreSQL runtime concreta condivisa tra i due host, con divergenza rispetto al requisito SQL Server originario esplicitamente governata nella documentazione.
+7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC archiviata come baseline demo con host dedicato (`F0`), primo riallineamento funzionale di controller/view model (`F1`) e UI web equivalente con griglia selezioni e polish (`F2`); bootstrap runtime locale PostgreSQL documentato e consolidato; blocco `G1` completato con introduzione di `ExamNavigator.Infrastructure.PostgreSql` e del service concreto `PostgreSqlExamNavigationService`; V1 mission-critical ancora aperta sul wiring della persistenza PostgreSQL runtime concreta condivisa tra i due host, con divergenza rispetto al requisito SQL Server originario esplicitamente governata nella documentazione.
 
 ## Perimetro V1
 

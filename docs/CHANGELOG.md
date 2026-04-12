@@ -1,10 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **F archived; active focus shifted to PostgreSQL local runtime concrete wiring, with explicit SQL Server deviation tracking**
+> Scope corrente: **G1 code baseline completed on dedicated PostgreSQL infrastructure; remaining focus on host wiring (`G2` / `G3`), with explicit SQL Server deviation tracking**
 
-#### G — PostgreSQL runtime pivot bootstrap
+#### G — PostgreSQL runtime concrete wiring
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`6166345` — feat(infrastructure): add postgresql exam navigation service**
+  - **Type:** ADDED · **Categoria:** Infrastructure/PostgreSQL
+  - **Cosa cambia:** introduce `src/ExamNavigator.Infrastructure.PostgreSql`, lo aggiunge alla solution, lo collega a `ExamNavigator.Application`, aggiunge `Npgsql 8.0.8` e materializza `PostgreSqlExamNavigationService` con query PostgreSQL reali per ambulatori, parti del corpo ed esami e fallback di selezione nel boundary infrastrutturale.
+  - **Impatto:** chiude il baseline codice di `G1`, rende presente un adapter PostgreSQL concreto separato da `Domain` e `Application`, e lascia deliberatamente differito il wiring host ai blocchi `G2` e `G3`.
 
 - **`3a95d60` — docs(db): add postgresql local runtime bootstrap artifacts**
   - **Type:** ADDED · **Categoria:** Database/PostgreSQL
