@@ -90,6 +90,55 @@ La soluzione è governata per strati:
 - `docs/ROADMAP.md` — traiettoria e milestone
 - `docs/ARCHITECTURE.md` — fotografia AS-IS della struttura corrente
 
+## Avvio rapido e verifica manuale
+
+Prerequisiti minimi:
+- database PostgreSQL locale disponibile;
+- schema e seed già applicati al database `exam_navigator`;
+- variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD` valorizzata con la password dell'utente PostgreSQL applicativo.
+
+### Avvio host web MVC
+
+```bash
+export EXAM_NAVIGATOR_PG_PASSWORD=''
+dotnet run --project src/ExamNavigator.Mvc --urls http://localhost:5099
+```
+
+Endpoint locale usato abitualmente:
+
+* `http://localhost:5099`
+
+### Avvio client desktop WinForms
+
+```bash
+export EXAM_NAVIGATOR_PG_PASSWORD=''
+./src/ExamNavigator.WinForms/bin/Debug/ExamNavigator.WinForms.exe
+```
+
+### Verifica manuale minima consigliata
+
+Verificare almeno i seguenti punti:
+
+* caricamento iniziale corretto di ambulatori, parti del corpo ed esami;
+* aggiornamento a cascata dei tre pannelli;
+* ricerca testuale con pulsante `Cerca`;
+* ricerca testuale con pressione del tasto `Invio`;
+* reset della ricerca con `Vedi tutti`;
+* conferma selezione esame nella griglia riepilogativa;
+* riordino righe con `Sposta su` / `Sposta giù`;
+* eliminazione riga selezionata;
+* resa coerente dei label ambulatori sia lato WinForms sia lato MVC anche in presenza di dati legacy/non normalizzati.
+
+### Nota sul perimetro qualità corrente
+
+Alla data attuale il repository espone come gate verificabile minimo:
+
+```bash
+dotnet build ExamNavigator.sln
+```
+
+Lint, test unitari, coverage e smoke automatizzati restano tracciati come EXTRA non ancora introdotti nella codebase.
+
 ## Privacy e fonti requisito
 
 Le fonti requisito originali e il freeze requisito sorgente sono mantenuti localmente in:
@@ -134,10 +183,11 @@ Dopo il freeze formale è stato aperto un **Final Conformance & Coherence Gate**
 - riallineare naming demo, testi UI, abbreviature e resa professionale;
 - chiudere gli ultimi mismatch prima di ogni promozione finale.
 
-Primo fix consolidato di questo gate:
-- commit `de03d95` — normalizzazione dei label degli ambulatori nell’host MVC, sia nella navigazione web sia nella griglia `Esami selezionati`.
+Fix consolidati di questo gate:
+- commit `de03d95` — normalizzazione dei label degli ambulatori nell’host MVC, sia nella navigazione web sia nella griglia `Esami selezionati`;
+- commit `cfee331` — estensione del seed PostgreSQL con dataset demo misto, comprendente baseline legacy/non normalizzata e nuovi dati più eterogenei, plausibili e professionalmente più coerenti per audit di naming, abbreviazioni e casi di normalizzazione.
 
-Il prossimo blocco corretto non è ancora la consegna/rilascio, ma il proseguimento del gate di conformità/coerenza sui dati demo e sui residui legacy non runtime-attivi.
+Il prossimo blocco corretto non è ancora la consegna/rilascio, ma la chiusura del residuo `G5.3` sui componenti legacy non runtime-attivi.
 
 ## Documentazione owner
 

@@ -70,7 +70,7 @@ Nota:
 - `database/sql/002_seed.sql` — dataset demo SQL Server di riferimento
 - `database/sql/003_navigation_queries.sql` — query SQL Server di riferimento per cascata e ricerca
 - `database/postgresql/001_schema.sql` — schema PostgreSQL per il runtime locale scelto
-- `database/postgresql/002_seed.sql` — seed PostgreSQL per il runtime locale scelto
+- `database/postgresql/002_seed.sql` — seed PostgreSQL esteso per il runtime locale scelto e per audit di naming/normalizzazione
 - `database/postgresql/postgresql.md` — documento tecnico di setup e pivot PostgreSQL
 - `docs/TIMELINE.md` — source of truth operativa
 - `docs/CHANGELOG.md` — tracciabilità evolutiva
@@ -173,6 +173,7 @@ Responsabilità correnti:
 Stato attuale:
 - baseline SQL Server presente come reference storica/compatibility track;
 - bootstrap runtime locale PostgreSQL presente come scelta tecnica attiva e documentata;
+- `database/postgresql/002_seed.sql` non è più solo seed minimale: contiene ora una baseline legacy/non normalizzata e un set demo misto più eterogeneo, usato per audit di naming, abbreviazioni e casi di normalizzazione/presentazione cross-host;
 - gli artefatti PostgreSQL risultano ora agganciati a un primo adapter C# eseguibile nel layer infrastructure dedicato;
 - il percorso SQL Server resta reference heritage e non costituisce il runtime locale attivo.
 

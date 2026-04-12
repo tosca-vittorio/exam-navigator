@@ -493,8 +493,16 @@ Quando la soluzione sarà più matura:
 - smoke MVC verificato con host reale su `http://localhost:5099`, password PostgreSQL in environment e marker HTML positivi per `Ecografia Doppler`, `Ecografia Massimino`, `Ecografia Privitera`, `Tac 1`, `Tac 2`;
 - verifica manuale finale positiva anche sulla griglia `Esami selezionati`.
 
-### ⬜ G5.2 — Audit dati demo / naming / abbreviazioni
+### ✅ G5.2 — Audit dati demo / naming / abbreviazioni
 **Obiettivo:** classificare in modo rigoroso ciò che è ancora solo grezzo nel seed demo rispetto a ciò che è realmente incoerente con missione e freeze, con focus su descrizioni esame, abbreviazioni cliniche e naming professionale.
+
+**Evidenze (truth-first):**
+- commit `cfee331` presente;
+- `database/postgresql/002_seed.sql` esteso con due blocchi espliciti: baseline legacy/non normalizzata e popolamento misto di test;
+- introdotti nuovi dati demo eterogenei, plausibili e utili a verificare naming professionale, abbreviazioni, label raw e casi di normalizzazione;
+- verifica SQL positiva con conteggi finali coerenti: `body_part = 8`, `room = 17`, `exam = 18`, `exam_room = 30`;
+- verifica relazionale positiva su `exam` + `exam_room` + `room` + `body_part`, con assenza di duplicati logici nel risultato utile;
+- `dotnet build ExamNavigator.sln` verde dopo il consolidamento del seed esteso.
 
 ### ⬜ G5.3 — Audit residuo legacy `BootstrapNavigationService` in WinForms
 **Obiettivo:** verificare e classificare correttamente il `BootstrapNavigationService` rimasto in `src/ExamNavigator.WinForms/Program.cs` come residuo storico non runtime-attivo, evitando ambiguità architetturali o di revisione.

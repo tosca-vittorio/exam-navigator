@@ -6,6 +6,11 @@
 #### G5 — Final conformance & coherence gate pre-consegna
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
 
+- **`cfee331` — feat(database): extend postgresql seed with mixed legacy and normalized demo data**
+  - **Type:** ADDED · **Categoria:** Database/Seed
+  - **Cosa cambia:** aggiorna `database/postgresql/002_seed.sql` introducendo un secondo blocco di popolamento con nuove parti del corpo, nuovi ambulatori e nuovi esami demo, costruiti in modo eterogeneo per coprire sia label legacy/non normalizzati sia naming più professionali e plausibili.
+  - **Impatto:** chiude il lavoro tecnico di audit su dati demo, naming e abbreviazioni del gate `G5.2`, rende il seed PostgreSQL più adatto a verificare i casi di normalizzazione/presentazione cross-host e migliora la difendibilità della baseline demo pre-consegna.
+
 - **`de03d95` — fix(mvc): normalize room labels in web navigation**
   - **Type:** FIXED · **Categoria:** MVC/Presentation
   - **Cosa cambia:** aggiorna `src/ExamNavigator.Mvc/Controllers/HomeController.cs` per normalizzare i label degli ambulatori nel page model MVC e nelle righe deserializzate della griglia `Esami selezionati`, riallineando il web al comportamento presentazionale già presente nel client WinForms.

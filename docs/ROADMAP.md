@@ -102,9 +102,9 @@ Obiettivo:
 - bloccare ogni promozione verso consegna/rilascio finché tali mismatch non siano auditati e chiusi.
 
 Stato operativo corrente:
-- emersa divergenza presentazionale tra WinForms e MVC sui label raw degli ambulatori seed PostgreSQL;
-- commit `de03d95` ha chiuso il primo fix reale del gate, normalizzando i label degli ambulatori nell’host MVC;
-- restano aperti l’audit dati demo/naming professionale e la classificazione del residuo legacy `BootstrapNavigationService` nel client WinForms.
+- commit `de03d95` ha chiuso il mismatch presentazionale dei label raw degli ambulatori nell’host MVC;
+- commit `cfee331` ha chiuso il lavoro tecnico di audit su dati demo, naming e abbreviazioni, estendendo il seed PostgreSQL con un dataset misto legacy + professionale utile alla validazione della normalizzazione;
+- resta aperta la classificazione del residuo legacy `BootstrapNavigationService` nel client WinForms.
 
 ### 9. Preparazione consegna / rilascio / demo V1
 Stato: congelata, attivabile solo dopo la chiusura della V1.
