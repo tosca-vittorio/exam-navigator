@@ -47,15 +47,14 @@ Nota:
    - contiene il primo host desktop della missione, ora wired al runtime PostgreSQL concreto tramite boundary applicativo, con foundation configurative tramite contenitore statico dei default di ricerca, parser raw del documento `.ini`, binder riflessivo type-safe e baseline runtime dei default di ricerca.
 
 6. **Host MVC**
-   - contiene il primo host ASP.NET Core MVC della soluzione, inizialmente introdotto come scaffold compilabile e ora riallineato a una baseline funzionale web completa in memoria per navigazione, ricerca, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, sempre wired al core condiviso.
+   - contiene il primo host ASP.NET Core MVC della soluzione, inizialmente introdotto come scaffold compilabile e ora wired al runtime PostgreSQL concreto per navigazione, ricerca, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, sempre wired al core condiviso.
 
 7. **Owner docs**
    - governano stato operativo, storia del cambiamento, roadmap e struttura.
 
 ### Sottosistemi richiesti ma non ancora presenti nella codebase
 
-5. wiring dell'host MVC alla stessa fonte PostgreSQL concreta già usata dal client WinForms;
-6. test project e quality tooling dedicato.
+5. test project e quality tooling dedicato.
 
 ---
 
@@ -189,7 +188,7 @@ Stato attuale:
 - usa `Npgsql 8.0.8` come provider PostgreSQL;
 - contiene `PostgreSqlExamNavigationService` come prima implementazione concreta di `IExamNavigationService`;
 - implementa query PostgreSQL reali per ambulatori, parti del corpo ed esami, con fallback di `SelectedRoomId` e `SelectedBodyPartId`;
-- è wired nel runtime WinForms tramite `Program.cs`; l'host MVC resta ancora appoggiato al bootstrap service locale in memoria.
+- è wired in entrambi gli host applicativi tramite `Program.cs`: WinForms su .NET Framework 4.8 e MVC su ASP.NET Core `net9.0`.
 
 ### 5. Host layer
 
@@ -214,11 +213,11 @@ Stato attuale:
 - presente come host ASP.NET Core MVC su `net9.0`;
 - aggiunto alla solution;
 - referenziato al core condiviso tramite `ExamNavigator.Application`;
-- `Program.cs` registra un `BootstrapNavigationService` locale in memoria come implementazione di `IExamNavigationService` e normalizza il naming demo degli ambulatori;
+- `Program.cs` registra `PostgreSqlExamNavigationService` come implementazione di `IExamNavigationService`, aggiunge il reference infrastructure dedicato e costruisce la connection string locale PostgreSQL leggendo la password da `EXAM_NAVIGATOR_PG_PASSWORD`;
 - `HomeController` costruisce `ExamNavigationRequest` dai parametri GET, gestisce `ApplySelectionCommand(...)` e mantiene uno stato minimale della griglia selezioni nella pagina;
 - `Index.cshtml` espone una baseline web con ricerca GET, tre sezioni per ambulatori/parti del corpo/esami, pulsante `Conferma selezione`, griglia `Esami selezionati`, selezione riga e azioni `Sposta su` / `Sposta giù` / `Elimina riga`;
 - `_Layout.cshtml` e `site.css` forniscono una shell UI/UX dedicata e non più scaffold generica;
-- equivalente in memoria al comportamento baseline del client WinForms per navigazione, ricerca, conferma selezione, riordino ed eliminazione riga.
+- equivalente al comportamento baseline del client WinForms per navigazione, ricerca, conferma selezione, riordino ed eliminazione riga, ora alimentato dalla stessa sorgente dati PostgreSQL concreta.
 
 Responsabilità futura prevista:
 - conversione web del comportamento desktop senza duplicazione della logica applicativa e futuro aggancio a runtime SQL concreto condiviso.
@@ -258,7 +257,7 @@ Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguib
 - la conferma della selezione aggiunge una riga alla griglia riepilogativa;
 - la rimozione della riga selezionata elimina elementi già confermati dalla griglia riepilogativa;
 - lo spostamento su e giù riordina di una posizione la riga selezionata nella griglia riepilogativa mantenendo la selezione sul record spostato;
-- `Program.cs` dell'host MVC registra un `BootstrapNavigationService` locale in memoria nel container DI e normalizza il naming demo degli ambulatori;
+- `Program.cs` dell'host MVC registra `PostgreSqlExamNavigationService` nel container DI e costruisce la stessa connection string locale PostgreSQL già adottata dal client WinForms, con password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`;
 - `HomeController` usa `IExamNavigationService` per risolvere la navigazione a cascata, mappa il risultato in `ExamNavigationPageViewModel` e gestisce i comandi web di conferma selezione, riordino ed eliminazione riga;
 - `Index.cshtml` rende una baseline web con ricerca GET, selezione esame, pulsante `Conferma selezione`, griglia `Esami selezionati`, radio di selezione riga e azioni `Sposta su` / `Sposta giù` / `Elimina riga`;
 - `_Layout.cshtml` e `site.css` completano la shell visiva dedicata del host MVC;
@@ -270,10 +269,10 @@ In altre parole, la codebase possiede oggi:
 - baseline dati SQL di riferimento;
 - adapter PostgreSQL concreto eseguibile nel layer infrastructure dedicato;
 - host WinForms compilabile e con navigazione a cascata su runtime PostgreSQL concreto, verificato anche dopo clean rebuild della runtime closure;
-- host MVC compilabile e già riallineato a una baseline funzionale demo equivalente al client WinForms, pur restando ancora su bootstrap service locale in memoria.
+- host MVC compilabile e wired al runtime PostgreSQL concreto, con baseline funzionale equivalente al client WinForms.
 
 Non possiede ancora:
-- wiring dell'host MVC alla stessa fonte dati PostgreSQL concreta già usata dal WinForms;
+- test project e quality tooling dedicato ancora assenti dalla codebase;
 - flusso end-to-end finale multi-host sulla persistenza reale;
 - track qualità con test, lint, coverage e smoke automatizzati.
 
@@ -286,7 +285,7 @@ Host desktop/web
 -> `ExamNavigationResult`
 -> rendering host
 
-Questo flusso è ora implementato fino al boundary infrastructure PostgreSQL, ma non è ancora agganciato end-to-end ai due host.
+Questo flusso è ora implementato end-to-end sui due host applicativi attraverso lo stesso boundary `IExamNavigationService` e lo stesso adapter PostgreSQL concreto.
 
 ---
 
@@ -304,7 +303,7 @@ Questo flusso è ora implementato fino al boundary infrastructure PostgreSQL, ma
 
 Rischi reali attuali:
 
-- l'host MVC è ancora cablato a bootstrap service locale in memoria; manca ancora l’aggancio del web host allo stesso adapter PostgreSQL concreto già usato dal WinForms;
+- test project e quality tooling dedicato ancora assenti dalla codebase;
 - il runtime WinForms dipende ora da una closure di assembly e binding redirects che devono restare governati dal sorgente senza regressioni;
 - la scelta PostgreSQL diverge dal requisito SQL Server originario e richiede documentazione owner rigorosa per restare difendibile;
 - configurazione `.ini` oggi limitata alla baseline della ricerca e consumata nel client WinForms ormai wired al runtime PostgreSQL concreto;
@@ -319,7 +318,7 @@ Rischi reali attuali:
 - l’implementazione concreta di `IExamNavigationService` deve continuare a vivere fuori da `Application`, nel layer `src/ExamNavigator.Infrastructure.PostgreSql`;
 - eventuali esigenze di portabilità o compatibilità SQL Server devono essere trattate come track separata/reference heritage, senza sostituire implicitamente il runtime PostgreSQL attivo;
 - il futuro host WinForms deve orchestrare il caso d’uso tramite `Application`;
-- il futuro host MVC deve riusare lo stesso perimetro applicativo, evitando duplicazione di logica;
+- l'host MVC riusa lo stesso perimetro applicativo del client WinForms, evitando duplicazione di logica;
 - il binding riflessivo `.ini` verso `Predefiniti_*` deve restare un boundary infrastrutturale/configurativo, non nel dominio;
 - test, lint, coverage e smoke devono essere aggiunti come track qualità su baseline stabile.
 

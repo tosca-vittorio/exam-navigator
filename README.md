@@ -33,7 +33,7 @@ Baseline attuale verificata:
     - `001_schema.sql`
     - `002_seed.sql`
     - `postgresql.md`
-- progetto `ExamNavigator.Infrastructure.PostgreSql` presente con adapter PostgreSQL concreto `PostgreSqlExamNavigationService`, query reali per ambulatori, parti del corpo ed esami, fallback di selezione `SelectedRoomId` / `SelectedBodyPartId` e parametri Npgsql tipizzati; host WinForms ora wired al runtime PostgreSQL concreto tramite `Program.cs`, con runtime closure `.NET Standard`/`Npgsql` governata dal `.csproj`, binding redirects espliciti in `App.config`, normalizzazione label degli ambulatori, etichette leggibili della ricerca e presentazione multi-line più leggibile del pannello `Esami`; host MVC ancora wired al bootstrap service locale in memoria; test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC è ora presente con baseline web funzionale completa in memoria per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, sempre wired al core condiviso.
+- progetto `ExamNavigator.Infrastructure.PostgreSql` presente con adapter PostgreSQL concreto `PostgreSqlExamNavigationService`, query reali per ambulatori, parti del corpo ed esami, fallback di selezione `SelectedRoomId` / `SelectedBodyPartId` e parametri Npgsql tipizzati; host WinForms ora wired al runtime PostgreSQL concreto tramite `Program.cs`, con runtime closure `.NET Standard`/`Npgsql` governata dal `.csproj`, binding redirects espliciti in `App.config`, normalizzazione label degli ambulatori, etichette leggibili della ricerca e presentazione multi-line più leggibile del pannello `Esami`; host MVC ora wired al runtime PostgreSQL concreto tramite `Program.cs`, con reference esplicito a `ExamNavigator.Infrastructure.PostgreSql` e password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`; test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC mantiene la baseline web funzionale completa per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, ora alimentata dalla stessa sorgente dati PostgreSQL concreta del client WinForms.
 
 ## Scelte tecniche correnti
 
@@ -71,9 +71,9 @@ La soluzione è governata per strati:
 
 5. **Host Web**
    - host ASP.NET Core MVC presente nella solution e referenziato al core condiviso;
-   - baseline funzionale web equivalente alla demo WinForms introdotta tramite controller dedicato, page view model e bootstrap service locale in memoria;
+   - baseline funzionale web equivalente alla demo WinForms introdotta tramite controller dedicato e page view model dedicato;
    - ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX presenti;
-   - adattamento MVC ancora appoggiato a dataset demo in memoria e non a un adapter SQL concreto.
+   - wiring runtime ora agganciato a `PostgreSqlExamNavigationService` tramite `Program.cs`, con sorgente dati PostgreSQL concreta condivisa col client WinForms e password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`.
 
 ## Repository layout
 
@@ -110,7 +110,7 @@ Stato corrente della missione principale:
 4. host WinForms baseline (`bootstrap progetto + layout statico form`) → completato;
 5. wiring desktop iniziale della cascata (`Application` boundary + bootstrap service locale + aggiornamento ambulatorio/parte del corpo/esami) → completato;
 6. blocco ricerca desktop baseline (`wiring` UI) → completato;
-7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC archiviata come baseline demo con host dedicato (`F0`), primo riallineamento funzionale di controller/view model (`F1`) e UI web equivalente con griglia selezioni e polish (`F2`); bootstrap runtime locale PostgreSQL documentato e consolidato; blocchi `G1`-`G2` completati con introduzione di `ExamNavigator.Infrastructure.PostgreSql`, del service concreto `PostgreSqlExamNavigationService` e del wiring runtime concreto del client WinForms; V1 mission-critical ancora aperta sul wiring MVC (`G3`) e sulla verifica formale finale (`G4`), con divergenza rispetto al requisito SQL Server originario esplicitamente governata nella documentazione.
+7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC archiviata come baseline demo con host dedicato (`F0`), primo riallineamento funzionale di controller/view model (`F1`) e UI web equivalente con griglia selezioni e polish (`F2`); bootstrap runtime locale PostgreSQL documentato e consolidato; blocchi `G1`-`G3` completati con introduzione di `ExamNavigator.Infrastructure.PostgreSql`, del service concreto `PostgreSqlExamNavigationService` e del wiring runtime concreto di entrambi gli host WinForms e MVC; V1 mission-critical ancora aperta solo sulla verifica formale finale (`G4`), con divergenza rispetto al requisito SQL Server originario esplicitamente governata nella documentazione.
 
 ## Perimetro V1
 

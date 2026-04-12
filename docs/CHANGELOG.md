@@ -1,10 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **G2 completed on WinForms concrete PostgreSQL runtime; remaining focus on MVC host wiring (`G3`) and V1 formal closure (`G4`), with explicit SQL Server deviation tracking**
+> Scope corrente: **G3 completed on MVC concrete PostgreSQL runtime; remaining focus on V1 formal closure (`G4`), with explicit SQL Server deviation tracking**
 
 #### G — PostgreSQL runtime concrete wiring
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`95ba1df` — feat(mvc): wire postgresql runtime**
+  - **Type:** ADDED · **Categoria:** MVC/PostgreSQL Runtime
+  - **Cosa cambia:** aggiorna `src/ExamNavigator.Mvc/Program.cs` e `src/ExamNavigator.Mvc/ExamNavigator.Mvc.csproj` per rimuovere `BootstrapNavigationService`, referenziare `ExamNavigator.Infrastructure.PostgreSql`, registrare `PostgreSqlExamNavigationService` nel container DI e costruire la connection string locale PostgreSQL con password letta da `EXAM_NAVIGATOR_PG_PASSWORD`.
+  - **Impatto:** chiude `G3` a codice e a smoke runtime, riallinea l'host MVC alla stessa sorgente dati concreta del client WinForms e lascia aperta solo la verifica formale finale `G4`.
 
 - **`56d3129` — feat(winforms): wire postgresql runtime and normalize desktop exam presentation**
   - **Type:** ADDED · **Categoria:** WinForms/PostgreSQL Runtime

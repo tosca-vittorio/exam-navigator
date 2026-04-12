@@ -77,7 +77,7 @@ Obiettivo:
 - chiudere la parte di conversione web senza riaprire il blocco nei passi successivi.
 
 ### 7. Chiusura V1 mission-critical
-Stato: attiva (`G1`-`G2` chiusi a codice; restano `G3`, `G4`).
+Stato: attiva (`G1`-`G3` chiusi a codice; resta `G4`).
 
 Obiettivo:
 - chiudere il runtime concreto sul database PostgreSQL locale scelto;
@@ -90,7 +90,8 @@ Stato operativo corrente:
 - il layer `src/ExamNavigator.Infrastructure.PostgreSql` è presente;
 - `PostgreSqlExamNavigationService` implementa il boundary applicativo sul runtime PostgreSQL locale;
 - il client WinForms è wired al runtime PostgreSQL concreto e verificato anche dopo clean rebuild della runtime closure;
-- il prossimo blocco corretto resta il wiring MVC (`G3`).
+- l'host MVC è wired al runtime PostgreSQL concreto e verificato con build verde e smoke manuale su host web reale;
+- il prossimo blocco corretto resta la verifica formale finale di chiusura V1 (`G4`).
 
 ### 8. Preparazione consegna / rilascio / demo V1
 Stato: congelata, attivabile solo dopo la chiusura della V1.

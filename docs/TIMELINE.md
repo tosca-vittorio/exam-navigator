@@ -446,8 +446,16 @@ Quando la soluzione sarà più matura:
 - verifica forte eseguita con cancellazione di `bin/` e `obj/` di WinForms e Infrastructure PostgreSQL, `dotnet build ExamNavigator.sln` verde, presenza della runtime closure in `src/ExamNavigator.WinForms/bin/Debug` e avvio reale di `ExamNavigator.WinForms.exe` con password PostgreSQL in environment;
 - l'host MVC resta ancora volutamente cablato al bootstrap service locale in memoria; wiring differito a `G3`.
 
-### ⬜ G3 — Wiring MVC su runtime PostgreSQL
+### ✅ G3 — Wiring MVC su runtime PostgreSQL
 **Obiettivo:** sostituire nell'host MVC il bootstrap service in memoria con la stessa sorgente dati PostgreSQL concreta del client WinForms.
+
+**Evidenze (truth-first):**
+- commit `95ba1df` presente;
+- `src/ExamNavigator.Mvc/Program.cs` rimuove `BootstrapNavigationService` e registra `PostgreSqlExamNavigationService` nel container DI;
+- `src/ExamNavigator.Mvc/ExamNavigator.Mvc.csproj` referenzia `..\ExamNavigator.Infrastructure.PostgreSql\ExamNavigator.Infrastructure.PostgreSql.csproj`;
+- la connection string locale PostgreSQL viene costruita in `Program.cs` con host `localhost`, porta `5432`, database `exam_navigator`, utente `exam_navigator_app` e password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`;
+- `dotnet build ExamNavigator.sln` verde dopo il wiring MVC;
+- smoke manuale verificato con `dotnet run --project src/ExamNavigator.Mvc --urls https://localhost:7099`, log di avvio verde e pagina web servita con dati seed PostgreSQL reali (`EcografiaDoppler`, `EcografiaMassimino`, `EcografiaPrivitera`, `Radiologia`, `Risonanza`, `Tac1`, `Tac2`, `Eco Doppler TSA`).
 
 ### ⬜ G4 — Verifica formale chiusura V1
 **Obiettivo:** verificare in modo esplicito la copertura del perimetro mail/freeze, dichiarare la divergenza rispetto alla richiesta SQL Server e congelare la baseline V1 come richiesta cliente.
