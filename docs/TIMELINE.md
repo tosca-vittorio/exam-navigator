@@ -400,7 +400,7 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## G — 🟡 Chiusura V1 mission-critical (PostgreSQL runtime concreto)
+## G — ☑️ Chiusura V1 mission-critical (PostgreSQL runtime concreto)
 
 **Obiettivo:** chiudere la V1 sul runtime PostgreSQL locale scelto, mantenendo la divergenza rispetto al requisito SQL Server originario esplicitamente documentata, auditabile e difendibile.
 
@@ -457,8 +457,18 @@ Quando la soluzione sarà più matura:
 - `dotnet build ExamNavigator.sln` verde dopo il wiring MVC;
 - smoke manuale verificato con `dotnet run --project src/ExamNavigator.Mvc --urls https://localhost:7099`, log di avvio verde e pagina web servita con dati seed PostgreSQL reali (`EcografiaDoppler`, `EcografiaMassimino`, `EcografiaPrivitera`, `Radiologia`, `Risonanza`, `Tac1`, `Tac2`, `Eco Doppler TSA`).
 
-### ⬜ G4 — Verifica formale chiusura V1
+### ✅ G4 — Verifica formale chiusura V1
 **Obiettivo:** verificare in modo esplicito la copertura del perimetro mail/freeze, dichiarare la divergenza rispetto alla richiesta SQL Server e congelare la baseline V1 come richiesta cliente.
+
+**Evidenze (truth-first):**
+- la missione sorgente e il requirements freeze richiedono WinForms, convertibilità MVC, tre pannelli, ricerca case-insensitive con `Cerca` / Invio / `Vedi tutti`, griglia con delete/reorder, loader `.ini` riflessivo e persistenza SQL Server o forma importabile in SQL Server;
+- il repository presenta host `ExamNavigator.WinForms`, host `ExamNavigator.Mvc`, core condiviso `Domain`/`Application`, artifacts SQL Server reference in `database/sql` e runtime locale PostgreSQL attivo in `database/postgresql`;
+- il client WinForms è wired al runtime PostgreSQL concreto, con build verde, runtime closure verificata e avvio reale già documentato in `G2`;
+- l'host MVC è wired allo stesso runtime PostgreSQL concreto, con build verde e smoke manuale reale già documentati in `G3`;
+- la baseline della ricerca, della griglia selezioni e della configurazione `.ini` riflessiva risulta già consolidata nei blocchi `D` ed `E`;
+- la divergenza rispetto al requisito SQL Server originario resta dichiarata in modo esplicito e difendibile come `SQL Server` reference heritage + PostgreSQL runtime locale attivo nei documenti owner.
+
+**Esito:** perimetro V1 formalmente coperto e congelato; prossimo blocco corretto demandato alla preparazione consegna / rilascio / demo (`H`).
 
 ---
 

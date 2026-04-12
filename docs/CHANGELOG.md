@@ -1,7 +1,7 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **G3 completed on MVC concrete PostgreSQL runtime; remaining focus on V1 formal closure (`G4`), with explicit SQL Server deviation tracking**
+> Scope corrente: **V1 mission-critical formally closed on concrete PostgreSQL runtime; next focus on delivery/release/demo preparation, with explicit SQL Server deviation tracking**
 
 #### G — PostgreSQL runtime concrete wiring
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
