@@ -33,7 +33,7 @@ Baseline attuale verificata:
     - `001_schema.sql`
     - `002_seed.sql`
     - `postgresql.md`
-- progetto `ExamNavigator.Infrastructure.PostgreSql` presente con adapter PostgreSQL concreto `PostgreSqlExamNavigationService`, query reali per ambulatori, parti del corpo ed esami, fallback di selezione `SelectedRoomId` / `SelectedBodyPartId` e parametri Npgsql tipizzati; host WinForms ora wired al runtime PostgreSQL concreto tramite `Program.cs`, con runtime closure `.NET Standard`/`Npgsql` governata dal `.csproj`, binding redirects espliciti in `App.config`, normalizzazione label degli ambulatori, etichette leggibili della ricerca e presentazione multi-line più leggibile del pannello `Esami`; host MVC ora wired al runtime PostgreSQL concreto tramite `Program.cs`, con reference esplicito a `ExamNavigator.Infrastructure.PostgreSql` e password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`; test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC mantiene la baseline web funzionale completa per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, ora alimentata dalla stessa sorgente dati PostgreSQL concreta del client WinForms.
+- progetto `ExamNavigator.Infrastructure.PostgreSql` presente con adapter PostgreSQL concreto `PostgreSqlExamNavigationService`, query reali per ambulatori, parti del corpo ed esami, fallback di selezione `SelectedRoomId` / `SelectedBodyPartId` e parametri Npgsql tipizzati; host WinForms ora wired al runtime PostgreSQL concreto tramite `Program.cs`, con runtime closure `.NET Standard`/`Npgsql` governata dal `.csproj`, binding redirects espliciti in `App.config`, normalizzazione label degli ambulatori, etichette leggibili della ricerca e presentazione multi-line più leggibile del pannello `Esami`; host MVC ora wired al runtime PostgreSQL concreto tramite `Program.cs`, con reference esplicito a `ExamNavigator.Infrastructure.PostgreSql` e password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`; test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC mantiene la baseline web funzionale completa per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, ora alimentata dalla stessa sorgente dati PostgreSQL concreta del client WinForms, con normalizzazione dei label degli ambulatori anche lato controller MVC nella navigazione web e nella griglia `Esami selezionati`.
 
 ## Scelte tecniche correnti
 
@@ -123,6 +123,21 @@ Per la V1 il criterio è:
 - aderente ai requisiti della mail senza introdurre dipendenze dagli EXTRA.
 
 Tutto ciò che non rientra in questo perimetro resta post-V1 oppure EXTRA congelato.
+
+
+## Stato operativo corrente (truth-first)
+
+La V1 mission-critical resta formalmente chiusa nei documenti owner al checkpoint `3897979`, ma la promozione verso tag / merge su `main` / release / consegna non è ancora autorizzata.
+
+Dopo il freeze formale è stato aperto un **Final Conformance & Coherence Gate** pre-consegna, con l’obiettivo di:
+- verificare in modo dimostrabile la coerenza finale dei requisiti fondamentali;
+- riallineare naming demo, testi UI, abbreviature e resa professionale;
+- chiudere gli ultimi mismatch prima di ogni promozione finale.
+
+Primo fix consolidato di questo gate:
+- commit `de03d95` — normalizzazione dei label degli ambulatori nell’host MVC, sia nella navigazione web sia nella griglia `Esami selezionati`.
+
+Il prossimo blocco corretto non è ancora la consegna/rilascio, ma il proseguimento del gate di conformità/coerenza sui dati demo e sui residui legacy non runtime-attivi.
 
 ## Documentazione owner
 

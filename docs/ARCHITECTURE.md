@@ -217,7 +217,7 @@ Stato attuale:
 - `HomeController` costruisce `ExamNavigationRequest` dai parametri GET, gestisce `ApplySelectionCommand(...)` e mantiene uno stato minimale della griglia selezioni nella pagina;
 - `Index.cshtml` espone una baseline web con ricerca GET, tre sezioni per ambulatori/parti del corpo/esami, pulsante `Conferma selezione`, griglia `Esami selezionati`, selezione riga e azioni `Sposta su` / `Sposta giù` / `Elimina riga`;
 - `_Layout.cshtml` e `site.css` forniscono una shell UI/UX dedicata e non più scaffold generica;
-- equivalente al comportamento baseline del client WinForms per navigazione, ricerca, conferma selezione, riordino ed eliminazione riga, ora alimentato dalla stessa sorgente dati PostgreSQL concreta.
+- equivalente al comportamento baseline del client WinForms per navigazione, ricerca, conferma selezione, riordino ed eliminazione riga, ora alimentato dalla stessa sorgente dati PostgreSQL concreta; `HomeController` normalizza inoltre lato host i label degli ambulatori per la navigazione web e per la griglia `Esami selezionati`, senza spostare tale responsabilità nel boundary applicativo o nel layer infrastructure.
 
 Responsabilità futura prevista:
 - conversione web del comportamento desktop senza duplicazione della logica applicativa e futuro aggancio a runtime SQL concreto condiviso.
@@ -307,6 +307,7 @@ Rischi reali attuali:
 - il runtime WinForms dipende ora da una closure di assembly e binding redirects che devono restare governati dal sorgente senza regressioni;
 - la scelta PostgreSQL diverge dal requisito SQL Server originario e richiede documentazione owner rigorosa per restare difendibile;
 - configurazione `.ini` oggi limitata alla baseline della ricerca e consumata nel client WinForms ormai wired al runtime PostgreSQL concreto;
+- `BootstrapNavigationService` è ancora presente come residuo storico in `src/ExamNavigator.WinForms/Program.cs`, pur non essendo più runtime-attivo dopo il wiring PostgreSQL concreto; questo può generare ambiguità di audit o lettura architetturale finché non viene classificato/rimosso in modo esplicito.
 - nessun progetto test presente;
 - nessun lint / coverage / smoke automatizzato presente;
 - possibile drift documentale se gli owner docs non restano esplicitamente allineati al fatto che i requisiti sorgente sono locali e non versionati.

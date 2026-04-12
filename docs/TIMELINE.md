@@ -468,10 +468,38 @@ Quando la soluzione sarà più matura:
 - la baseline della ricerca, della griglia selezioni e della configurazione `.ini` riflessiva risulta già consolidata nei blocchi `D` ed `E`;
 - la divergenza rispetto al requisito SQL Server originario resta dichiarata in modo esplicito e difendibile come `SQL Server` reference heritage + PostgreSQL runtime locale attivo nei documenti owner.
 
-**Esito:** perimetro V1 formalmente coperto e congelato; prossimo blocco corretto demandato alla preparazione consegna / rilascio / demo (`H`).
+**Esito:** perimetro V1 formalmente coperto e congelato; la promozione verso `H` resta però sospesa dopo il freeze formale, perché è stato aperto un gate reale di conformità/coerenza pre-consegna. Il prossimo blocco corretto non è ancora la preparazione consegna/rilascio, ma il completamento di tale gate.
 
 ---
 
+## G5 — 🟡 Final conformance & coherence gate pre-consegna
+
+**Obiettivo:** verificare e chiudere i mismatch residui tra baseline formalmente chiusa e qualità reale di consegna, con focus su coerenza presentazionale, professionalità dei dati demo, chiarezza dei testi UI e assenza di ambiguità residue prima di ogni promozione finale.
+
+**DoD (G5):**
+- mismatch presentazionali cross-host verificati e corretti dove realmente presenti;
+- dati demo, naming e abbreviazioni rivalutati in termini di coerenza professionale;
+- residui legacy non runtime-attivi auditati e classificati correttamente;
+- nessuna promozione verso `main`, tag o release finché il gate non è formalmente chiuso.
+
+### ✅ G5.1 — Normalizzazione label ambulatori lato MVC
+**Obiettivo:** riallineare l’host MVC al comportamento già presente nel client WinForms sui nomi degli ambulatori, evitando la visualizzazione raw dei label seed PostgreSQL nella navigazione web e nella griglia selezionati.
+
+**Evidenze (truth-first):**
+- commit `de03d95` presente;
+- `src/ExamNavigator.Mvc/Controllers/HomeController.cs` normalizza i label degli ambulatori in `BuildPageModel(...)`;
+- le righe deserializzate della griglia `Esami selezionati` vengono normalizzate prima del rendering;
+- `dotnet build ExamNavigator.sln` verde dopo il fix;
+- smoke MVC verificato con host reale su `http://localhost:5099`, password PostgreSQL in environment e marker HTML positivi per `Ecografia Doppler`, `Ecografia Massimino`, `Ecografia Privitera`, `Tac 1`, `Tac 2`;
+- verifica manuale finale positiva anche sulla griglia `Esami selezionati`.
+
+### ⬜ G5.2 — Audit dati demo / naming / abbreviazioni
+**Obiettivo:** classificare in modo rigoroso ciò che è ancora solo grezzo nel seed demo rispetto a ciò che è realmente incoerente con missione e freeze, con focus su descrizioni esame, abbreviazioni cliniche e naming professionale.
+
+### ⬜ G5.3 — Audit residuo legacy `BootstrapNavigationService` in WinForms
+**Obiettivo:** verificare e classificare correttamente il `BootstrapNavigationService` rimasto in `src/ExamNavigator.WinForms/Program.cs` come residuo storico non runtime-attivo, evitando ambiguità architetturali o di revisione.
+
+---
 ## H — ⬜ Preparazione consegna / rilascio / demo V1
 
 **Obiettivo:** preparare il rilascio della baseline V1 nel formato più opportuno, con tag dedicato, merge su `main`, release e materiale di demo coerente con la richiesta cliente.

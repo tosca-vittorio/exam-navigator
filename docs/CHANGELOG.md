@@ -1,7 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **V1 mission-critical formally closed on concrete PostgreSQL runtime; next focus on delivery/release/demo preparation, with explicit SQL Server deviation tracking**
+> Scope corrente: **post-freeze final conformance/coherence gate on the formally closed V1 baseline; no promotion to tag/merge/release until residual presentation/data coherence gaps are closed**
+
+#### G5 — Final conformance & coherence gate pre-consegna
+> Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`de03d95` — fix(mvc): normalize room labels in web navigation**
+  - **Type:** FIXED · **Categoria:** MVC/Presentation
+  - **Cosa cambia:** aggiorna `src/ExamNavigator.Mvc/Controllers/HomeController.cs` per normalizzare i label degli ambulatori nel page model MVC e nelle righe deserializzate della griglia `Esami selezionati`, riallineando il web al comportamento presentazionale già presente nel client WinForms.
+  - **Impatto:** chiude il primo mismatch reale del final conformance/coherence gate post-freeze, elimina la visualizzazione raw di label come `EcografiaMassimino`, `EcografiaPrivitera`, `EcografiaDoppler`, `Tac1` e `Tac2` nell’host MVC e mantiene invariato il boundary applicativo/infrastrutturale condiviso.
 
 #### G — PostgreSQL runtime concrete wiring
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.

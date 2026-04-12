@@ -12,17 +12,17 @@ Milestone già consolidate:
 3. baseline SQL Server (`schema` + `seed` + `query`);
 4. host WinForms baseline (`bootstrap progetto + layout statico del form`).
 5. WinForms first (`wiring` cascata, conferma selezione, delete/reorder della griglia).
-
-Milestone mission-critical consolidata più recente:
+6. ricerca e configurazione `.ini`.
 7. conversione web MVC baseline funzionale demo archiviata.
-
-Milestone attiva:
 8. chiusura V1 mission-critical su PostgreSQL runtime concreto, con divergenza SQL Server esplicitamente governata.
 
+Milestone attiva:
+9. final conformance/coherence gate pre-consegna sulla baseline V1 già formalmente congelata.
+
 Milestone successive:
-9. preparazione consegna / rilascio / demo V1;
-10. preparazione colloquio #2;
-11. EXTRA e sviluppi futuri post-colloquio.
+10. preparazione consegna / rilascio / demo V1;
+11. preparazione colloquio #2;
+12. EXTRA e sviluppi futuri post-colloquio.
 
 ## Sequenza strategica mission-critical
 
@@ -91,9 +91,22 @@ Stato operativo corrente:
 - `PostgreSqlExamNavigationService` implementa il boundary applicativo sul runtime PostgreSQL locale;
 - il client WinForms è wired al runtime PostgreSQL concreto e verificato anche dopo clean rebuild della runtime closure;
 - l'host MVC è wired al runtime PostgreSQL concreto e verificato con build verde e smoke manuale su host web reale;
-- la V1 mission-critical è formalmente chiusa; il prossimo blocco corretto è la preparazione consegna / rilascio / demo V1.
+- la V1 mission-critical è formalmente chiusa, ma la promozione resta sospesa da un final conformance/coherence gate pre-consegna; il prossimo blocco corretto non è ancora la preparazione consegna / rilascio / demo V1.
 
-### 8. Preparazione consegna / rilascio / demo V1
+### 8. Final conformance/coherence gate pre-consegna
+Stato: attivo.
+
+Obiettivo:
+- verificare in modo rigoroso che la baseline V1 formalmente chiusa sia anche coerente e professionale in termini di dati demo, naming, abbreviazioni, resa UI e comportamento percepito;
+- correggere i mismatch reali emersi dopo il freeze senza riaprire arbitrariamente i blocchi già chiusi;
+- bloccare ogni promozione verso consegna/rilascio finché tali mismatch non siano auditati e chiusi.
+
+Stato operativo corrente:
+- emersa divergenza presentazionale tra WinForms e MVC sui label raw degli ambulatori seed PostgreSQL;
+- commit `de03d95` ha chiuso il primo fix reale del gate, normalizzando i label degli ambulatori nell’host MVC;
+- restano aperti l’audit dati demo/naming professionale e la classificazione del residuo legacy `BootstrapNavigationService` nel client WinForms.
+
+### 9. Preparazione consegna / rilascio / demo V1
 Stato: congelata, attivabile solo dopo la chiusura della V1.
 
 Obiettivo:
@@ -102,7 +115,7 @@ Obiettivo:
 - eseguire merge su `main` e release di baseline;
 - congelare il punto di rilascio della richiesta cliente prima di ulteriori ottimizzazioni.
 
-### 9. Preparazione colloquio #2
+### 10. Preparazione colloquio #2
 Stato: congelata, attivabile solo dopo la chiusura della V1 e la preparazione della consegna.
 
 Obiettivo:
@@ -111,7 +124,7 @@ Obiettivo:
 - preparare domande plausibili di colloquio e relative risposte;
 - usare la V1 come base di studio su MVC, controller, SQL e architettura.
 
-### 10. Sviluppi futuri / EXTRA post-colloquio
+### 11. Sviluppi futuri / EXTRA post-colloquio
 Stato: congelati, attivabili solo dopo la fase di preparazione colloquio.
 
 Obiettivo:
