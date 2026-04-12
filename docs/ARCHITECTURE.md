@@ -44,7 +44,7 @@ Nota:
    - contiene il primo layer infrastructure concreto separato dal core condiviso, con implementazione PostgreSQL di `IExamNavigationService`.
 
 5. **Host WinForms**
-   - contiene il primo host desktop della missione con cascata baseline wired tramite boundary applicativo, bootstrap service locale in memoria e foundation configurative tramite contenitore statico dei default di ricerca, parser raw del documento `.ini`, binder riflessivo type-safe e baseline runtime dei default di ricerca.
+   - contiene il primo host desktop della missione, ora wired al runtime PostgreSQL concreto tramite boundary applicativo, con foundation configurative tramite contenitore statico dei default di ricerca, parser raw del documento `.ini`, binder riflessivo type-safe e baseline runtime dei default di ricerca.
 
 6. **Host MVC**
    - contiene il primo host ASP.NET Core MVC della soluzione, inizialmente introdotto come scaffold compilabile e ora riallineato a una baseline funzionale web completa in memoria per navigazione, ricerca, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, sempre wired al core condiviso.
@@ -54,7 +54,7 @@ Nota:
 
 ### Sottosistemi richiesti ma non ancora presenti nella codebase
 
-5. wiring dei due host alla stessa fonte PostgreSQL concreta condivisa;
+5. wiring dell'host MVC alla stessa fonte PostgreSQL concreta già usata dal client WinForms;
 6. test project e quality tooling dedicato.
 
 ---
@@ -189,7 +189,7 @@ Stato attuale:
 - usa `Npgsql 8.0.8` come provider PostgreSQL;
 - contiene `PostgreSqlExamNavigationService` come prima implementazione concreta di `IExamNavigationService`;
 - implementa query PostgreSQL reali per ambulatori, parti del corpo ed esami, con fallback di `SelectedRoomId` e `SelectedBodyPartId`;
-- non è ancora wired nei due host, che restano appoggiati ai bootstrap service locali in memoria.
+- è wired nel runtime WinForms tramite `Program.cs`; l'host MVC resta ancora appoggiato al bootstrap service locale in memoria.
 
 ### 5. Host layer
 
@@ -201,11 +201,13 @@ Responsabilità correnti:
 
 Stato attuale:
 - presente come host desktop wired al boundary `Application`;
-- contiene caricamento iniziale dei tre pannelli, aggiornamento a cascata da ambulatorio a parte del corpo a esami, ricerca testuale wired tramite pulsante `Cerca`, tasto Invio e reset `Vedi tutti`, oltre alla conferma selezione con append alla griglia tramite servizio bootstrap locale in memoria;
+- il runtime entrypoint costruisce ora `PostgreSqlExamNavigationService` con connection string locale PostgreSQL composta in `Program.cs` e password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`;
+- il `.csproj` governa la runtime closure necessaria a `Npgsql` / `.NET Standard` e `App.config` contiene i binding redirects espliciti necessari all'esecuzione WinForms su .NET Framework 4.8;
+- contiene caricamento iniziale dei tre pannelli, aggiornamento a cascata da ambulatorio a parte del corpo a esami, ricerca testuale wired tramite pulsante `Cerca`, tasto Invio e reset `Vedi tutti`, oltre alla conferma selezione con append alla griglia su runtime PostgreSQL concreto;
 - contiene anche `Predefiniti_Ricerca` come primo contenitore statico dei default di `SearchText` e `SearchField`;
 - contiene anche `IniConfigurationDocument` come parser raw di sezioni e coppie `chiave = valore` del file `.ini`;
 - contiene anche `IniConfigurationBinder` come binder riflessivo type-safe verso `Predefiniti_*`;
-- non è ancora wired al nuovo adapter PostgreSQL concreto; il caricamento runtime dei default di ricerca e il relativo consumo nel bootstrap/UI sono presenti in baseline; la griglia supporta conferma selezione, cancellazione della riga selezionata e riordinamento `move up / move down`.
+- normalizza i nomi ambulatorio, espone label leggibili per i campi di ricerca e rende il pannello `Esami` più leggibile con presentazione multi-line; la griglia supporta conferma selezione, cancellazione della riga selezionata e riordinamento `move up / move down`.
 
 #### 5.2 Host MVC
 Stato attuale:
@@ -245,14 +247,14 @@ Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguib
 - `Application` compila con reference a `Domain`;
 - `ExamNavigator.WinForms` referenzia `ExamNavigator.Application`;
 - `ExamNavigator.Mvc` referenzia `ExamNavigator.Application`;
-- `Program.cs` del client WinForms carica, se presente, un file `.ini`, applica i default verso `Predefiniti_*` e costruisce un `BootstrapNavigationService` locale in memoria;
+- `Program.cs` del client WinForms carica, se presente, un file `.ini`, applica i default verso `Predefiniti_*` e costruisce un `PostgreSqlExamNavigationService` con runtime locale PostgreSQL e password letta da variabile ambiente;
 - `ExamNavigator.WinForms` contiene `Predefiniti_Ricerca` come contenitore statico dei default di ricerca, consumato dal bootstrap runtime per la baseline configurabile della ricerca;
 - `ExamNavigator.WinForms` contiene `IniConfigurationDocument` come parser raw del file `.ini`;
 - `ExamNavigator.WinForms` contiene `IniConfigurationBinder` come binder riflessivo type-safe dei default verso `Predefiniti_*`, wired nel bootstrap runtime per la baseline configurabile della ricerca;
 - `Form1` inizializza la ricerca dai default configurati e usa `IExamNavigationService` per popolare all’avvio i tre pannelli;
 - la selezione dell’ambulatorio aggiorna parti del corpo ed esami;
 - la selezione della parte del corpo aggiorna gli esami;
-- la ricerca testuale filtra i tre pannelli sul bootstrap runtime tramite `SearchText` e `SearchField`, con attivazione da pulsante `Cerca`, tasto Invio e reset `Vedi tutti`;
+- la ricerca testuale filtra i tre pannelli sul runtime PostgreSQL concreto tramite `SearchText` e `SearchField`, con attivazione da pulsante `Cerca`, tasto Invio e reset `Vedi tutti`;
 - la conferma della selezione aggiunge una riga alla griglia riepilogativa;
 - la rimozione della riga selezionata elimina elementi già confermati dalla griglia riepilogativa;
 - lo spostamento su e giù riordina di una posizione la riga selezionata nella griglia riepilogativa mantenendo la selezione sul record spostato;
@@ -267,12 +269,12 @@ In altre parole, la codebase possiede oggi:
 - boundary applicativo;
 - baseline dati SQL di riferimento;
 - adapter PostgreSQL concreto eseguibile nel layer infrastructure dedicato;
-- host WinForms compilabile e con navigazione a cascata baseline su servizio bootstrap locale;
+- host WinForms compilabile e con navigazione a cascata su runtime PostgreSQL concreto, verificato anche dopo clean rebuild della runtime closure;
 - host MVC compilabile e già riallineato a una baseline funzionale demo equivalente al client WinForms, pur restando ancora su bootstrap service locale in memoria.
 
 Non possiede ancora:
-- wiring dei due host alla stessa fonte dati PostgreSQL concreta condivisa;
-- flusso end-to-end finale sulla persistenza reale;
+- wiring dell'host MVC alla stessa fonte dati PostgreSQL concreta già usata dal WinForms;
+- flusso end-to-end finale multi-host sulla persistenza reale;
 - track qualità con test, lint, coverage e smoke automatizzati.
 
 ### Flusso target già preparato a livello di boundary, ma non ancora implementato end-to-end
@@ -302,10 +304,10 @@ Questo flusso è ora implementato fino al boundary infrastructure PostgreSQL, ma
 
 Rischi reali attuali:
 
-- host WinForms e host MVC sono ancora cablati a bootstrap service locali in memoria; manca ancora l’aggancio a un adapter PostgreSQL concreto condiviso;
-- adapter PostgreSQL concreto presente ma non ancora wired nei due host;
+- l'host MVC è ancora cablato a bootstrap service locale in memoria; manca ancora l’aggancio del web host allo stesso adapter PostgreSQL concreto già usato dal WinForms;
+- il runtime WinForms dipende ora da una closure di assembly e binding redirects che devono restare governati dal sorgente senza regressioni;
 - la scelta PostgreSQL diverge dal requisito SQL Server originario e richiede documentazione owner rigorosa per restare difendibile;
-- configurazione `.ini` oggi limitata alla baseline della ricerca e ancora appoggiata al bootstrap service locale in memoria;
+- configurazione `.ini` oggi limitata alla baseline della ricerca e consumata nel client WinForms ormai wired al runtime PostgreSQL concreto;
 - nessun progetto test presente;
 - nessun lint / coverage / smoke automatizzato presente;
 - possibile drift documentale se gli owner docs non restano esplicitamente allineati al fatto che i requisiti sorgente sono locali e non versionati.

@@ -1,10 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **G1 code baseline completed on dedicated PostgreSQL infrastructure; remaining focus on host wiring (`G2` / `G3`), with explicit SQL Server deviation tracking**
+> Scope corrente: **G2 completed on WinForms concrete PostgreSQL runtime; remaining focus on MVC host wiring (`G3`) and V1 formal closure (`G4`), with explicit SQL Server deviation tracking**
 
 #### G — PostgreSQL runtime concrete wiring
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`56d3129` — feat(winforms): wire postgresql runtime and normalize desktop exam presentation**
+  - **Type:** ADDED · **Categoria:** WinForms/PostgreSQL Runtime
+  - **Cosa cambia:** aggiorna `Program.cs`, `ExamNavigator.WinForms.csproj`, `App.config`, `Form1.cs` e `PostgreSqlExamNavigationService.cs` per agganciare il runtime reale WinForms al PostgreSQL locale, governare in modo deterministico la runtime closure necessaria a `Npgsql`, introdurre binding redirects espliciti, tipizzare i parametri Npgsql nullabili e migliorare leggibilità/allineamento UI del pannello `Esami`, delle label di ricerca e dei nomi ambulatorio.
+  - **Impatto:** chiude `G2` a codice e a verifica forte sul client desktop, lasciando come prossimo blocco corretto il wiring MVC (`G3`).
 
 - **`6166345` — feat(infrastructure): add postgresql exam navigation service**
   - **Type:** ADDED · **Categoria:** Infrastructure/PostgreSQL

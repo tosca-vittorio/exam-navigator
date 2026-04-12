@@ -433,8 +433,18 @@ Quando la soluzione sarà più matura:
 - `dotnet build ExamNavigator.sln` verde dopo l’introduzione dell’adapter;
 - host WinForms e host MVC ancora volutamente cablati ai bootstrap service in memoria; wiring differito rispettivamente a `G2` e `G3`.
 
-### ⬜ G2 — Wiring WinForms su runtime PostgreSQL
+### ✅ G2 — Wiring WinForms su runtime PostgreSQL
 **Obiettivo:** sostituire nel client desktop il bootstrap service in memoria con la sorgente dati PostgreSQL concreta.
+
+**Evidenze (truth-first):**
+- commit `56d3129` presente;
+- `Program.cs` del client WinForms costruisce ora `PostgreSqlExamNavigationService` usando una connection string locale PostgreSQL composta da host, porta, database, username e password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`;
+- `ExamNavigator.WinForms.csproj` referenzia `ExamNavigator.Infrastructure.PostgreSql`, governa la runtime closure necessaria ai package `.NET Standard` / `Npgsql` e copia nel `bin/Debug` gli assembly runtime necessari anche dopo clean rebuild;
+- `App.config` del client WinForms introduce binding redirects espliciti per gli assembly runtime richiesti dalla closure PostgreSQL / Npgsql;
+- `PostgreSqlExamNavigationService` usa parametri Npgsql tipizzati (`NpgsqlDbType.Text` / `NpgsqlDbType.Integer`) per eliminare l'errore PostgreSQL `42P08` sui parametri nullabili;
+- `Form1` normalizza la label degli ambulatori, espone etichette leggibili per i campi di ricerca e rende il pannello `Esami` più leggibile con presentazione multi-line in owner draw;
+- verifica forte eseguita con cancellazione di `bin/` e `obj/` di WinForms e Infrastructure PostgreSQL, `dotnet build ExamNavigator.sln` verde, presenza della runtime closure in `src/ExamNavigator.WinForms/bin/Debug` e avvio reale di `ExamNavigator.WinForms.exe` con password PostgreSQL in environment;
+- l'host MVC resta ancora volutamente cablato al bootstrap service locale in memoria; wiring differito a `G3`.
 
 ### ⬜ G3 — Wiring MVC su runtime PostgreSQL
 **Obiettivo:** sostituire nell'host MVC il bootstrap service in memoria con la stessa sorgente dati PostgreSQL concreta del client WinForms.

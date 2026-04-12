@@ -23,7 +23,7 @@ Baseline attuale verificata:
 - solution `ExamNavigator.sln` presente;
 - progetto `ExamNavigator.Domain` presente con entità minime del dominio;
 - progetto `ExamNavigator.Application` presente con contratti di navigazione e interfaccia applicativa;
-- progetto `ExamNavigator.WinForms` presente con host desktop wired al boundary `Application`, cascata baseline in memoria, ricerca testuale wired (pulsante `Cerca`, tasto Invio e reset `Vedi tutti`), append delle selezioni confermate nella griglia riepilogativa, cancellazione della riga selezionata, riordinamento `move up / move down`, primo contenitore statico `Predefiniti_Ricerca` per i default della ricerca, parser raw `IniConfigurationDocument` per il documento `.ini` e binder riflessivo type-safe `IniConfigurationBinder` verso `Predefiniti_*`;
+- progetto `ExamNavigator.WinForms` presente con host desktop wired al boundary `Application`, runtime PostgreSQL concreto tramite `PostgreSqlExamNavigationService`, ricerca testuale wired (pulsante `Cerca`, tasto Invio e reset `Vedi tutti`), append delle selezioni confermate nella griglia riepilogativa, cancellazione della riga selezionata, riordinamento `move up / move down`, primo contenitore statico `Predefiniti_Ricerca` per i default della ricerca, parser raw `IniConfigurationDocument` per il documento `.ini`, binder riflessivo type-safe `IniConfigurationBinder` verso `Predefiniti_*`, normalizzazione label degli ambulatori, etichette leggibili della ricerca e presentazione multi-line del pannello `Esami`;
 - baseline database presente con:
   - reference SQL Server in `database/sql`:
     - `001_schema.sql`
@@ -33,7 +33,7 @@ Baseline attuale verificata:
     - `001_schema.sql`
     - `002_seed.sql`
     - `postgresql.md`
-- progetto `ExamNavigator.Infrastructure.PostgreSql` presente con adapter PostgreSQL concreto `PostgreSqlExamNavigationService`, query reali per ambulatori, parti del corpo ed esami e fallback di selezione `SelectedRoomId` / `SelectedBodyPartId`; host WinForms e host MVC ancora wired ai bootstrap service locali in memoria; test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC è ora presente con baseline web funzionale completa in memoria per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, sempre wired al core condiviso.
+- progetto `ExamNavigator.Infrastructure.PostgreSql` presente con adapter PostgreSQL concreto `PostgreSqlExamNavigationService`, query reali per ambulatori, parti del corpo ed esami, fallback di selezione `SelectedRoomId` / `SelectedBodyPartId` e parametri Npgsql tipizzati; host WinForms ora wired al runtime PostgreSQL concreto tramite `Program.cs`, con runtime closure `.NET Standard`/`Npgsql` governata dal `.csproj`, binding redirects espliciti in `App.config`, normalizzazione label degli ambulatori, etichette leggibili della ricerca e presentazione multi-line più leggibile del pannello `Esami`; host MVC ancora wired al bootstrap service locale in memoria; test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC è ora presente con baseline web funzionale completa in memoria per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, sempre wired al core condiviso.
 
 ## Scelte tecniche correnti
 
@@ -67,7 +67,7 @@ La soluzione è governata per strati:
 4. **Host WinForms**
    - interfaccia desktop richiesta dalla missione;
    - wiring UI -> Application;
-   - griglia selezioni e gestione eventi.
+   - runtime entrypoint wired al PostgreSQL concreto, con normalizzazione label e pannello `Esami` più leggibile.
 
 5. **Host Web**
    - host ASP.NET Core MVC presente nella solution e referenziato al core condiviso;
@@ -110,7 +110,7 @@ Stato corrente della missione principale:
 4. host WinForms baseline (`bootstrap progetto + layout statico form`) → completato;
 5. wiring desktop iniziale della cascata (`Application` boundary + bootstrap service locale + aggiornamento ambulatorio/parte del corpo/esami) → completato;
 6. blocco ricerca desktop baseline (`wiring` UI) → completato;
-7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC archiviata come baseline demo con host dedicato (`F0`), primo riallineamento funzionale di controller/view model (`F1`) e UI web equivalente con griglia selezioni e polish (`F2`); bootstrap runtime locale PostgreSQL documentato e consolidato; blocco `G1` completato con introduzione di `ExamNavigator.Infrastructure.PostgreSql` e del service concreto `PostgreSqlExamNavigationService`; V1 mission-critical ancora aperta sul wiring della persistenza PostgreSQL runtime concreta condivisa tra i due host, con divergenza rispetto al requisito SQL Server originario esplicitamente governata nella documentazione.
+7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC archiviata come baseline demo con host dedicato (`F0`), primo riallineamento funzionale di controller/view model (`F1`) e UI web equivalente con griglia selezioni e polish (`F2`); bootstrap runtime locale PostgreSQL documentato e consolidato; blocchi `G1`-`G2` completati con introduzione di `ExamNavigator.Infrastructure.PostgreSql`, del service concreto `PostgreSqlExamNavigationService` e del wiring runtime concreto del client WinForms; V1 mission-critical ancora aperta sul wiring MVC (`G3`) e sulla verifica formale finale (`G4`), con divergenza rispetto al requisito SQL Server originario esplicitamente governata nella documentazione.
 
 ## Perimetro V1
 
