@@ -5,6 +5,7 @@ using ExamNavigator.Application.Services;
 using ExamNavigator.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Text.RegularExpressions;
 
 namespace ExamNavigator.Mvc.Controllers;
 
@@ -133,6 +134,7 @@ public class HomeController : Controller
         };
 
         var result = _navigationService.GetNavigation(request);
+        var normalizedRooms = NormalizeRoomItems(result.Rooms);
 
         var selectedExamId = input.SelectedExamId;
         if (!selectedExamId.HasValue || result.Exams.All(exam => exam.Id != selectedExamId.Value))
@@ -141,8 +143,8 @@ public class HomeController : Controller
         }
 
         var selectedExams = selectedExamsOverride is null
-            ? DeserializeSelectionState(input.SelectionState)
-            : new List<SelectedExamRowViewModel>(selectedExamsOverride);
+            ? NormalizeSelectedExamRows(DeserializeSelectionState(input.SelectionState))
+            : NormalizeSelectedExamRows(selectedExamsOverride);
 
         var selectedGridIndex = NormalizeSelectedGridIndex(
             selectedGridIndexOverride ?? input.SelectedGridIndex,
@@ -150,7 +152,7 @@ public class HomeController : Controller
 
         return new ExamNavigationPageViewModel
         {
-            Rooms = result.Rooms,
+            Rooms = normalizedRooms,
             BodyParts = result.BodyParts,
             Exams = result.Exams,
             SelectedRoomId = result.SelectedRoomId,
@@ -162,6 +164,54 @@ public class HomeController : Controller
             SelectionState = SerializeSelectionState(selectedExams),
             SelectedGridIndex = selectedGridIndex
         };
+    }
+    private static List<LookupItem> NormalizeRoomItems(IReadOnlyList<LookupItem> rooms)
+    {
+        var normalizedRooms = new List<LookupItem>(rooms.Count);
+
+        foreach (var room in rooms)
+        {
+            normalizedRooms.Add(new LookupItem
+            {
+                Id = room.Id,
+                Label = NormalizeRoomLabel(room.Label)
+            });
+        }
+
+        return normalizedRooms;
+    }
+
+    private static List<SelectedExamRowViewModel> NormalizeSelectedExamRows(
+        IReadOnlyList<SelectedExamRowViewModel> selectedExams)
+    {
+        var normalizedRows = new List<SelectedExamRowViewModel>(selectedExams.Count);
+
+        foreach (var row in selectedExams)
+        {
+            normalizedRows.Add(new SelectedExamRowViewModel
+            {
+                CodiceMinisteriale = row.CodiceMinisteriale,
+                CodiceInterno = row.CodiceInterno,
+                DescrizioneEsame = row.DescrizioneEsame,
+                BodyPartLabel = row.BodyPartLabel,
+                RoomLabel = NormalizeRoomLabel(row.RoomLabel)
+            });
+        }
+
+        return normalizedRows;
+    }
+
+    private static string NormalizeRoomLabel(string? label)
+    {
+        if (string.IsNullOrWhiteSpace(label))
+        {
+            return string.Empty;
+        }
+
+        var normalized = Regex.Replace(label, @"(?<=[a-z])(?=[A-Z])", " ");
+        normalized = Regex.Replace(normalized, @"(?<=[A-Za-z])(?=\d)", " ");
+
+        return normalized.Trim();
     }
 
     private static int? NormalizeSelectedGridIndex(int? selectedGridIndex, int itemCount)
