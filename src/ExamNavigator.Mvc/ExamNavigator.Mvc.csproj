@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExamNavigator.Application\ExamNavigator.Application.csproj" />
+    <ProjectReference Include="..\ExamNavigator.Infrastructure.PostgreSql\ExamNavigator.Infrastructure.PostgreSql.csproj" />
   </ItemGroup>
 
 </Project>
