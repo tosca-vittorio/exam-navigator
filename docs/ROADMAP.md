@@ -104,7 +104,9 @@ Obiettivo:
 Stato operativo corrente:
 - commit `de03d95` ha chiuso il mismatch presentazionale dei label raw degli ambulatori nell’host MVC;
 - commit `cfee331` ha chiuso il lavoro tecnico di audit su dati demo, naming e abbreviazioni, estendendo il seed PostgreSQL con un dataset misto legacy + professionale utile alla validazione della normalizzazione;
-- resta aperta la classificazione del residuo legacy `BootstrapNavigationService` nel client WinForms.
+- durante una validazione manuale reale dell’host MVC su liste lunghe è emerso un difetto UX aggiuntivo: la viewport torna verso l’alto durante la navigazione/selezione;
+- è stato avviato un tentativo locale non committato su `Index.cshtml` e `site.css`, ma l’esito attuale non è soddisfacente: il bug viewport resta aperto e la soluzione sperimentale ha peggiorato la resa UI;
+- per questo motivo il prossimo blocco corretto non è temporaneamente `G5.4`, ma `G5.3`, cioè il congelamento truth-first e la riapertura conservativa della fix viewport MVC prima di tornare all’audit del residuo legacy WinForms.
 
 ### 9. Preparazione consegna / rilascio / demo V1
 Stato: congelata, attivabile solo dopo la chiusura della V1.

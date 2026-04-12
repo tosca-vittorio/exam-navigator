@@ -100,7 +100,7 @@ Prerequisiti minimi:
 ### Avvio host web MVC
 
 ```bash
-export EXAM_NAVIGATOR_PG_PASSWORD=''
+export EXAM_NAVIGATOR_PG_PASSWORD='<POSTGRESQL_PASSWORD>'
 dotnet run --project src/ExamNavigator.Mvc --urls http://localhost:5099
 ```
 
@@ -111,7 +111,7 @@ Endpoint locale usato abitualmente:
 ### Avvio client desktop WinForms
 
 ```bash
-export EXAM_NAVIGATOR_PG_PASSWORD=''
+export EXAM_NAVIGATOR_PG_PASSWORD='<POSTGRESQL_PASSWORD>'
 ./src/ExamNavigator.WinForms/bin/Debug/ExamNavigator.WinForms.exe
 ```
 
@@ -187,7 +187,11 @@ Fix consolidati di questo gate:
 - commit `de03d95` — normalizzazione dei label degli ambulatori nell’host MVC, sia nella navigazione web sia nella griglia `Esami selezionati`;
 - commit `cfee331` — estensione del seed PostgreSQL con dataset demo misto, comprendente baseline legacy/non normalizzata e nuovi dati più eterogenei, plausibili e professionalmente più coerenti per audit di naming, abbreviazioni e casi di normalizzazione.
 
-Il prossimo blocco corretto non è ancora la consegna/rilascio, ma la chiusura del residuo `G5.3` sui componenti legacy non runtime-attivi.
+Il prossimo blocco corretto non è ancora la consegna/rilascio.
+
+Dopo il riallineamento docs successivo a `G5.2`, durante una validazione manuale reale dell’host MVC su liste lunghe è emerso un difetto UX aggiuntivo: la viewport torna verso l’alto durante la selezione e la navigazione dei pannelli. È stato aperto un tentativo locale non committato su `src/ExamNavigator.Mvc/Views/Home/Index.cshtml` e `src/ExamNavigator.Mvc/wwwroot/css/site.css`, ma l’esito attuale non è consolidabile: la resa UI è peggiorata e il bug viewport resta aperto.
+
+Il prossimo micro-step corretto è quindi trattare questo stream locale come investigazione non consolidata già congelata da snapshot Git aggiornato, e riprendere con una riduzione o un revert chirurgico del tentativo MVC sui due file sporchi prima di progettare una fix più conservativa; solo dopo si tornerà alla chiusura del residuo `G5.4` sui componenti legacy non runtime-attivi.
 
 ## Documentazione owner
 

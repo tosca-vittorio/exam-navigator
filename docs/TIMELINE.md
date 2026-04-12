@@ -504,7 +504,31 @@ Quando la soluzione sarà più matura:
 - verifica relazionale positiva su `exam` + `exam_room` + `room` + `body_part`, con assenza di duplicati logici nel risultato utile;
 - `dotnet build ExamNavigator.sln` verde dopo il consolidamento del seed esteso.
 
-### ⬜ G5.3 — Audit residuo legacy `BootstrapNavigationService` in WinForms
+### 🟡 G5.3 — Audit/fix regressione UX viewport MVC su liste lunghe
+**Obiettivo:** eliminare il salto della viewport verso l’alto durante la selezione di elementi nei pannelli MVC (`Ambulatori`, `Parti del corpo`, `Esami`) e durante le azioni correlate, senza alterare inutilmente la UI attuale e senza introdurre regressioni funzionali o controlli duplicati.
+
+**Evidenze (truth-first):**
+- working tree locale sporca con modifiche non committate in:
+  - `src/ExamNavigator.Mvc/Views/Home/Index.cshtml`
+  - `src/ExamNavigator.Mvc/wwwroot/css/site.css`
+- il tentativo locale introduce una soluzione estesa basata su:
+  - marcatori `data-viewport-*`,
+  - contenitori scrollabili dedicati,
+  - script inline con `sessionStorage`,
+  - forzature di `scrollIntoView(...)`;
+- `dotnet build ExamNavigator.sln` e il run MVC risultano positivi, ma la validazione manuale reale è negativa:
+  - il bug della viewport permane;
+  - la resa UI/UX peggiora rispetto alla baseline precedente;
+  - durante il tentativo è comparsa anche una duplicazione del pulsante `Conferma selezione`;
+- secondo l’ultimo riscontro manuale, la duplicazione del pulsante è stata localmente neutralizzata eliminando markup `form` superfluo; lo snapshot Git aggiornato dei due file MVC sporchi è ora presente e congela il tentativo locale nello stato effettivamente raggiunto;
+- screenshot UI disponibile come evidenza qualitativa del peggioramento introdotto;
+- nessun commit è stato prodotto per questo stream locale, quindi il tentativo resta classificato come investigazione non consolidata.
+
+**Nota operativa:** questo blocco ha priorità immediata rispetto a `G5.4`, perché riguarda un difetto runtime percepibile nell’host web durante l’uso reale.
+
+**Prossimo micro-step corretto:** raccogliere uno snapshot Git fresco e focalizzato dei due file MVC ancora sporchi dopo l’ultimo intervento manuale, quindi ridurre o revertire chirurgicamente il tentativo locale fino a recuperare la baseline visiva stabile prima di progettare una fix più conservativa; solo dopo si tornerà a `G5.4`.
+
+### ⬜ G5.4 — Audit residuo legacy `BootstrapNavigationService` in WinForms
 **Obiettivo:** verificare e classificare correttamente il `BootstrapNavigationService` rimasto in `src/ExamNavigator.WinForms/Program.cs` come residuo storico non runtime-attivo, evitando ambiguità architetturali o di revisione.
 
 ---
