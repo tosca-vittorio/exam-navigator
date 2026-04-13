@@ -1,0 +1,303 @@
+@using ExamNavigator.Application.Contracts
+@model ExamNavigator.Mvc.Models.ExamNavigationPageViewModel
+
+@{
+    var hasSelectedGridRow = Model.SelectedGridIndex.HasValue;
+
+    string GetSearchFieldLabel(ExamSearchField field)
+    {
+        return field switch
+        {
+            ExamSearchField.CodiceMinisteriale => "Codice ministeriale",
+            ExamSearchField.CodiceInterno => "Codice interno",
+            _ => "Descrizione esame"
+        };
+    }
+}
+
+<section class="page-hero">
+    <h1 class="page-hero-title">Exam Navigator</h1>
+    <p class="page-hero-subtitle">
+        Baseline MVC progressiva del flusso di navigazione esami, allineata al core condiviso.
+    </p>
+</section>
+
+<section class="exam-surface mb-4">
+    <div class="exam-surface-header">
+        <div>
+            <h2 class="exam-surface-title">Ricerca esami</h2>
+            <p class="exam-surface-subtitle">
+                Filtro testuale case-insensitive su codice ministeriale, codice interno o descrizione esame.
+            </p>
+        </div>
+    </div>
+
+    <div class="exam-surface-body">
+        <form method="get" asp-action="Index" class="row g-3 align-items-end">
+            <input type="hidden" name="selectedRoomId" value="@(Model.SelectedRoomId?.ToString() ?? string.Empty)" />
+            <input type="hidden" name="selectedBodyPartId" value="@(Model.SelectedBodyPartId?.ToString() ?? string.Empty)" />
+            <input type="hidden" name="selectedExamId" value="@(Model.SelectedExamId?.ToString() ?? string.Empty)" />
+            <input type="hidden" name="selectionState" value="@Model.SelectionState" />
+            <input type="hidden" name="selectedGridIndex" value="@(Model.SelectedGridIndex?.ToString() ?? string.Empty)" />
+
+            <div class="col-lg-3">
+                <label class="form-label" for="searchField">Cerca nel campo</label>
+                <select id="searchField" name="searchField" class="form-select">
+                    @foreach (var field in Enum.GetValues<ExamSearchField>())
+                    {
+                        if (field == Model.SearchField)
+                        {
+                            <option value="@field" selected>@GetSearchFieldLabel(field)</option>
+                        }
+                        else
+                        {
+                            <option value="@field">@GetSearchFieldLabel(field)</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-lg-7">
+                <label class="form-label" for="searchText">Testo da cercare</label>
+                <input id="searchText"
+                       name="searchText"
+                       class="form-control"
+                       value="@Model.SearchText"
+                       placeholder="Inserisci testo di ricerca" />
+            </div>
+
+            <div class="col-lg-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-fill">Cerca</button>
+                <a asp-action="Index"
+                   asp-route-selectedRoomId="@Model.SelectedRoomId"
+                   asp-route-selectedBodyPartId="@Model.SelectedBodyPartId"
+                   asp-route-selectedExamId="@Model.SelectedExamId"
+                   asp-route-searchField="@Model.SearchField"
+                   asp-route-selectionState="@Model.SelectionState"
+                   asp-route-selectedGridIndex="@Model.SelectedGridIndex"
+                   class="btn btn-outline-secondary flex-fill">Vedi tutti</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="panel-grid mb-4">
+    <article class="panel-card">
+        <div class="panel-card-header">
+            <h2 class="panel-card-title">Ambulatori</h2>
+            <span class="panel-card-count">@Model.Rooms.Count</span>
+        </div>
+
+        <div class="panel-card-body">
+            <div class="list-group">
+                @if (Model.Rooms.Count == 0)
+                {
+                    <div class="list-group-item placeholder-muted">Nessun ambulatorio disponibile.</div>
+                }
+                else
+                {
+                    foreach (var room in Model.Rooms)
+                    {
+                        var isSelected = room.Id == Model.SelectedRoomId;
+
+                        <a asp-action="Index"
+                           asp-route-selectedRoomId="@room.Id"
+                           asp-route-selectedBodyPartId="@Model.SelectedBodyPartId"
+                           asp-route-selectedExamId="@Model.SelectedExamId"
+                           asp-route-searchText="@Model.SearchText"
+                           asp-route-searchField="@Model.SearchField"
+                           asp-route-selectionState="@Model.SelectionState"
+                           asp-route-selectedGridIndex="@Model.SelectedGridIndex"
+                           class="list-group-item list-group-item-action @(isSelected ? "active" : string.Empty)">
+                            @room.Label
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </article>
+
+    <article class="panel-card">
+        <div class="panel-card-header">
+            <h2 class="panel-card-title">Parti del corpo</h2>
+            <span class="panel-card-count">@Model.BodyParts.Count</span>
+        </div>
+
+        <div class="panel-card-body">
+            <div class="list-group">
+                @if (Model.BodyParts.Count == 0)
+                {
+                    <div class="list-group-item placeholder-muted">Nessuna parte del corpo disponibile.</div>
+                }
+                else
+                {
+                    foreach (var bodyPart in Model.BodyParts)
+                    {
+                        var isSelected = bodyPart.Id == Model.SelectedBodyPartId;
+
+                        <a asp-action="Index"
+                           asp-route-selectedRoomId="@Model.SelectedRoomId"
+                           asp-route-selectedBodyPartId="@bodyPart.Id"
+                           asp-route-selectedExamId="@Model.SelectedExamId"
+                           asp-route-searchText="@Model.SearchText"
+                           asp-route-searchField="@Model.SearchField"
+                           asp-route-selectionState="@Model.SelectionState"
+                           asp-route-selectedGridIndex="@Model.SelectedGridIndex"
+                           class="list-group-item list-group-item-action @(isSelected ? "active" : string.Empty)">
+                            @bodyPart.Label
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </article>
+
+    <article class="panel-card">
+        <div class="panel-card-header">
+            <h2 class="panel-card-title">Esami</h2>
+            <span class="panel-card-count">@Model.Exams.Count</span>
+        </div>
+
+        <div class="panel-card-body">
+            <div class="list-group mb-3">
+                @if (Model.Exams.Count == 0)
+                {
+                    <div class="list-group-item placeholder-muted">Nessun esame disponibile.</div>
+                }
+                else
+                {
+                    foreach (var exam in Model.Exams)
+                    {
+                        var isSelected = exam.Id == Model.SelectedExamId;
+
+                        <a asp-action="Index"
+                           asp-route-selectedRoomId="@Model.SelectedRoomId"
+                           asp-route-selectedBodyPartId="@Model.SelectedBodyPartId"
+                           asp-route-selectedExamId="@exam.Id"
+                           asp-route-searchText="@Model.SearchText"
+                           asp-route-searchField="@Model.SearchField"
+                           asp-route-selectionState="@Model.SelectionState"
+                           asp-route-selectedGridIndex="@Model.SelectedGridIndex"
+                           class="list-group-item list-group-item-action @(isSelected ? "active" : string.Empty)">
+                            <div class="exam-list-item-title">@exam.DescrizioneEsame</div>
+                            <div class="exam-list-item-meta">Cod. Min.: @exam.CodiceMinisteriale</div>
+                            <div class="exam-list-item-meta">Cod. Int.: @exam.CodiceInterno</div>
+                        </a>
+                    }
+                }
+            </div>
+
+            <form asp-action="ApplySelectionCommand" method="post" class="d-flex justify-content-end">
+                <input type="hidden" name="SelectedRoomId" value="@(Model.SelectedRoomId?.ToString() ?? string.Empty)" />
+                <input type="hidden" name="SelectedBodyPartId" value="@(Model.SelectedBodyPartId?.ToString() ?? string.Empty)" />
+                <input type="hidden" name="SelectedExamId" value="@(Model.SelectedExamId?.ToString() ?? string.Empty)" />
+                <input type="hidden" name="SearchText" value="@Model.SearchText" />
+                <input type="hidden" name="SearchField" value="@Model.SearchField" />
+                <input type="hidden" name="SelectionState" value="@Model.SelectionState" />
+                <input type="hidden" name="SelectedGridIndex" value="@(Model.SelectedGridIndex?.ToString() ?? string.Empty)" />
+
+                <button type="submit"
+                        name="command"
+                        value="confirm"
+                        class="btn btn-primary"
+                        disabled="@(Model.SelectedExamId is null)">
+                    Conferma selezione
+                </button>
+            </form>
+        </div>
+    </article>
+</section>
+
+<section class="exam-surface">
+    <div class="exam-surface-header">
+        <div>
+            <h2 class="exam-surface-title">Esami selezionati</h2>
+            <p class="exam-surface-subtitle">
+                Baseline web della griglia con conferma selezione, riordino ed eliminazione riga.
+            </p>
+        </div>
+    </div>
+
+    <div class="exam-surface-body">
+        <form asp-action="ApplySelectionCommand" method="post">
+            <input type="hidden" name="SelectedRoomId" value="@(Model.SelectedRoomId?.ToString() ?? string.Empty)" />
+            <input type="hidden" name="SelectedBodyPartId" value="@(Model.SelectedBodyPartId?.ToString() ?? string.Empty)" />
+            <input type="hidden" name="SelectedExamId" value="@(Model.SelectedExamId?.ToString() ?? string.Empty)" />
+            <input type="hidden" name="SearchText" value="@Model.SearchText" />
+            <input type="hidden" name="SearchField" value="@Model.SearchField" />
+            <input type="hidden" name="SelectionState" value="@Model.SelectionState" />
+
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Codice ministeriale</th>
+                            <th>Codice interno</th>
+                            <th>Descrizione esame</th>
+                            <th>Parte del corpo</th>
+                            <th>Ambulatorio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.SelectedExams.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="5" class="placeholder-muted">
+                                    Nessun esame selezionato nella baseline MVC attuale.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            for (var index = 0; index < Model.SelectedExams.Count; index++)
+                            {
+                                var row = Model.SelectedExams[index];
+
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <input class="form-check-input mt-0"
+                                                   type="radio"
+                                                   name="SelectedGridIndex"
+                                                   value="@index"
+                                                   checked="@(Model.SelectedGridIndex == index)" />
+                                            <span>@row.CodiceMinisteriale</span>
+                                        </div>
+                                    </td>
+                                    <td>@row.CodiceInterno</td>
+                                    <td>@row.DescrizioneEsame</td>
+                                    <td>@row.BodyPartLabel</td>
+                                    <td>@row.RoomLabel</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="selection-actions">
+                <button type="submit"
+                        name="command"
+                        value="up"
+                        class="btn btn-outline-secondary"
+                        disabled="@(!hasSelectedGridRow)">
+                    Sposta su
+                </button>
+                <button type="submit"
+                        name="command"
+                        value="down"
+                        class="btn btn-outline-secondary"
+                        disabled="@(!hasSelectedGridRow)">
+                    Sposta giù
+                </button>
+                <button type="submit"
+                        name="command"
+                        value="remove"
+                        class="btn btn-outline-danger"
+                        disabled="@(!hasSelectedGridRow)">
+                    Elimina riga
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

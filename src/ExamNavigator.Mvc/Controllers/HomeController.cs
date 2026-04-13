@@ -21,7 +21,7 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Index([FromQuery] ExamNavigationCommandInputModel input)
     {
-        return View(BuildPageModel(input));
+        return RenderNavigationPage(BuildPageModel(input));
     }
 
     [HttpPost]
@@ -101,7 +101,7 @@ public class HomeController : Controller
             }
         }
 
-        return View("Index", BuildPageModel(input, selectedExams, selectedGridIndex));
+        return RenderNavigationPage(BuildPageModel(input, selectedExams, selectedGridIndex));
     }
 
     public IActionResult Privacy()
@@ -116,6 +116,33 @@ public class HomeController : Controller
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
         });
+    }
+
+    private IActionResult RenderNavigationPage(ExamNavigationPageViewModel model)
+    {
+        if (IsAjaxNavigationRequest())
+        {
+            return PartialView("_ExamNavigationPage", model);
+        }
+
+        return View("Index", model);
+    }
+
+    private bool IsAjaxNavigationRequest()
+    {
+        if (Request.Headers.TryGetValue("X-Requested-With", out var requestedWith) &&
+            string.Equals(requestedWith.ToString(), "XMLHttpRequest", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        if (Request.Query.TryGetValue("fragment", out var fragment) &&
+            string.Equals(fragment.ToString(), "1", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private ExamNavigationPageViewModel BuildPageModel(
