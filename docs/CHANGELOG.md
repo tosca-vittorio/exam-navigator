@@ -6,6 +6,12 @@
 #### G5 — Final conformance & coherence gate pre-consegna
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
 
+- **`39e3bdd` — fix(mvc): replace full-page reload with ajax fragment navigation**
+  - **Type:** FIXED · **Categoria:** MVC/UX
+  - **Cosa cambia:** aggiorna `src/ExamNavigator.Mvc/Controllers/HomeController.cs`, `src/ExamNavigator.Mvc/Views/Home/Index.cshtml` e introduce `src/ExamNavigator.Mvc/Views/Home/_ExamNavigationPage.cshtml`, separando la pagina web in shell + fragment e aggiungendo navigazione incrementale `fetch`-based con rendering parziale lato controller.
+  - **Impatto:** chiude `G5.3`, elimina il salto della viewport su liste lunghe nell’host MVC, sostituisce il full-page reload interattivo con aggiornamenti asincroni di ricerca/pannelli/griglia e mantiene intatto il boundary applicativo condiviso.
+
+
 - **`cfee331` — feat(database): extend postgresql seed with mixed legacy and normalized demo data**
   - **Type:** ADDED · **Categoria:** Database/Seed
   - **Cosa cambia:** aggiorna `database/postgresql/002_seed.sql` introducendo un secondo blocco di popolamento con nuove parti del corpo, nuovi ambulatori e nuovi esami demo, costruiti in modo eterogeneo per coprire sia label legacy/non normalizzati sia naming più professionali e plausibili.

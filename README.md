@@ -33,7 +33,7 @@ Baseline attuale verificata:
     - `001_schema.sql`
     - `002_seed.sql`
     - `postgresql.md`
-- progetto `ExamNavigator.Infrastructure.PostgreSql` presente con adapter PostgreSQL concreto `PostgreSqlExamNavigationService`, query reali per ambulatori, parti del corpo ed esami, fallback di selezione `SelectedRoomId` / `SelectedBodyPartId` e parametri Npgsql tipizzati; host WinForms ora wired al runtime PostgreSQL concreto tramite `Program.cs`, con runtime closure `.NET Standard`/`Npgsql` governata dal `.csproj`, binding redirects espliciti in `App.config`, normalizzazione label degli ambulatori, etichette leggibili della ricerca e presentazione multi-line più leggibile del pannello `Esami`; host MVC ora wired al runtime PostgreSQL concreto tramite `Program.cs`, con reference esplicito a `ExamNavigator.Infrastructure.PostgreSql` e password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`; test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC mantiene la baseline web funzionale completa per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, ora alimentata dalla stessa sorgente dati PostgreSQL concreta del client WinForms, con normalizzazione dei label degli ambulatori anche lato controller MVC nella navigazione web e nella griglia `Esami selezionati`.
+- progetto `ExamNavigator.Infrastructure.PostgreSql` presente con adapter PostgreSQL concreto `PostgreSqlExamNavigationService`, query reali per ambulatori, parti del corpo ed esami, fallback di selezione `SelectedRoomId` / `SelectedBodyPartId` e parametri Npgsql tipizzati; host WinForms ora wired al runtime PostgreSQL concreto tramite `Program.cs`, con runtime closure `.NET Standard`/`Npgsql` governata dal `.csproj`, binding redirects espliciti in `App.config`, normalizzazione label degli ambulatori, etichette leggibili della ricerca e presentazione multi-line più leggibile del pannello `Esami`; host MVC ora wired al runtime PostgreSQL concreto tramite `Program.cs`, con reference esplicito a `ExamNavigator.Infrastructure.PostgreSql` e password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`; test, lint e coverage non ancora introdotti nella codebase; il caricamento runtime dei default da configurazione e il consumo runtime dei default nel bootstrap/UI sono presenti per la baseline della ricerca; l'host MVC mantiene la baseline web funzionale completa per navigazione esami, ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX, ora alimentata dalla stessa sorgente dati PostgreSQL concreta del client WinForms, con normalizzazione dei label degli ambulatori anche lato controller MVC nella navigazione web e nella griglia `Esami selezionati`, e con navigazione incrementale a fragment (`Index.cshtml` shell + `_ExamNavigationPage.cshtml` + `fetch`/partial rendering) per ricerca, selezione pannelli e comandi griglia, eliminando il full-page reload interattivo e il salto viewport su liste lunghe.
 
 ## Scelte tecniche correnti
 
@@ -73,7 +73,8 @@ La soluzione è governata per strati:
    - host ASP.NET Core MVC presente nella solution e referenziato al core condiviso;
    - baseline funzionale web equivalente alla demo WinForms introdotta tramite controller dedicato e page view model dedicato;
    - ricerca GET, conferma selezione, griglia riepilogativa, riordino, eliminazione riga e polish UI/UX presenti;
-   - wiring runtime ora agganciato a `PostgreSqlExamNavigationService` tramite `Program.cs`, con sorgente dati PostgreSQL concreta condivisa col client WinForms e password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`.
+   - wiring runtime ora agganciato a `PostgreSqlExamNavigationService` tramite `Program.cs`, con sorgente dati PostgreSQL concreta condivisa col client WinForms e password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`;
+   - shell MVC + fragment partial + navigazione `fetch` incrementale presenti per evitare full-page reload durante le interazioni ad alta frequenza dell’host web.
 
 ## Repository layout
 
@@ -127,7 +128,8 @@ Verificare almeno i seguenti punti:
 * conferma selezione esame nella griglia riepilogativa;
 * riordino righe con `Sposta su` / `Sposta giù`;
 * eliminazione riga selezionata;
-* resa coerente dei label ambulatori sia lato WinForms sia lato MVC anche in presenza di dati legacy/non normalizzati.
+* resa coerente dei label ambulatori sia lato WinForms sia lato MVC anche in presenza di dati legacy/non normalizzati;
+* assenza di salto viewport nell’host MVC durante selezione su liste lunghe, ricerca e azioni della griglia, grazie alla navigazione incrementale a fragment.
 
 ### Nota sul perimetro qualità corrente
 
@@ -178,20 +180,20 @@ Tutto ciò che non rientra in questo perimetro resta post-V1 oppure EXTRA congel
 
 La V1 mission-critical resta formalmente chiusa nei documenti owner al checkpoint `3897979`, ma la promozione verso tag / merge su `main` / release / consegna non è ancora autorizzata.
 
-Dopo il freeze formale è stato aperto un **Final Conformance & Coherence Gate** pre-consegna, con l’obiettivo di:
-- verificare in modo dimostrabile la coerenza finale dei requisiti fondamentali;
-- riallineare naming demo, testi UI, abbreviature e resa professionale;
-- chiudere gli ultimi mismatch prima di ogni promozione finale.
+Dopo `G5.1` e `G5.2`, la validazione manuale reale dell’host MVC su liste lunghe ha confermato un difetto UX aggiuntivo: la viewport tornava verso l’alto durante navigazione, ricerca e comandi della griglia. Il tentativo locale iniziale basato su scroll manuale e marcatori `data-viewport-*` è stato classificato come investigazione non consolidata e poi rimosso.
+
+Il commit `39e3bdd` ha chiuso `G5.3` sostituendo il full-page reload interattivo dell’host MVC con una navigazione incrementale a fragment:
+- `HomeController` ora rende `Index` o `_ExamNavigationPage` tramite `RenderNavigationPage(...)`, in base al tipo di richiesta;
+- `Index.cshtml` è ora una shell MVC con root `#exam-navigation-root` e script `fetch` dedicato;
+- `_ExamNavigationPage.cshtml` contiene il markup reale della pagina web;
+- la ricerca, la navigazione dei pannelli e i comandi della griglia vengono aggiornati asincronamente senza ricaricare l’intera pagina.
 
 Fix consolidati di questo gate:
 - commit `de03d95` — normalizzazione dei label degli ambulatori nell’host MVC, sia nella navigazione web sia nella griglia `Esami selezionati`;
-- commit `cfee331` — estensione del seed PostgreSQL con dataset demo misto, comprendente baseline legacy/non normalizzata e nuovi dati più eterogenei, plausibili e professionalmente più coerenti per audit di naming, abbreviazioni e casi di normalizzazione.
+- commit `cfee331` — estensione del seed PostgreSQL con dataset demo misto, comprendente baseline legacy/non normalizzata e nuovi dati più eterogenei, plausibili e professionalmente più coerenti per audit di naming, abbreviazioni e casi di normalizzazione;
+- commit `39e3bdd` — eliminazione del salto viewport MVC su liste lunghe tramite fragment navigation AJAX e verifica manuale finale positiva sui cinque casi critici: `Ambulatori`, `Parti del corpo`, `Esami`, griglia selezioni e ricerca.
 
-Il prossimo blocco corretto non è ancora la consegna/rilascio.
-
-Dopo il riallineamento docs successivo a `G5.2`, durante una validazione manuale reale dell’host MVC su liste lunghe è emerso un difetto UX aggiuntivo: la viewport torna verso l’alto durante la selezione e la navigazione dei pannelli. È stato aperto un tentativo locale non committato su `src/ExamNavigator.Mvc/Views/Home/Index.cshtml` e `src/ExamNavigator.Mvc/wwwroot/css/site.css`, ma l’esito attuale non è consolidabile: la resa UI è peggiorata e il bug viewport resta aperto.
-
-Il prossimo micro-step corretto è quindi trattare questo stream locale come investigazione non consolidata già congelata da snapshot Git aggiornato, e riprendere con una riduzione o un revert chirurgico del tentativo MVC sui due file sporchi prima di progettare una fix più conservativa; solo dopo si tornerà alla chiusura del residuo `G5.4` sui componenti legacy non runtime-attivi.
+Il prossimo micro-step corretto non è più il recupero della baseline MVC: è `G5.4`, cioè l’audit del residuo legacy `BootstrapNavigationService` in WinForms, prima di ogni eventuale promozione finale del gate `G5`.
 
 ## Documentazione owner
 

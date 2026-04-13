@@ -91,7 +91,7 @@ Stato operativo corrente:
 - `PostgreSqlExamNavigationService` implementa il boundary applicativo sul runtime PostgreSQL locale;
 - il client WinForms è wired al runtime PostgreSQL concreto e verificato anche dopo clean rebuild della runtime closure;
 - l'host MVC è wired al runtime PostgreSQL concreto e verificato con build verde e smoke manuale su host web reale;
-- la V1 mission-critical è formalmente chiusa, ma la promozione resta sospesa da un final conformance/coherence gate pre-consegna; il prossimo blocco corretto non è ancora la preparazione consegna / rilascio / demo V1.
+- la V1 mission-critical è formalmente chiusa, ma la promozione resta sospesa da un final conformance/coherence gate pre-consegna tracciato separatamente nella sezione 8.
 
 ### 8. Final conformance/coherence gate pre-consegna
 Stato: attivo.
@@ -104,9 +104,9 @@ Obiettivo:
 Stato operativo corrente:
 - commit `de03d95` ha chiuso il mismatch presentazionale dei label raw degli ambulatori nell’host MVC;
 - commit `cfee331` ha chiuso il lavoro tecnico di audit su dati demo, naming e abbreviazioni, estendendo il seed PostgreSQL con un dataset misto legacy + professionale utile alla validazione della normalizzazione;
-- durante una validazione manuale reale dell’host MVC su liste lunghe è emerso un difetto UX aggiuntivo: la viewport torna verso l’alto durante la navigazione/selezione;
-- è stato avviato un tentativo locale non committato su `Index.cshtml` e `site.css`, ma l’esito attuale non è soddisfacente: il bug viewport resta aperto e la soluzione sperimentale ha peggiorato la resa UI;
-- per questo motivo il prossimo blocco corretto non è temporaneamente `G5.4`, ma `G5.3`, cioè il congelamento truth-first e la riapertura conservativa della fix viewport MVC prima di tornare all’audit del residuo legacy WinForms.
+- commit `39e3bdd` ha chiuso `G5.3`, sostituendo il full-page reload interattivo dell’host MVC con shell `Index.cshtml` + fragment `_ExamNavigationPage.cshtml`, rendering dual-mode `View/PartialView` nel controller e navigazione incrementale `fetch`-based;
+- `dotnet build ExamNavigator.sln` è rimasto verde e la validazione manuale finale è risultata positiva sui cinque casi critici (`Ambulatori`, `Parti del corpo`, `Esami`, griglia selezioni e ricerca), con eliminazione del salto viewport su liste lunghe;
+- il prossimo blocco corretto non è più il recupero della baseline MVC, ma `G5.4`, cioè l’audit/classificazione del residuo legacy `BootstrapNavigationService` in WinForms prima della chiusura complessiva del gate `G5`.
 
 ### 9. Preparazione consegna / rilascio / demo V1
 Stato: congelata, attivabile solo dopo la chiusura della V1.

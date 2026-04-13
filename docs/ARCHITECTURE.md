@@ -215,15 +215,18 @@ Stato attuale:
 - aggiunto alla solution;
 - referenziato al core condiviso tramite `ExamNavigator.Application`;
 - `Program.cs` registra `PostgreSqlExamNavigationService` come implementazione di `IExamNavigationService`, aggiunge il reference infrastructure dedicato e costruisce la connection string locale PostgreSQL leggendo la password da `EXAM_NAVIGATOR_PG_PASSWORD`;
-- `HomeController` costruisce `ExamNavigationRequest` dai parametri GET, gestisce `ApplySelectionCommand(...)` e mantiene uno stato minimale della griglia selezioni nella pagina;
-- `Index.cshtml` espone una baseline web con ricerca GET, tre sezioni per ambulatori/parti del corpo/esami, pulsante `Conferma selezione`, griglia `Esami selezionati`, selezione riga e azioni `Sposta su` / `Sposta giù` / `Elimina riga`;
+- `HomeController` costruisce `ExamNavigationRequest` dai parametri GET, gestisce `ApplySelectionCommand(...)` e rende la pagina in modalità duale: `Index` completo per le richieste normali e fragment `_ExamNavigationPage` per le richieste AJAX, tramite `RenderNavigationPage(...)` e `IsAjaxNavigationRequest()`;
+- `Index.cshtml` è ora una shell MVC con root `#exam-navigation-root` e script inline basato su `fetch`, `AbortController`, `history.pushState` e `popstate`, che intercetta link interni e submit dei form per aggiornare la pagina in modo incrementale senza full-page reload;
+- `_ExamNavigationPage.cshtml` ospita il markup reale della pagina web: ricerca, tre pannelli di navigazione, conferma selezione, griglia riepilogativa e comandi di riordino/eliminazione;
 - `_Layout.cshtml` e `site.css` forniscono una shell UI/UX dedicata e non più scaffold generica;
-- equivalente al comportamento baseline del client WinForms per navigazione, ricerca, conferma selezione, riordino ed eliminazione riga, ora alimentato dalla stessa sorgente dati PostgreSQL concreta; `HomeController` normalizza inoltre lato host i label degli ambulatori per la navigazione web e per la griglia `Esami selezionati`, senza spostare tale responsabilità nel boundary applicativo o nel layer infrastructure.
+- equivalente al comportamento baseline del client WinForms per navigazione, ricerca, conferma selezione, riordino ed eliminazione riga, ora alimentato dalla stessa sorgente dati PostgreSQL concreta; `HomeController` normalizza inoltre lato host i label degli ambulatori per la navigazione web e per la griglia `Esami selezionati`, senza spostare tale responsabilità nel boundary applicativo o nel layer infrastructure;
+- il passaggio a shell + fragment + fetch incrementale ha eliminato il salto viewport su liste lunghe senza reintrodurre workaround UI invasivi.
 
 Responsabilità futura prevista:
-- conversione web del comportamento desktop senza duplicazione della logica applicativa e futuro aggancio a runtime SQL concreto condiviso.
+- estendere il comportamento web mantenendo la logica applicativa nel boundary condiviso e privilegiando aggiornamenti incrementali a fragment per le interazioni ad alta frequenza.
 
 ### 5. Configurazione `.ini`
+
 Stato attuale:
 - presente come foundation parziale lato host WinForms;
 - la classe statica `Predefiniti_Ricerca` centralizza i default di `SearchText` e `SearchField`;
@@ -259,8 +262,9 @@ Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguib
 - la rimozione della riga selezionata elimina elementi già confermati dalla griglia riepilogativa;
 - lo spostamento su e giù riordina di una posizione la riga selezionata nella griglia riepilogativa mantenendo la selezione sul record spostato;
 - `Program.cs` dell'host MVC registra `PostgreSqlExamNavigationService` nel container DI e costruisce la stessa connection string locale PostgreSQL già adottata dal client WinForms, con password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`;
-- `HomeController` usa `IExamNavigationService` per risolvere la navigazione a cascata, mappa il risultato in `ExamNavigationPageViewModel` e gestisce i comandi web di conferma selezione, riordino ed eliminazione riga;
-- `Index.cshtml` rende una baseline web con ricerca GET, selezione esame, pulsante `Conferma selezione`, griglia `Esami selezionati`, radio di selezione riga e azioni `Sposta su` / `Sposta giù` / `Elimina riga`;
+- `HomeController` usa `IExamNavigationService` per risolvere la navigazione a cascata, mappa il risultato in `ExamNavigationPageViewModel`, gestisce i comandi web di conferma selezione/riordino/eliminazione e rende ora `Index` completo o `_ExamNavigationPage` come fragment in base al tipo di richiesta;
+- `Index.cshtml` funge da shell MVC con root `#exam-navigation-root` e script `fetch`-based che intercetta ricerca GET, navigazione dei pannelli e submit dei form per aggiornare la UI in modo incrementale;
+- `_ExamNavigationPage.cshtml` rende il fragment reale della pagina MVC con ricerca, pannelli, conferma selezione e griglia `Esami selezionati`;
 - `_Layout.cshtml` e `site.css` completano la shell visiva dedicata del host MVC;
 - baseline SQL esiste come script separati di riferimento.
 
@@ -270,7 +274,7 @@ In altre parole, la codebase possiede oggi:
 - baseline dati SQL di riferimento;
 - adapter PostgreSQL concreto eseguibile nel layer infrastructure dedicato;
 - host WinForms compilabile e con navigazione a cascata su runtime PostgreSQL concreto, verificato anche dopo clean rebuild della runtime closure;
-- host MVC compilabile e wired al runtime PostgreSQL concreto, con baseline funzionale equivalente al client WinForms.
+- host MVC compilabile e wired al runtime PostgreSQL concreto, con baseline funzionale equivalente al client WinForms e navigazione incrementale a fragment per le interazioni ad alta frequenza.
 
 Non possiede ancora:
 - test project e quality tooling dedicato ancora assenti dalla codebase;
