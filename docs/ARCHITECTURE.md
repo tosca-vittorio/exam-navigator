@@ -54,7 +54,8 @@ Nota:
 
 ### Sottosistemi richiesti ma non ancora presenti nella codebase
 
-5. test project e quality tooling dedicato.
+5. layer infrastructure SQL Server concreto, necessario per una chiusura letterale della missione;
+6. test project e quality tooling dedicato.
 
 ---
 
@@ -283,16 +284,16 @@ Non possiede ancora:
 - flusso end-to-end finale multi-host sulla persistenza reale;
 - track qualità con test, lint, coverage e smoke automatizzati.
 
-### Flusso target già preparato a livello di boundary, ma non ancora implementato end-to-end
+### Flusso target aggiuntivo per il riallineamento finale SQL Server
 
 Host desktop/web
 -> Application (`IExamNavigationService`)
--> Infrastructure PostgreSQL futura
--> script/query SQL coerenti con schema e seed
+-> Infrastructure SQL Server futura
+-> script/query SQL Server coerenti con schema, seed e query reference
 -> `ExamNavigationResult`
 -> rendering host
 
-Questo flusso è ora implementato end-to-end sui due host applicativi attraverso lo stesso boundary `IExamNavigationService` e lo stesso adapter PostgreSQL concreto.
+Questo flusso aggiuntivo non è ancora implementato end-to-end e costituisce il gap mission-critical residuo tracciato come `G6`.
 
 ---
 
@@ -313,6 +314,7 @@ Rischi reali attuali:
 - test project e quality tooling dedicato ancora assenti dalla codebase;
 - il runtime WinForms dipende ora da una closure di assembly e binding redirects che devono restare governati dal sorgente senza regressioni;
 - la scelta PostgreSQL diverge dal requisito SQL Server originario e richiede documentazione owner rigorosa per restare difendibile;
+- assenza attuale di un adapter/runtime SQL Server concreto, nonostante la missione originale richieda SQL Server come ambiente dati di riferimento; questo mantiene aperto un gap di conformità letterale prima della promozione finale;
 - configurazione `.ini` oggi limitata alla baseline della ricerca e consumata nel client WinForms ormai wired al runtime PostgreSQL concreto;
 - `BootstrapNavigationService` è ancora presente nel client WinForms come fallback legacy in-memory raggiungibile tramite il costruttore parameterless `Form1()`; non coincide con il bootstrap runtime principale, ma la sua presenza può ancora generare ambiguità di audit o lettura architetturale finché non viene governato o rimosso in modo esplicito.
 - nessun progetto test presente;
@@ -323,8 +325,8 @@ Rischi reali attuali:
 
 ## Linee guida per l’estensione del sistema
 
-- l’implementazione concreta di `IExamNavigationService` deve continuare a vivere fuori da `Application`, nel layer `src/ExamNavigator.Infrastructure.PostgreSql`;
-- eventuali esigenze di portabilità o compatibilità SQL Server devono essere trattate come track separata/reference heritage, senza sostituire implicitamente il runtime PostgreSQL attivo;
+- le implementazioni concrete di `IExamNavigationService` devono continuare a vivere fuori da `Application`, in layer infrastructure dedicati (`src/ExamNavigator.Infrastructure.PostgreSql` per il runtime attuale e futuro layer SQL Server dedicato per il riallineamento `G6`);
+- il riallineamento SQL Server tracciato come `G6` deve vivere in un layer infrastructure dedicato e in un wiring esplicito degli host, senza alterare implicitamente il runtime PostgreSQL attuale finché `G6` non è chiuso;
 - il futuro host WinForms deve orchestrare il caso d’uso tramite `Application`;
 - l'host MVC riusa lo stesso perimetro applicativo del client WinForms, evitando duplicazione di logica;
 - il binding riflessivo `.ini` verso `Predefiniti_*` deve restare un boundary infrastrutturale/configurativo, non nel dominio;

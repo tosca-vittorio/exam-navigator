@@ -189,6 +189,8 @@ Stato corrente della missione principale:
 6. blocco ricerca desktop baseline (`wiring` UI) → completato;
 7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC archiviata come baseline demo con host dedicato (`F0`), primo riallineamento funzionale di controller/view model (`F1`) e UI web equivalente con griglia selezioni e polish (`F2`); bootstrap runtime locale PostgreSQL documentato e consolidato; blocchi `G1`-`G4` completati con introduzione di `ExamNavigator.Infrastructure.PostgreSql`, del service concreto `PostgreSqlExamNavigationService`, del wiring runtime concreto di entrambi gli host WinForms e MVC e della verifica formale finale di chiusura V1; la divergenza rispetto al requisito SQL Server originario resta esplicitamente governata nella documentazione owner.
 
+Il gap residuo per la chiusura letterale della missione è ora tracciato come `G6`: introduzione e wiring di un runtime SQL Server concreto.
+
 ## Perimetro V1
 
 La V1 mission-critical coincide esclusivamente con i requisiti funzionali e non funzionali della mail, congelati nel freeze locale dei requisiti.
@@ -204,7 +206,7 @@ Tutto ciò che non rientra in questo perimetro resta post-V1 oppure EXTRA congel
 
 ## Stato operativo corrente (truth-first)
 
-La V1 mission-critical resta formalmente chiusa nei documenti owner al checkpoint `3897979`, ma la promozione verso tag / merge su `main` / release / consegna non è ancora autorizzata.
+La V1 mission-critical era stata formalmente chiusa nei documenti owner al checkpoint `3897979`, ma il successivo riallineamento truth-first ha classificato un gap residuo di conformità letterale verso il requisito SQL Server, ora tracciato come `G6`. Per questo motivo, la promozione verso tag / merge su `main` / release / consegna non è ancora autorizzata.
 
 Dopo `G5.1` e `G5.2`, la validazione manuale reale dell’host MVC su liste lunghe ha confermato un difetto UX aggiuntivo: la viewport tornava verso l’alto durante navigazione, ricerca e comandi della griglia. Il tentativo locale iniziale basato su scroll manuale e marcatori `data-viewport-*` è stato classificato come investigazione non consolidata e poi rimosso.
 
@@ -221,9 +223,11 @@ Fix consolidati di questo gate:
 
 Il gate `G5.4` è stato chiarito truth-first: `BootstrapNavigationService` non è il runtime principale del client WinForms, ma un fallback legacy in-memory ancora raggiungibile tramite il costruttore parameterless `Form1()`. Il bootstrap reale del client desktop continua a passare da `Program.Main()` verso `PostgreSqlExamNavigationService` e poi verso `new Form1(navigationService)`.
 
-Con questa classificazione il gate `G5` risulta chiuso a docs sync consolidato; il blocco attivo corretto diventa `H`, cioè la preparazione controllata della consegna/demo V1, senza anticipare ancora merge su `main`, tag o release.
+Con questa classificazione il gate `G5` risulta chiuso a docs sync consolidato. I preflight `H0`-`H2` restano validi come lavoro preparatorio di demo/consegna, ma non sbloccano ancora la promozione finale.
 
-Alla data attuale (13-04-2026), il formato di demo/consegna più difendibile è un **bundle demo locale controllato**, non ancora una release formale né un `.exe` standalone autosufficiente. La superficie oggi realmente materializzata dal repository è composta da: client WinForms come host dimostrativo primario, host MVC come dimostrazione secondaria della convertibilità web, artefatti database PostgreSQL locali per schema/seed/runtime bootstrap e baseline SQL Server mantenuta come reference heritage/importabile.
+La baseline funzionale attuale è solida, verificata e dimostrabile tramite bundle demo locale controllato basato su PostgreSQL. Tuttavia, la chiusura letterale della missione non è ancora autorizzata, perché il repository non espone ancora un runtime SQL Server concreto wired agli host applicativi.
+
+Il gap mission-critical residuo è ora classificato truth-first come `G6 — SQL Server runtime conformance closure`. Finché `G6` non sarà chiuso, il bundle PostgreSQL resta una baseline demo locale difendibile ma non ancora il punto finale di rilascio pienamente aderente alla formulazione letterale della missione.
 
 ## Documentazione owner
 

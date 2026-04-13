@@ -521,7 +521,7 @@ Quando la soluzione sarà più matura:
   - griglia selezioni (`Sposta su` / `Sposta giù` / `Elimina riga`)
   - ricerca (`Cerca` / `Vedi tutti`)
 
-**Nota operativa:** `G5.4` è ora chiuso. Il gate `G5` risulta completato e il prossimo blocco corretto diventa `H`, cioè la preparazione controllata della consegna / demo V1, senza anticipare automaticamente merge su `main`, tag o release.
+**Nota operativa:** `G5.4` è ora chiuso. Il gate `G5` risulta completato; i preflight di demo/consegna restano validi, ma il prossimo blocco mission-critical corretto diventa `G6`, cioè la chiusura del gap residuo sul runtime SQL Server concreto, senza anticipare ancora merge su `main`, tag o release.
 
 ### ✅ G5.4 — Audit/classificazione del fallback legacy `BootstrapNavigationService` in WinForms
 **Obiettivo:** verificare e classificare correttamente il `BootstrapNavigationService` rimasto nel client WinForms, chiarendo se si tratti di codice morto, residuo storico o fallback legacy ancora raggiungibile, così da eliminare ambiguità architetturali e di revisione prima della promozione finale della baseline.
@@ -534,13 +534,39 @@ Quando la soluzione sarà più matura:
 - classificazione finale: `BootstrapNavigationService` è un fallback legacy in-memory ancora raggiungibile, non il runtime principale del client desktop e non puro codice morto;
 - `dotnet build ExamNavigator.sln` resta verde dopo l’audit.
 
-**Esito del gate `G5`:** tutti i sotto-step `G5.1`-`G5.4` risultano chiusi. Il prossimo blocco corretto diventa `H`, cioè la preparazione controllata della consegna / demo V1, senza anticipare automaticamente merge su `main`, tag o release.
+**Esito del gate `G5`:** tutti i sotto-step `G5.1`-`G5.4` risultano chiusi. I preflight `H0`-`H2` restano validi come preparazione della demo, ma il prossimo blocco mission-critical corretto diventa `G6`, cioè l’introduzione di un runtime SQL Server concreto, senza anticipare automaticamente merge su `main`, tag o release.
 
 ---
 
-## H — 🟡 Preparazione consegna / rilascio / demo V1
+
+## G6 — 🟡 SQL Server runtime conformance closure
+
+**Obiettivo:** chiudere il gap residuo rispetto alla formulazione letterale della missione introducendo un runtime SQL Server concreto, così da sbloccare in modo pieno la chiusura V1 e la successiva promozione del blocco `H`.
+
+**DoD (G6):**
+- layer infrastructure SQL Server concreto presente;
+- host WinForms wired a SQL Server concreto;
+- host MVC wired allo stesso runtime SQL Server concreto, oppure eventuale limite residuo classificato in modo esplicito e difendibile;
+- la chiusura mission-critical non dipende più soltanto dalla divergenza PostgreSQL documentata;
+- il blocco `H` risulta realmente sbloccato per merge/tag/release.
+
+### ⬜ G6.0 — Preflight adapter SQL Server concreto
+**Obiettivo:** congelare il boundary tecnico corretto per introdurre un adapter SQL Server concreto senza rompere `Domain`, `Application` e gli host già stabilizzati.
+
+**Evidenze attese (truth-first):**
+- audit dei contratti `IExamNavigationService` e dei request/result model;
+- audit degli artefatti `database/sql/*`;
+- classificazione del provider .NET SQL Server più coerente con lo stack corrente;
+- definizione del wiring target per WinForms e MVC;
+- verifica esplicita che il blocco `H` resti sospeso fino alla chiusura di `G6`.
+
+---
+
+## H — 🟡 Preparazione consegna / rilascio / demo V1 (preflight svolto, blocco sospeso fino a chiusura di G6)
 
 **Obiettivo:** preparare il rilascio della baseline V1 nel formato più opportuno, con tag dedicato, merge su `main`, release e materiale di demo coerente con la richiesta cliente.
+
+**Nota di stato:** i sotto-step `H0`-`H2` restano validi come preflight di consegna/demo, ma `H` non è il blocco attivo corrente. La prosecuzione verso tag, merge su `main`, release e consegna finale resta sospesa fino alla chiusura di `G6`.
 
 **Note operative congelate:**
 - valutare il formato di consegna più opportuno (`.exe`, script SQL, bundle demo, eventuale Docker solo se realmente utile);
@@ -596,7 +622,7 @@ Quando la soluzione sarà più matura:
 - creare domande plausibili sulla base del codice realizzato;
 - descrivere ideazione, progettazione, analisi, scelte e architettura;
 - descrivere moduli, responsabilità e mansioni;
-- analizzare e spiegare `database/postgresql/*.sql` + relazioni ed entità + teoria del backend sviluppato;
+- analizzare e spiegare `database/sql/*.sql`, `database/postgresql/*.sql`, relazioni ed entità, e la logica del backend sviluppato con particolare attenzione al riallineamento finale verso SQL Server;
 - spiegare architettura, pattern e scelte riconducibili;
 - ripassare MVC usando il codice della V1 come caso di studio;
 - chiarire esempi base su controller MVC e sui concetti di stato in UI moderne.

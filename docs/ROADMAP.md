@@ -18,11 +18,11 @@ Milestone già consolidate:
 9. final conformance/coherence gate pre-consegna sulla baseline V1 formalmente congelata.
 
 Milestone attiva:
-10. preparazione consegna / rilascio / demo V1.
+9.bis. riallineamento finale al requisito SQL Server prima della consegna.
 
 Milestone successive:
-11. preparazione colloquio #2;
-12. EXTRA e sviluppi futuri post-colloquio.
+10. preparazione colloquio #2;
+11. EXTRA e sviluppi futuri post-colloquio.
 
 ## Sequenza strategica mission-critical
 
@@ -107,10 +107,26 @@ Stato operativo corrente:
 - commit `39e3bdd` ha chiuso `G5.3`, sostituendo il full-page reload interattivo dell’host MVC con shell `Index.cshtml` + fragment `_ExamNavigationPage.cshtml`, rendering dual-mode `View/PartialView` nel controller e navigazione incrementale `fetch`-based;
 - `dotnet build ExamNavigator.sln` è rimasto verde e la validazione manuale finale è risultata positiva sui cinque casi critici (`Ambulatori`, `Parti del corpo`, `Esami`, griglia selezioni e ricerca), con eliminazione del salto viewport su liste lunghe;
 - l'audit `G5.4` ha classificato `BootstrapNavigationService` WinForms come fallback legacy in-memory ancora raggiungibile tramite il costruttore parameterless `Form1()`, ma non parte del bootstrap runtime principale, che passa da `Program.Main()` a `PostgreSqlExamNavigationService`;
-- con questa classificazione truth-first il gate `G5` risulta chiuso a documentazione riallineata e il prossimo blocco corretto diventa `H`, cioè la preparazione controllata della consegna/demo V1, senza anticipare ancora merge su `main`, tag o release.
+- con questa classificazione truth-first il gate `G5` risulta chiuso a documentazione riallineata; i preflight `H0`-`H2` restano validi come preparazione della demo, ma il prossimo blocco mission-critical corretto diventa `9.bis / G6`, cioè il riallineamento finale al requisito SQL Server, senza anticipare ancora merge su `main`, tag o release.
+
+
+### 9.bis. SQL Server runtime conformance closure
+Stato: attiva.
+
+Obiettivo:
+- introdurre un runtime SQL Server concreto coerente con la missione originale;
+- collegare gli host applicativi a tale runtime;
+- chiudere il gap residuo tra baseline demo PostgreSQL difendibile e aderenza letterale alla richiesta;
+- sbloccare solo dopo questo punto la preparazione finale della consegna.
+
+Stato operativo corrente:
+- il repository espone oggi un runtime concreto PostgreSQL e una baseline SQL Server di riferimento;
+- il bundle demo locale controllato e il relativo contratto operativo restano validi come lavoro preparatorio;
+- tag, merge su `main` e release non sono ancora autorizzati;
+- il prossimo avanzamento corretto è l’introduzione dell’adapter SQL Server concreto.
 
 ### 9. Preparazione consegna / rilascio / demo V1
-Stato: attiva.
+Stato: sospesa fino alla chiusura di `G6`.
 
 Obiettivo:
 - preparare il formato di consegna più opportuno (`.exe`, script SQL, bundle demo, eventuale Docker solo se realmente utile);
@@ -119,11 +135,11 @@ Obiettivo:
 - congelare il punto di rilascio della richiesta cliente prima di ulteriori ottimizzazioni.
 
 Stato operativo corrente:
-- il preflight di `H0` ha classificato come formato oggi più difendibile un **bundle demo locale controllato**, non ancora una release formale;
-- la demo primaria più solida è il client WinForms già materializzato con runtime closure locale;
+- i preflight `H0`, `H1` e `H2` hanno già chiarito formato demo, superficie reale del bundle e contratto operativo minimo della demo;
+- la demo primaria più solida resta il client WinForms già materializzato con runtime closure locale;
 - l'host MVC resta parte della superficie dimostrativa come prova della convertibilità web già concretamente implementata;
 - gli artefatti `database/postgresql/*` costituiscono il bootstrap runtime locale attivo, mentre `database/sql/*` resta il tracciato reference heritage/importabile rispetto al requisito SQL Server;
-- tag, merge su `main` e release restano esplicitamente differiti ai sotto-step successivi del blocco `H`.
+- tag, merge su `main` e release restano sospesi fino alla chiusura di `G6`, cioè fino all’introduzione di un runtime SQL Server concreto.
 
 ### 10. Preparazione colloquio #2
 Stato: congelata, attivabile solo dopo la chiusura della V1 e la preparazione della consegna.
