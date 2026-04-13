@@ -1,7 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **post-G5 controlled delivery/demo preparation on the formally closed V1 baseline; no automatic promotion to tag/merge/release until the H delivery path is explicitly governed**
+> Scope corrente: **post-G5 baseline with H demo/delivery preflight completed, but final promotion still suspended until G6 closes the residual SQL Server runtime conformance gap**
+
+#### G6 — SQL Server runtime conformance closure
+> Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`15121d2` — docs(project): reopen mission-critical flow to sql server runtime conformance**
+  - **Type:** CHANGED · **Categoria:** Docs/Governance
+  - **Cosa cambia:** aggiorna `README.md`, `docs/TIMELINE.md`, `docs/ROADMAP.md` e `docs/ARCHITECTURE.md` per riclassificare truth-first il gap residuo della missione come `G6`, cioè introduzione di un runtime SQL Server concreto prima della promozione finale.
+  - **Impatto:** sospende il blocco `H` come percorso già preflightrato ma non ancora sbloccato, impedisce merge/tag/release prematuri e riallinea la governance al fatto che il bundle PostgreSQL è oggi una baseline demo difendibile ma non ancora la chiusura letterale della missione.
 
 #### G5 — Final conformance & coherence gate pre-consegna
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
