@@ -141,6 +141,32 @@ dotnet build ExamNavigator.sln
 
 Lint, test unitari, coverage e smoke automatizzati restano tracciati come EXTRA non ancora introdotti nella codebase.
 
+## Perimetro del bundle demo locale controllato
+
+Alla data attuale, il bundle demo locale controllato è composto da questi elementi realmente materializzati nel repository e nei build output locali:
+
+- **host demo primario:** `src/ExamNavigator.WinForms/bin/Debug/ExamNavigator.WinForms.exe` con relativa runtime closure `.NET Framework` / `Npgsql`;
+- **host demo secondario:** `src/ExamNavigator.Mvc/bin/Debug/net9.0/ExamNavigator.Mvc.exe` con relativi artifact runtime ASP.NET Core MVC;
+- **bootstrap runtime locale attivo:** `database/postgresql/001_schema.sql`, `database/postgresql/002_seed.sql`, `database/postgresql/postgresql.md`;
+- **reference heritage/importabile SQL Server:** `database/sql/001_schema.sql`, `database/sql/002_seed.sql`, `database/sql/003_navigation_queries.sql`;
+- **contratto operativo di demo:** prerequisiti, comandi di avvio e checklist di verifica manuale documentati in questo `README.md`.
+
+Questo perimetro non coincide ancora con una release formale, con un installer o con un archivio di consegna definitivo: rappresenta la superficie demo oggi più difendibile e immediatamente eseguibile in ambiente locale controllato.
+
+## Sequenza operativa raccomandata per la demo
+
+Per una demo locale controllata, il flusso raccomandato è il seguente:
+
+1. verificare che PostgreSQL locale sia disponibile;
+2. applicare schema e seed del bootstrap runtime locale PostgreSQL;
+3. valorizzare la variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`;
+4. avviare **prima** il client WinForms come host demo primario;
+5. verificare caricamento iniziale, cascata, ricerca, conferma selezione, riordino ed eliminazione nella griglia;
+6. avviare **poi** l'host MVC come dimostrazione secondaria della convertibilità web già implementata;
+7. verificare nell'host MVC gli stessi punti funzionali essenziali, con attenzione anche all'assenza di full-page reload e salto viewport durante le interazioni.
+
+Questo ordine è quello oggi più difendibile perché mostra prima l'host desktop richiesto dalla missione e poi l'host web come estensione concreta della stessa baseline applicativa e dello stesso runtime PostgreSQL.
+
 ## Privacy e fonti requisito
 
 Le fonti requisito originali e il freeze requisito sorgente sono mantenuti localmente in:
@@ -195,7 +221,9 @@ Fix consolidati di questo gate:
 
 Il gate `G5.4` è stato chiarito truth-first: `BootstrapNavigationService` non è il runtime principale del client WinForms, ma un fallback legacy in-memory ancora raggiungibile tramite il costruttore parameterless `Form1()`. Il bootstrap reale del client desktop continua a passare da `Program.Main()` verso `PostgreSqlExamNavigationService` e poi verso `new Form1(navigationService)`.
 
-Con questa classificazione il gate `G5` risulta chiudibile a docs sync consolidato; il prossimo micro-step corretto diventa `H`, cioè la preparazione controllata della consegna/demo V1, senza anticipare ancora merge su `main`, tag o release.
+Con questa classificazione il gate `G5` risulta chiuso a docs sync consolidato; il blocco attivo corretto diventa `H`, cioè la preparazione controllata della consegna/demo V1, senza anticipare ancora merge su `main`, tag o release.
+
+Alla data attuale (13-04-2026), il formato di demo/consegna più difendibile è un **bundle demo locale controllato**, non ancora una release formale né un `.exe` standalone autosufficiente. La superficie oggi realmente materializzata dal repository è composta da: client WinForms come host dimostrativo primario, host MVC come dimostrazione secondaria della convertibilità web, artefatti database PostgreSQL locali per schema/seed/runtime bootstrap e baseline SQL Server mantenuta come reference heritage/importabile.
 
 ## Documentazione owner
 

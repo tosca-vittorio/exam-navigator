@@ -538,7 +538,7 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## H — ⬜ Preparazione consegna / rilascio / demo V1
+## H — 🟡 Preparazione consegna / rilascio / demo V1
 
 **Obiettivo:** preparare il rilascio della baseline V1 nel formato più opportuno, con tag dedicato, merge su `main`, release e materiale di demo coerente con la richiesta cliente.
 
@@ -547,6 +547,42 @@ Quando la soluzione sarà più matura:
 - creare tag dedicato alla consegna cliente;
 - eseguire merge + release su `main`;
 - usare questo punto come freeze del rilascio cliente prima di ulteriori ottimizzazioni su `development`.
+
+### ✅ H0 — Preflight formato consegna/demo V1
+**Obiettivo:** classificare in modo truth-first il formato di consegna/demo oggi realmente difendibile, sulla base della superficie già materializzata dal repository, senza anticipare tag, merge su `main` o release.
+
+**Evidenze (truth-first):**
+- working tree pulita e branch `development` riallineato a `origin/development`;
+- `dotnet build ExamNavigator.sln` verde sulla baseline corrente;
+- runtime WinForms reale materializzato in `src/ExamNavigator.WinForms/bin/Debug/` con `ExamNavigator.WinForms.exe` e relativa runtime closure;
+- artefatti database presenti sia in `database/postgresql/` sia in `database/sql/`;
+- `README.md` già allineato al fatto che `G5` è chiuso e che il blocco attivo corretto è `H`.
+
+**Esito:** il formato oggi più difendibile è un **bundle demo locale controllato** composto da repository, guida di run, bootstrap database PostgreSQL locale, host WinForms come demo primaria e host MVC come dimostrazione secondaria della convertibilità web. Non risultano ancora autorizzati tag, merge su `main`, release o consegna finale automatica.
+
+### ✅ H1 — Censimento della superficie del bundle demo locale
+**Obiettivo:** censire in modo esplicito i componenti reali che compongono la demo locale controllata, distinguendo host primario, host secondario, bootstrap runtime attivo e reference heritage.
+
+**Evidenze (truth-first):**
+- `src/ExamNavigator.WinForms/bin/Debug/` contiene `ExamNavigator.WinForms.exe`, `ExamNavigator.WinForms.exe.config`, `ExamNavigator.Infrastructure.PostgreSql.dll`, `Npgsql.dll` e la runtime closure necessaria alla demo desktop;
+- `src/ExamNavigator.Mvc/bin/Debug/net9.0/` contiene `ExamNavigator.Mvc.exe`, `ExamNavigator.Mvc.dll`, `ExamNavigator.Mvc.runtimeconfig.json`, `ExamNavigator.Mvc.deps.json`, `appsettings.json`, `appsettings.Development.json` e l'adapter PostgreSQL concreto per la demo web;
+- `database/postgresql/` contiene `001_schema.sql`, `002_seed.sql` e `postgresql.md` come bootstrap runtime locale attivo;
+- `database/sql/` contiene `001_schema.sql`, `002_seed.sql` e `003_navigation_queries.sql` come tracciato SQL Server di riferimento/importabilità;
+- `README.md` contiene prerequisiti, comandi di run e checklist minima di verifica manuale per i due host.
+
+**Esito:** il bundle demo locale controllato risulta oggi composto da host WinForms primario, host MVC secondario, bootstrap PostgreSQL locale attivo, reference SQL Server e contratto operativo di run/verifica manuale; non risultano ancora materializzati tag, release, installer o archivio finale di consegna.
+
+### ✅ H2 — Preflight del contratto operativo della demo
+**Obiettivo:** esplicitare il flusso operativo minimo della demo locale controllata, chiarendo prerequisiti reali, ordine di bootstrap e sequenza raccomandata di presentazione dei due host.
+
+**Evidenze (truth-first):**
+- `README.md` richiede PostgreSQL locale disponibile, schema/seed applicati e variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`;
+- `README.md` documenta i comandi di avvio sia dell'host WinForms sia dell'host MVC;
+- `database/postgresql/postgresql.md` conferma il ruolo di PostgreSQL come runtime locale scelto e documenta i parametri di riferimento del setup tecnico;
+- `git grep -n "EXAM_NAVIGATOR_PG_PASSWORD"` conferma che entrambi gli host leggono la password dalla stessa variabile ambiente;
+- la classificazione del bundle demo già consolidata in `H0` e `H1` rende difendibile una sequenza di demo con WinForms primario e MVC secondario.
+
+**Esito:** il contratto operativo minimo della demo risulta: bootstrap PostgreSQL locale, impostazione della variabile ambiente condivisa, avvio del client WinForms come host primario e successiva verifica dell'host MVC come prova secondaria della convertibilità web sulla stessa baseline runtime.
 
 ---
 
@@ -560,7 +596,7 @@ Quando la soluzione sarà più matura:
 - creare domande plausibili sulla base del codice realizzato;
 - descrivere ideazione, progettazione, analisi, scelte e architettura;
 - descrivere moduli, responsabilità e mansioni;
-- analizzare e spiegare `database/sql/*.sql`;
+- analizzare e spiegare `database/postgresql/*.sql` + relazioni ed entità + teoria del backend sviluppato;
 - spiegare architettura, pattern e scelte riconducibili;
 - ripassare MVC usando il codice della V1 come caso di studio;
 - chiarire esempi base su controller MVC e sui concetti di stato in UI moderne.

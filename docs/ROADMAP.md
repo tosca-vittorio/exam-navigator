@@ -118,6 +118,13 @@ Obiettivo:
 - eseguire merge su `main` e release di baseline;
 - congelare il punto di rilascio della richiesta cliente prima di ulteriori ottimizzazioni.
 
+Stato operativo corrente:
+- il preflight di `H0` ha classificato come formato oggi più difendibile un **bundle demo locale controllato**, non ancora una release formale;
+- la demo primaria più solida è il client WinForms già materializzato con runtime closure locale;
+- l'host MVC resta parte della superficie dimostrativa come prova della convertibilità web già concretamente implementata;
+- gli artefatti `database/postgresql/*` costituiscono il bootstrap runtime locale attivo, mentre `database/sql/*` resta il tracciato reference heritage/importabile rispetto al requisito SQL Server;
+- tag, merge su `main` e release restano esplicitamente differiti ai sotto-step successivi del blocco `H`.
+
 ### 10. Preparazione colloquio #2
 Stato: congelata, attivabile solo dopo la chiusura della V1 e la preparazione della consegna.
 

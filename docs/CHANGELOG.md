@@ -1,10 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **post-freeze final conformance/coherence gate on the formally closed V1 baseline; no promotion to tag/merge/release until residual presentation/data coherence gaps are closed**
+> Scope corrente: **post-G5 controlled delivery/demo preparation on the formally closed V1 baseline; no automatic promotion to tag/merge/release until the H delivery path is explicitly governed**
 
 #### G5 — Final conformance & coherence gate pre-consegna
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`1af6bf0` — docs(project): realign owner docs after winforms legacy fallback audit**
+  - **Type:** CHANGED · **Categoria:** Docs/Governance
+  - **Cosa cambia:** aggiorna `README.md`, `docs/TIMELINE.md`, `docs/ROADMAP.md` e `docs/ARCHITECTURE.md` per classificare `BootstrapNavigationService` WinForms come fallback legacy in-memory ancora raggiungibile tramite il costruttore parameterless `Form1()`, ma non coincidente con il bootstrap runtime principale basato su `PostgreSqlExamNavigationService`.
+  - **Impatto:** chiude il docs sync gate successivo all’audit `G5.4`, elimina l’ambiguità documentale sul residuo legacy WinForms e riallinea la documentazione owner al fatto che il gate `G5` è chiuso e che il prossimo blocco corretto diventa `H`, senza anticipare ancora merge su `main`, tag o release.
 
 - **`39e3bdd` — fix(mvc): replace full-page reload with ajax fragment navigation**
   - **Type:** FIXED · **Categoria:** MVC/UX
