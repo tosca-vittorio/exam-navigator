@@ -472,14 +472,14 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## G5 — 🟡 Final conformance & coherence gate pre-consegna
+## G5 — ☑️ Final conformance & coherence gate pre-consegna
 
 **Obiettivo:** verificare e chiudere i mismatch residui tra baseline formalmente chiusa e qualità reale di consegna, con focus su coerenza presentazionale, professionalità dei dati demo, chiarezza dei testi UI e assenza di ambiguità residue prima di ogni promozione finale.
 
 **DoD (G5):**
 - mismatch presentazionali cross-host verificati e corretti dove realmente presenti;
 - dati demo, naming e abbreviazioni rivalutati in termini di coerenza professionale;
-- residui legacy non runtime-attivi auditati e classificati correttamente;
+- residui legacy / fallback impliciti auditati e classificati correttamente;
 - nessuna promozione verso `main`, tag o release finché il gate non è formalmente chiuso.
 
 ### ✅ G5.1 — Normalizzazione label ambulatori lato MVC
@@ -521,12 +521,23 @@ Quando la soluzione sarà più matura:
   - griglia selezioni (`Sposta su` / `Sposta giù` / `Elimina riga`)
   - ricerca (`Cerca` / `Vedi tutti`)
 
-**Nota operativa:** `G5.3` è chiuso. Il prossimo micro-step corretto del gate `G5` è ora `G5.4`, cioè l’audit/classificazione del residuo legacy `BootstrapNavigationService` in WinForms.
+**Nota operativa:** `G5.4` è ora chiuso. Il gate `G5` risulta completato e il prossimo blocco corretto diventa `H`, cioè la preparazione controllata della consegna / demo V1, senza anticipare automaticamente merge su `main`, tag o release.
 
-### ⬜ G5.4 — Audit residuo legacy `BootstrapNavigationService` in WinForms
-**Obiettivo:** verificare e classificare correttamente il `BootstrapNavigationService` rimasto in `src/ExamNavigator.WinForms/Program.cs` come residuo storico non runtime-attivo, evitando ambiguità architetturali o di revisione.
+### ✅ G5.4 — Audit/classificazione del fallback legacy `BootstrapNavigationService` in WinForms
+**Obiettivo:** verificare e classificare correttamente il `BootstrapNavigationService` rimasto nel client WinForms, chiarendo se si tratti di codice morto, residuo storico o fallback legacy ancora raggiungibile, così da eliminare ambiguità architetturali e di revisione prima della promozione finale della baseline.
+
+**Evidenze (truth-first):**
+- audit eseguito su `src/ExamNavigator.WinForms/Program.cs` e `src/ExamNavigator.WinForms/Form1.cs`;
+- `Program.Main()` costruisce `PostgreSqlExamNavigationService` e avvia il client desktop con `Application.Run(new Form1(navigationService))`, confermando che il bootstrap runtime primario del client WinForms è PostgreSQL concreto;
+- `Form1()` mantiene però ancora un costruttore parameterless che delega a `this(new BootstrapNavigationService())`;
+- `git grep -n "BootstrapNavigationService"` conferma che il servizio legacy è ancora definito nel progetto WinForms e ancora raggiungibile tramite il costruttore parameterless del form, pur non essendo il path di bootstrap principale;
+- classificazione finale: `BootstrapNavigationService` è un fallback legacy in-memory ancora raggiungibile, non il runtime principale del client desktop e non puro codice morto;
+- `dotnet build ExamNavigator.sln` resta verde dopo l’audit.
+
+**Esito del gate `G5`:** tutti i sotto-step `G5.1`-`G5.4` risultano chiusi. Il prossimo blocco corretto diventa `H`, cioè la preparazione controllata della consegna / demo V1, senza anticipare automaticamente merge su `main`, tag o release.
 
 ---
+
 ## H — ⬜ Preparazione consegna / rilascio / demo V1
 
 **Obiettivo:** preparare il rilascio della baseline V1 nel formato più opportuno, con tag dedicato, merge su `main`, release e materiale di demo coerente con la richiesta cliente.

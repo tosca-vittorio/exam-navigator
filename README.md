@@ -193,7 +193,9 @@ Fix consolidati di questo gate:
 - commit `cfee331` — estensione del seed PostgreSQL con dataset demo misto, comprendente baseline legacy/non normalizzata e nuovi dati più eterogenei, plausibili e professionalmente più coerenti per audit di naming, abbreviazioni e casi di normalizzazione;
 - commit `39e3bdd` — eliminazione del salto viewport MVC su liste lunghe tramite fragment navigation AJAX e verifica manuale finale positiva sui cinque casi critici: `Ambulatori`, `Parti del corpo`, `Esami`, griglia selezioni e ricerca.
 
-Il prossimo micro-step corretto non è più il recupero della baseline MVC: è `G5.4`, cioè l’audit del residuo legacy `BootstrapNavigationService` in WinForms, prima di ogni eventuale promozione finale del gate `G5`.
+Il gate `G5.4` è stato chiarito truth-first: `BootstrapNavigationService` non è il runtime principale del client WinForms, ma un fallback legacy in-memory ancora raggiungibile tramite il costruttore parameterless `Form1()`. Il bootstrap reale del client desktop continua a passare da `Program.Main()` verso `PostgreSqlExamNavigationService` e poi verso `new Form1(navigationService)`.
+
+Con questa classificazione il gate `G5` risulta chiudibile a docs sync consolidato; il prossimo micro-step corretto diventa `H`, cioè la preparazione controllata della consegna/demo V1, senza anticipare ancora merge su `main`, tag o release.
 
 ## Documentazione owner
 

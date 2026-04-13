@@ -15,12 +15,12 @@ Milestone già consolidate:
 6. ricerca e configurazione `.ini`.
 7. conversione web MVC baseline funzionale demo archiviata.
 8. chiusura V1 mission-critical su PostgreSQL runtime concreto, con divergenza SQL Server esplicitamente governata.
+9. final conformance/coherence gate pre-consegna sulla baseline V1 formalmente congelata.
 
 Milestone attiva:
-9. final conformance/coherence gate pre-consegna sulla baseline V1 già formalmente congelata.
+10. preparazione consegna / rilascio / demo V1.
 
 Milestone successive:
-10. preparazione consegna / rilascio / demo V1;
 11. preparazione colloquio #2;
 12. EXTRA e sviluppi futuri post-colloquio.
 
@@ -94,7 +94,7 @@ Stato operativo corrente:
 - la V1 mission-critical è formalmente chiusa, ma la promozione resta sospesa da un final conformance/coherence gate pre-consegna tracciato separatamente nella sezione 8.
 
 ### 8. Final conformance/coherence gate pre-consegna
-Stato: attivo.
+Stato: completato.
 
 Obiettivo:
 - verificare in modo rigoroso che la baseline V1 formalmente chiusa sia anche coerente e professionale in termini di dati demo, naming, abbreviazioni, resa UI e comportamento percepito;
@@ -106,10 +106,11 @@ Stato operativo corrente:
 - commit `cfee331` ha chiuso il lavoro tecnico di audit su dati demo, naming e abbreviazioni, estendendo il seed PostgreSQL con un dataset misto legacy + professionale utile alla validazione della normalizzazione;
 - commit `39e3bdd` ha chiuso `G5.3`, sostituendo il full-page reload interattivo dell’host MVC con shell `Index.cshtml` + fragment `_ExamNavigationPage.cshtml`, rendering dual-mode `View/PartialView` nel controller e navigazione incrementale `fetch`-based;
 - `dotnet build ExamNavigator.sln` è rimasto verde e la validazione manuale finale è risultata positiva sui cinque casi critici (`Ambulatori`, `Parti del corpo`, `Esami`, griglia selezioni e ricerca), con eliminazione del salto viewport su liste lunghe;
-- il prossimo blocco corretto non è più il recupero della baseline MVC, ma `G5.4`, cioè l’audit/classificazione del residuo legacy `BootstrapNavigationService` in WinForms prima della chiusura complessiva del gate `G5`.
+- l'audit `G5.4` ha classificato `BootstrapNavigationService` WinForms come fallback legacy in-memory ancora raggiungibile tramite il costruttore parameterless `Form1()`, ma non parte del bootstrap runtime principale, che passa da `Program.Main()` a `PostgreSqlExamNavigationService`;
+- con questa classificazione truth-first il gate `G5` risulta chiuso a documentazione riallineata e il prossimo blocco corretto diventa `H`, cioè la preparazione controllata della consegna/demo V1, senza anticipare ancora merge su `main`, tag o release.
 
 ### 9. Preparazione consegna / rilascio / demo V1
-Stato: congelata, attivabile solo dopo la chiusura della V1.
+Stato: attiva.
 
 Obiettivo:
 - preparare il formato di consegna più opportuno (`.exe`, script SQL, bundle demo, eventuale Docker solo se realmente utile);

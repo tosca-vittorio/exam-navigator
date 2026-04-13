@@ -202,6 +202,7 @@ Responsabilità correnti:
 Stato attuale:
 - presente come host desktop wired al boundary `Application`;
 - il runtime entrypoint costruisce ora `PostgreSqlExamNavigationService` con connection string locale PostgreSQL composta in `Program.cs` e password letta da variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`;
+- `Form1` mantiene ancora un costruttore parameterless che delega a `BootstrapNavigationService`; questo path costituisce un fallback legacy in-memory ancora raggiungibile, ma non il bootstrap runtime principale del client desktop;
 - il `.csproj` governa la runtime closure necessaria a `Npgsql` / `.NET Standard` e `App.config` contiene i binding redirects espliciti necessari all'esecuzione WinForms su .NET Framework 4.8;
 - contiene caricamento iniziale dei tre pannelli, aggiornamento a cascata da ambulatorio a parte del corpo a esami, ricerca testuale wired tramite pulsante `Cerca`, tasto Invio e reset `Vedi tutti`, oltre alla conferma selezione con append alla griglia su runtime PostgreSQL concreto;
 - contiene anche `Predefiniti_Ricerca` come primo contenitore statico dei default di `SearchText` e `SearchField`;
@@ -251,6 +252,7 @@ Il flusso realmente implementato oggi è un baseline runtime parziale ma eseguib
 - `ExamNavigator.WinForms` referenzia `ExamNavigator.Application`;
 - `ExamNavigator.Mvc` referenzia `ExamNavigator.Application`;
 - `Program.cs` del client WinForms carica, se presente, un file `.ini`, applica i default verso `Predefiniti_*` e costruisce un `PostgreSqlExamNavigationService` con runtime locale PostgreSQL e password letta da variabile ambiente;
+- `Form1` mantiene ancora un costruttore parameterless che delega a `BootstrapNavigationService`; questo percorso resta raggiungibile come fallback legacy in-memory, pur non coincidendo con il bootstrap runtime principale del client desktop;
 - `ExamNavigator.WinForms` contiene `Predefiniti_Ricerca` come contenitore statico dei default di ricerca, consumato dal bootstrap runtime per la baseline configurabile della ricerca;
 - `ExamNavigator.WinForms` contiene `IniConfigurationDocument` come parser raw del file `.ini`;
 - `ExamNavigator.WinForms` contiene `IniConfigurationBinder` come binder riflessivo type-safe dei default verso `Predefiniti_*`, wired nel bootstrap runtime per la baseline configurabile della ricerca;
@@ -312,7 +314,7 @@ Rischi reali attuali:
 - il runtime WinForms dipende ora da una closure di assembly e binding redirects che devono restare governati dal sorgente senza regressioni;
 - la scelta PostgreSQL diverge dal requisito SQL Server originario e richiede documentazione owner rigorosa per restare difendibile;
 - configurazione `.ini` oggi limitata alla baseline della ricerca e consumata nel client WinForms ormai wired al runtime PostgreSQL concreto;
-- `BootstrapNavigationService` è ancora presente come residuo storico in `src/ExamNavigator.WinForms/Program.cs`, pur non essendo più runtime-attivo dopo il wiring PostgreSQL concreto; questo può generare ambiguità di audit o lettura architetturale finché non viene classificato/rimosso in modo esplicito.
+- `BootstrapNavigationService` è ancora presente nel client WinForms come fallback legacy in-memory raggiungibile tramite il costruttore parameterless `Form1()`; non coincide con il bootstrap runtime principale, ma la sua presenza può ancora generare ambiguità di audit o lettura architetturale finché non viene governato o rimosso in modo esplicito.
 - nessun progetto test presente;
 - nessun lint / coverage / smoke automatizzato presente;
 - possibile drift documentale se gli owner docs non restano esplicitamente allineati al fatto che i requisiti sorgente sono locali e non versionati.
