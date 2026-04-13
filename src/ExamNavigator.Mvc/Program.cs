@@ -1,15 +1,11 @@
 using ExamNavigator.Application.Services;
-using ExamNavigator.Infrastructure.PostgreSql;
+using ExamNavigator.Infrastructure.SqlServer;
 
 namespace ExamNavigator.Mvc;
 
 public static class Program
 {
-    private const string PostgreSqlHost = "localhost";
-    private const int PostgreSqlPort = 5432;
-    private const string PostgreSqlDatabase = "exam_navigator";
-    private const string PostgreSqlUsername = "exam_navigator_app";
-    private const string PostgreSqlPasswordEnvironmentVariable = "EXAM_NAVIGATOR_PG_PASSWORD";
+    private const string SqlServerConnectionStringEnvironmentVariable = "EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING";
 
     public static void Main(string[] args)
     {
@@ -17,7 +13,7 @@ public static class Program
 
         builder.Services.AddControllersWithViews();
         builder.Services.AddSingleton<IExamNavigationService>(
-            _ => new PostgreSqlExamNavigationService(BuildPostgreSqlConnectionString()));
+            _ => new SqlServerExamNavigationService(BuildSqlServerConnectionString()));
 
         var app = builder.Build();
 
@@ -41,19 +37,15 @@ public static class Program
         app.Run();
     }
 
-    private static string BuildPostgreSqlConnectionString()
+    private static string BuildSqlServerConnectionString()
     {
-        var password = Environment.GetEnvironmentVariable(PostgreSqlPasswordEnvironmentVariable);
-        if (string.IsNullOrWhiteSpace(password))
+        var connectionString = Environment.GetEnvironmentVariable(SqlServerConnectionStringEnvironmentVariable);
+        if (string.IsNullOrWhiteSpace(connectionString))
         {
             throw new InvalidOperationException(
-                "Set the EXAM_NAVIGATOR_PG_PASSWORD environment variable before starting the MVC host.");
+                "Set the EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING environment variable before starting the MVC host.");
         }
 
-        return "Host=" + PostgreSqlHost
-            + ";Port=" + PostgreSqlPort
-            + ";Database=" + PostgreSqlDatabase
-            + ";Username=" + PostgreSqlUsername
-            + ";Password=" + password;
+        return connectionString;
     }
 }
