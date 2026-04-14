@@ -16,13 +16,15 @@ Milestone già consolidate:
 7. conversione web MVC baseline funzionale demo archiviata.
 8. chiusura V1 mission-critical su PostgreSQL runtime concreto, con divergenza SQL Server esplicitamente governata.
 9. final conformance/coherence gate pre-consegna sulla baseline V1 formalmente congelata.
+9.bis. materializzazione del runtime SQL Server concreto su entrambi gli host.
 
 Milestone attiva:
-9.bis. riallineamento finale al requisito SQL Server prima della consegna.
+9.ter. completamento del docs sync gate owner e push controllato prima dello sblocco del blocco `H`.
 
 Milestone successive:
-10. preparazione colloquio #2;
-11. EXTRA e sviluppi futuri post-colloquio.
+10. preparazione consegna / rilascio / demo V1;
+11. preparazione colloquio #2;
+12. EXTRA e sviluppi futuri post-colloquio.
 
 ## Sequenza strategica mission-critical
 
@@ -111,22 +113,40 @@ Stato operativo corrente:
 
 
 ### 9.bis. SQL Server runtime conformance closure
-Stato: attiva.
+Stato: completata a codice.
 
 Obiettivo:
 - introdurre un runtime SQL Server concreto coerente con la missione originale;
 - collegare gli host applicativi a tale runtime;
 - chiudere il gap residuo tra baseline demo PostgreSQL difendibile e aderenza letterale alla richiesta;
-- sbloccare solo dopo questo punto la preparazione finale della consegna.
+- sbloccare il passaggio successivo di riallineamento owner docs prima della preparazione finale della consegna.
 
 Stato operativo corrente:
-- il repository espone oggi un runtime concreto PostgreSQL e una baseline SQL Server di riferimento;
-- il bundle demo locale controllato e il relativo contratto operativo restano validi come lavoro preparatorio;
-- tag, merge su `main` e release non sono ancora autorizzati;
-- il prossimo avanzamento corretto è l’introduzione dell’adapter SQL Server concreto.
+- il repository espone ora un layer `ExamNavigator.Infrastructure.SqlServer` concreto;
+- `SqlServerExamNavigationService` implementa il boundary applicativo sul runtime SQL Server;
+- il client WinForms è wired al runtime SQL Server concreto tramite `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`;
+- l'host MVC è wired allo stesso runtime SQL Server concreto tramite `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`;
+- il client desktop governa la runtime closure di `Microsoft.Data.SqlClient` nel `.csproj`;
+- il quality gate minimo corrente è verde su `dotnet build ExamNavigator.sln`;
+- il lavoro codice di `G6` è quindi chiuso, ma il flusso non è ancora promosso perché resta aperto il docs sync gate owner e il push controllato del branch `development`.
 
-### 9. Preparazione consegna / rilascio / demo V1
-Stato: sospesa fino alla chiusura di `G6`.
+### 9.ter. Docs sync gate owner + push controllato pre-H
+Stato: attiva.
+
+Obiettivo:
+- riallineare truth-first i documenti owner dopo la materializzazione del runtime SQL Server concreto;
+- aggiornare la traiettoria documentale da “G6 ancora aperto” a “G6 chiuso a codice, H non ancora sbloccato fino a docs sync/push”;
+- completare il push controllato di `development` dopo l’allineamento owner docs.
+
+Stato operativo corrente:
+- `docs/TIMELINE.md` è stato riallineato alla chiusura di `G6.0` e `G6.1`;
+- `docs/CHANGELOG.md` è stato aggiornato con l’entry del commit `e42a783`;
+- `README.md`, `docs/ARCHITECTURE.md` e `docs/ROADMAP.md` sono allineati nel working tree al runtime SQL Server concreto e al docs sync gate attivo;
+- finché il docs sync gate non è chiuso a commit e `e42a783` non è pushato su `origin/development`, il blocco `H` resta sospeso per governance;
+- il prossimo avanzamento corretto, dopo commit e push controllato del riallineamento owner docs, è la preparazione consegna / rilascio / demo V1.
+
+### 10. Preparazione consegna / rilascio / demo V1
+Stato: pronta per sblocco dopo chiusura del docs sync gate owner e push controllato.
 
 Obiettivo:
 - preparare il formato di consegna più opportuno (`.exe`, script SQL, bundle demo, eventuale Docker solo se realmente utile);
@@ -138,10 +158,11 @@ Stato operativo corrente:
 - i preflight `H0`, `H1` e `H2` hanno già chiarito formato demo, superficie reale del bundle e contratto operativo minimo della demo;
 - la demo primaria più solida resta il client WinForms già materializzato con runtime closure locale;
 - l'host MVC resta parte della superficie dimostrativa come prova della convertibilità web già concretamente implementata;
-- gli artefatti `database/postgresql/*` costituiscono il bootstrap runtime locale attivo, mentre `database/sql/*` resta il tracciato reference heritage/importabile rispetto al requisito SQL Server;
-- tag, merge su `main` e release restano sospesi fino alla chiusura di `G6`, cioè fino all’introduzione di un runtime SQL Server concreto.
+- gli artefatti `database/sql/*` costituiscono ora il bootstrap runtime locale attivo;
+- gli artefatti `database/postgresql/*` restano come heritage/demo track del pivot precedente;
+- tag, merge su `main` e release restano sospesi fino alla chiusura del docs sync gate owner e al push controllato del branch `development`.
 
-### 10. Preparazione colloquio #2
+### 11. Preparazione colloquio #2
 Stato: congelata, attivabile solo dopo la chiusura della V1 e la preparazione della consegna.
 
 Obiettivo:
@@ -150,7 +171,7 @@ Obiettivo:
 - preparare domande plausibili di colloquio e relative risposte;
 - usare la V1 come base di studio su MVC, controller, SQL e architettura.
 
-### 11. Sviluppi futuri / EXTRA post-colloquio
+### 12. Sviluppi futuri / EXTRA post-colloquio
 Stato: congelati, attivabili solo dopo la fase di preparazione colloquio.
 
 Obiettivo:

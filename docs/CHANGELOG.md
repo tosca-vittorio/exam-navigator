@@ -1,10 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **post-G5 baseline with H demo/delivery preflight completed, but final promotion still suspended until G6 closes the residual SQL Server runtime conformance gap**
+> Scope corrente: **sql server runtime materialized on development branch, with owner docs sync in progress before H unlock / push / final promotion**
 
 #### G6 — SQL Server runtime conformance closure
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`e42a783` — feat(sqlserver): wire concrete sql server runtime across hosts**
+  - **Type:** ADDED · **Categoria:** Infrastructure/Runtime
+  - **Cosa cambia:** introduce `src/ExamNavigator.Infrastructure.SqlServer` con `SqlServerExamNavigationService`, aggiunge il nuovo progetto alla solution, riallinea entrambi gli host `WinForms` e `MVC` al runtime SQL Server concreto tramite `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`, sostituisce i `ProjectReference` host dal layer PostgreSQL al nuovo layer SQL Server e governa nel client desktop la runtime closure di `Microsoft.Data.SqlClient`.
+  - **Impatto:** materializza a codice il gap mission-critical `G6` sul runtime SQL Server concreto, elimina la dipendenza runtime PostgreSQL dagli host applicativi, mantiene `Domain` e `Application` invariati e sposta il blocco attivo dal solo implementation work al docs sync gate finale prima dello sblocco di `H`.
 
 - **`15121d2` — docs(project): reopen mission-critical flow to sql server runtime conformance**
   - **Type:** CHANGED · **Categoria:** Docs/Governance

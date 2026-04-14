@@ -546,27 +546,55 @@ Quando la soluzione sarà più matura:
 **DoD (G6):**
 - layer infrastructure SQL Server concreto presente;
 - host WinForms wired a SQL Server concreto;
-- host MVC wired allo stesso runtime SQL Server concreto, oppure eventuale limite residuo classificato in modo esplicito e difendibile;
-- la chiusura mission-critical non dipende più soltanto dalla divergenza PostgreSQL documentata;
-- il blocco `H` risulta realmente sbloccato per merge/tag/release.
+- host MVC wired allo stesso runtime SQL Server concreto;
+- runtime closure WinForms per `Microsoft.Data.SqlClient` governata dal `.csproj`;
+- evidenza minima corrente verde su `dotnet build ExamNavigator.sln`;
+- documentazione owner riallineata truth-first prima di sbloccare il blocco `H`.
 
-### ⬜ G6.0 — Preflight adapter SQL Server concreto
+### ✅ G6.0 — Preflight adapter SQL Server concreto
 **Obiettivo:** congelare il boundary tecnico corretto per introdurre un adapter SQL Server concreto senza rompere `Domain`, `Application` e gli host già stabilizzati.
 
-**Evidenze attese (truth-first):**
-- audit dei contratti `IExamNavigationService` e dei request/result model;
-- audit degli artefatti `database/sql/*`;
-- classificazione del provider .NET SQL Server più coerente con lo stack corrente;
-- definizione del wiring target per WinForms e MVC;
-- verifica esplicita che il blocco `H` resti sospeso fino alla chiusura di `G6`.
+**Evidenze (truth-first):**
+- audit dei contratti `IExamNavigationService`, `ExamNavigationRequest`, `ExamNavigationResult` ed `ExamSearchField` eseguito;
+- audit degli artefatti `database/sql/001_schema.sql`, `database/sql/002_seed.sql` e `database/sql/003_navigation_queries.sql` eseguito;
+- classificato `Microsoft.Data.SqlClient` come provider .NET SQL Server coerente con lo stack corrente;
+- definito il wiring target per WinForms e MVC;
+- verificato esplicitamente che il blocco `H` restasse sospeso fino alla chiusura di `G6`.
+
+### ✅ G6.1 — Materializzazione infrastructure SQL Server e wiring host
+**Obiettivo:** introdurre un layer infrastructure SQL Server concreto e riallineare entrambi gli host applicativi al nuovo runtime senza contaminare `Domain` e `Application`.
+
+**Evidenze (truth-first):**
+- commit `e42a783` presente;
+- introdotto progetto `src/ExamNavigator.Infrastructure.SqlServer` aggiunto a `ExamNavigator.sln` e referenziato a `ExamNavigator.Application`;
+- `ExamNavigator.Infrastructure.SqlServer.csproj` usa `Microsoft.Data.SqlClient` `7.0.0` su `netstandard2.0`;
+- introdotta classe `SqlServerExamNavigationService` come implementazione concreta di `IExamNavigationService`, con query SQL Server per ambulatori, parti del corpo ed esami, parametri tipizzati `SqlDbType.*` e fallback di `SelectedRoomId` / `SelectedBodyPartId`;
+- `src/ExamNavigator.WinForms/Program.cs` rimuove il wiring runtime PostgreSQL concreto e costruisce `SqlServerExamNavigationService` usando la variabile ambiente `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`;
+- `src/ExamNavigator.Mvc/Program.cs` registra `SqlServerExamNavigationService` nel container DI usando la stessa variabile ambiente `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`;
+- `src/ExamNavigator.WinForms/ExamNavigator.WinForms.csproj` rimuove il `ProjectReference` a `ExamNavigator.Infrastructure.PostgreSql`, introduce il `ProjectReference` a `ExamNavigator.Infrastructure.SqlServer`, governa la runtime closure di `Microsoft.Data.SqlClient` e riallinea le versioni dei package necessari alla closure desktop;
+- `src/ExamNavigator.Mvc/ExamNavigator.Mvc.csproj` sostituisce il `ProjectReference` PostgreSQL con il reference al nuovo layer SQL Server;
+- il target WinForms di copia runtime è stato riallineato semanticamente a `CopySqlServerRuntimeClosure` con item list `SqlServerRuntimeAssemblies`;
+- verifica forte desktop eseguita con purge di `bin/` e `obj/` WinForms, rebuild verde e presenza nel `bin/Debug` di `Microsoft.Data.SqlClient.dll` e dei binari `Microsoft.Data.SqlClient.SNI.*`, senza `Npgsql.dll` nel runtime output finale del client desktop;
+- `dotnet build ExamNavigator.sln` verde dopo il commit codice, con compilazione positiva di:
+  - `ExamNavigator.Domain`
+  - `ExamNavigator.Application`
+  - `ExamNavigator.Infrastructure.PostgreSql`
+  - `ExamNavigator.Infrastructure.SqlServer`
+  - `ExamNavigator.WinForms`
+  - `ExamNavigator.Mvc`
+
+**Nota di stato (G6):**
+- il gap mission-critical sul runtime SQL Server concreto è stato materializzato a codice e verificato al quality gate minimo corrente (`dotnet build ExamNavigator.sln`);
+- il prossimo passo corretto non è ancora `H`, ma il completamento del docs sync gate owner (`TIMELINE` → `CHANGELOG` → documenti impattati) e il successivo push del commit `e42a783`;
+- fino a quel momento il blocco `H` resta sospeso per governance, pur essendo ora presente un runtime SQL Server concreto wired a entrambi gli host.
 
 ---
 
-## H — 🟡 Preparazione consegna / rilascio / demo V1 (preflight svolto, blocco sospeso fino a chiusura di G6)
+## H — 🟡 Preparazione consegna / rilascio / demo V1 (preflight svolto, blocco sospeso fino a chiusura del docs sync gate owner e push controllato)
 
 **Obiettivo:** preparare il rilascio della baseline V1 nel formato più opportuno, con tag dedicato, merge su `main`, release e materiale di demo coerente con la richiesta cliente.
 
-**Nota di stato:** i sotto-step `H0`-`H2` restano validi come preflight di consegna/demo, ma `H` non è il blocco attivo corrente. La prosecuzione verso tag, merge su `main`, release e consegna finale resta sospesa fino alla chiusura di `G6`.
+**Nota di stato:** i sotto-step `H0`-`H2` restano validi come preflight di consegna/demo, ma `H` non è il blocco attivo corrente. La prosecuzione verso tag, merge su `main`, release e consegna finale resta sospesa fino alla chiusura del docs sync gate owner e al push controllato del branch `development`.
 
 **Note operative congelate:**
 - valutare il formato di consegna più opportuno (`.exe`, script SQL, bundle demo, eventuale Docker solo se realmente utile);
@@ -578,37 +606,36 @@ Quando la soluzione sarà più matura:
 **Obiettivo:** classificare in modo truth-first il formato di consegna/demo oggi realmente difendibile, sulla base della superficie già materializzata dal repository, senza anticipare tag, merge su `main` o release.
 
 **Evidenze (truth-first):**
-- working tree pulita e branch `development` riallineato a `origin/development`;
 - `dotnet build ExamNavigator.sln` verde sulla baseline corrente;
-- runtime WinForms reale materializzato in `src/ExamNavigator.WinForms/bin/Debug/` con `ExamNavigator.WinForms.exe` e relativa runtime closure;
-- artefatti database presenti sia in `database/postgresql/` sia in `database/sql/`;
-- `README.md` già allineato al fatto che `G5` è chiuso e che il blocco attivo corretto è `H`.
+- runtime WinForms reale materializzato in `src/ExamNavigator.WinForms/bin/Debug/` con `ExamNavigator.WinForms.exe` e relativa runtime closure SQL Server;
+- artefatti database presenti sia in `database/sql/` sia in `database/postgresql/`;
+- owner docs in corso di riallineamento truth-first al runtime SQL Server concreto.
 
-**Esito:** il formato oggi più difendibile è un **bundle demo locale controllato** composto da repository, guida di run, bootstrap database PostgreSQL locale, host WinForms come demo primaria e host MVC come dimostrazione secondaria della convertibilità web. Non risultano ancora autorizzati tag, merge su `main`, release o consegna finale automatica.
+**Esito:** il formato oggi più difendibile è un **bundle demo locale controllato** composto da repository, guida di run, bootstrap SQL Server locale, host WinForms come demo primaria e host MVC come dimostrazione secondaria della convertibilità web. Non risultano ancora autorizzati tag, merge su `main`, release o consegna finale automatica.
 
 ### ✅ H1 — Censimento della superficie del bundle demo locale
-**Obiettivo:** censire in modo esplicito i componenti reali che compongono la demo locale controllata, distinguendo host primario, host secondario, bootstrap runtime attivo e reference heritage.
+**Obiettivo:** censire in modo esplicito i componenti reali che compongono la demo locale controllata, distinguendo host primario, host secondario, bootstrap runtime attivo e track heritage.
 
 **Evidenze (truth-first):**
-- `src/ExamNavigator.WinForms/bin/Debug/` contiene `ExamNavigator.WinForms.exe`, `ExamNavigator.WinForms.exe.config`, `ExamNavigator.Infrastructure.PostgreSql.dll`, `Npgsql.dll` e la runtime closure necessaria alla demo desktop;
-- `src/ExamNavigator.Mvc/bin/Debug/net9.0/` contiene `ExamNavigator.Mvc.exe`, `ExamNavigator.Mvc.dll`, `ExamNavigator.Mvc.runtimeconfig.json`, `ExamNavigator.Mvc.deps.json`, `appsettings.json`, `appsettings.Development.json` e l'adapter PostgreSQL concreto per la demo web;
-- `database/postgresql/` contiene `001_schema.sql`, `002_seed.sql` e `postgresql.md` come bootstrap runtime locale attivo;
-- `database/sql/` contiene `001_schema.sql`, `002_seed.sql` e `003_navigation_queries.sql` come tracciato SQL Server di riferimento/importabilità;
+- `src/ExamNavigator.WinForms/bin/Debug/` contiene `ExamNavigator.WinForms.exe`, `ExamNavigator.WinForms.exe.config`, `Microsoft.Data.SqlClient.dll` e i binari `Microsoft.Data.SqlClient.SNI.*` richiesti dalla runtime closure desktop;
+- `src/ExamNavigator.Mvc/bin/Debug/net9.0/` contiene l’host MVC compilato e i relativi artifact runtime ASP.NET Core;
+- `database/sql/` contiene `001_schema.sql`, `002_seed.sql` e `003_navigation_queries.sql` come bootstrap runtime locale attivo;
+- `database/postgresql/` contiene `001_schema.sql`, `002_seed.sql` e `postgresql.md` come heritage/demo track del pivot precedente;
 - `README.md` contiene prerequisiti, comandi di run e checklist minima di verifica manuale per i due host.
 
-**Esito:** il bundle demo locale controllato risulta oggi composto da host WinForms primario, host MVC secondario, bootstrap PostgreSQL locale attivo, reference SQL Server e contratto operativo di run/verifica manuale; non risultano ancora materializzati tag, release, installer o archivio finale di consegna.
+**Esito:** il bundle demo locale controllato risulta oggi composto da host WinForms primario, host MVC secondario, bootstrap SQL Server locale attivo, track PostgreSQL heritage/demo e contratto operativo di run/verifica manuale; non risultano ancora materializzati tag, release, installer o archivio finale di consegna.
 
 ### ✅ H2 — Preflight del contratto operativo della demo
 **Obiettivo:** esplicitare il flusso operativo minimo della demo locale controllata, chiarendo prerequisiti reali, ordine di bootstrap e sequenza raccomandata di presentazione dei due host.
 
 **Evidenze (truth-first):**
-- `README.md` richiede PostgreSQL locale disponibile, schema/seed applicati e variabile ambiente `EXAM_NAVIGATOR_PG_PASSWORD`;
+- `README.md` richiede istanza SQL Server locale disponibile, schema/seed applicati e variabile ambiente `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`;
 - `README.md` documenta i comandi di avvio sia dell'host WinForms sia dell'host MVC;
-- `database/postgresql/postgresql.md` conferma il ruolo di PostgreSQL come runtime locale scelto e documenta i parametri di riferimento del setup tecnico;
-- `git grep -n "EXAM_NAVIGATOR_PG_PASSWORD"` conferma che entrambi gli host leggono la password dalla stessa variabile ambiente;
+- il wiring dei due host legge la stessa variabile ambiente `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`;
+- `database/sql/*` costituisce il bootstrap runtime attivo, mentre `database/postgresql/*` resta il tracciato heritage/demo del pivot precedente;
 - la classificazione del bundle demo già consolidata in `H0` e `H1` rende difendibile una sequenza di demo con WinForms primario e MVC secondario.
 
-**Esito:** il contratto operativo minimo della demo risulta: bootstrap PostgreSQL locale, impostazione della variabile ambiente condivisa, avvio del client WinForms come host primario e successiva verifica dell'host MVC come prova secondaria della convertibilità web sulla stessa baseline runtime.
+**Esito:** il contratto operativo minimo della demo risulta: bootstrap SQL Server locale, impostazione della variabile ambiente condivisa, avvio del client WinForms come host primario e successiva verifica dell'host MVC come prova secondaria della convertibilità web sulla stessa baseline runtime.
 
 ---
 
