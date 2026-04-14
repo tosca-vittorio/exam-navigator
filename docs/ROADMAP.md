@@ -160,6 +160,8 @@ Stato operativo corrente:
 - gli artefatti `database/sql/*` costituiscono il bootstrap runtime locale attivo;
 - gli artefatti `database/postgresql/*` restano come heritage/demo track del pivot precedente;
 - il blocco attivo corrente è `H`; tag, merge su `main`, release e consegna finale restano sospesi fino a successiva esecuzione esplicita, ma non sono più bloccati dal docs sync gate owner.
+- il changeset minimo promuovibile della V1 è ora congelato truth-first come: host demo primario WinForms, host demo secondario MVC, bootstrap SQL Server locale attivo (`database/sql/*`), track PostgreSQL solo heritage/demo e contratto operativo documentato in `README.md`;
+- restano esplicitamente fuori dal freeze corrente installer, archivio finale di consegna, Docker salvo reale necessità, EXTRA, nuove patch codice e qualunque riapertura di `G6`.
 
 ### 11. Preparazione colloquio #2
 Stato: congelata, attivabile solo dopo la chiusura della V1 e la preparazione della consegna.

@@ -653,6 +653,17 @@ Quando la soluzione sarà più matura:
 
 **Esito:** il contratto operativo minimo della demo risulta: bootstrap SQL Server locale, impostazione della variabile ambiente condivisa, avvio del client WinForms come host primario e successiva verifica dell'host MVC come prova secondaria della convertibilità web sulla stessa baseline runtime.
 
+### ✅ H3 — Freeze truth-first del changeset minimo promuovibile per consegna/demo V1
+**Obiettivo:** congelare in modo esplicito il perimetro minimo promuovibile della V1, distinguendo ciò che entra davvero nel checkpoint di consegna/demo da ciò che resta fuori in questa fase.
+
+**Evidenze (truth-first):**
+- `H0`, `H1` e `H2` hanno già congelato formato demo, superficie del bundle e contratto operativo minimo;
+- `README.md` censisce già host demo primario WinForms, host demo secondario MVC, bootstrap SQL Server locale attivo e track PostgreSQL heritage/demo;
+- il blocco `H` è attivo e non più bloccato dal docs sync gate owner post-`G6`;
+- non risultano ancora eseguiti tag, merge su `main`, release o packaging finale.
+
+**Esito:** il changeset minimo promuovibile della V1 è congelato come segue: host demo primario WinForms, host demo secondario MVC, bootstrap SQL Server locale attivo (`database/sql/*`), track PostgreSQL mantenuta solo come heritage/demo track e contratto operativo di demo documentato in `README.md`. Restano esplicitamente fuori da questo freeze: installer, archivio finale di consegna, Docker salvo necessità reale, EXTRA, nuove patch codice e qualunque riapertura di `G6`.
+
 ---
 
 ## I — ⬜ Preparazione colloquio #2
