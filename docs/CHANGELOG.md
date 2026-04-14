@@ -1,7 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **blocco H attivo con changeset minimo promuovibile della demo/consegna V1 congelato truth-first su `development`**
+> Scope corrente: **blocco I attivo: chiusura truth-first del preflight/demo locale controllata di `H` consolidata su `development`, con avvio della preparazione colloquio #2**
+
+#### I — Interview prep activation after H closure
+> Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`fdd415b` — docs(project): close H demo-preflight and activate interview prep**
+  - **Type:** CHANGED · **Categoria:** Docs/Governance
+  - **Cosa cambia:** aggiorna `README.md`, `docs/TIMELINE.md`, `docs/ROADMAP.md` e `docs/ARCHITECTURE.md` per chiudere formalmente il blocco `H` sul piano del preflight/demo locale controllata, registrare i sotto-step `H4`-`H7` e attivare `I — Preparazione colloquio #2` come nuovo blocco operativo corrente.
+  - **Impatto:** riallinea gli owner docs al fatto che la preparazione/demo locale controllata della V1 è ora chiusa truth-first su `development`, sposta il focus operativo sulla preparazione del colloquio tecnico e lascia ancora non eseguiti tag, merge su `main`, release e consegna finale.
 
 #### H — Delivery/demo promotable changeset freeze
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
