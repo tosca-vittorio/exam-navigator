@@ -194,7 +194,7 @@ Stato corrente della missione principale:
 6. blocco ricerca desktop baseline (`wiring` UI) → completato;
 7. blocchi successivi → configurazione `.ini` avanzata con fondazione dei default di ricerca, parser raw del documento, binder riflessivo type-safe e wiring runtime della baseline di ricerca completati; conversione web MVC archiviata come baseline demo con host dedicato (`F0`), primo riallineamento funzionale di controller/view model (`F1`) e UI web equivalente con griglia selezioni e polish (`F2`) completati; bootstrap runtime locale PostgreSQL documentato e consolidato come heritage/demo track; blocchi `G1`-`G4` completati con introduzione di `ExamNavigator.Infrastructure.PostgreSql`, del service concreto `PostgreSqlExamNavigationService`, del wiring runtime concreto PostgreSQL dei due host e della verifica formale finale di chiusura V1; blocchi `G6.0`, `G6.1` e `G6.2` completati con introduzione di `ExamNavigator.Infrastructure.SqlServer`, del service concreto `SqlServerExamNavigationService`, del wiring runtime SQL Server concreto di entrambi gli host WinForms e MVC, del completamento della runtime closure desktop reale WinForms e del consolidamento del bootstrap locale SQL Server.
 
-Il gap residuo per la chiusura letterale della missione non è più la materializzazione del runtime SQL Server né il docs sync gate owner, entrambi ormai chiusi sul branch `development`. Il blocco operativo corrente è ora `H — Preparazione consegna / rilascio / demo V1`; restano ancora sospesi, fino a successiva esecuzione esplicita, tag, merge su `main`, release e consegna finale.
+Il gap residuo per la chiusura letterale della missione non è più la materializzazione del runtime SQL Server né il docs sync gate owner, entrambi ormai chiusi sul branch `development`. Anche il blocco `H — Preparazione consegna / rilascio / demo V1` risulta ora chiuso sul piano del preflight/demo locale controllata. Il blocco operativo corrente diventa quindi `I — Preparazione colloquio #2`; tag, merge su `main`, release e consegna finale restano ancora non eseguiti.
 
 ## Perimetro V1
 
@@ -234,7 +234,7 @@ Il commit `e42a783` ha chiuso il lavoro codice di `G6`, introducendo `ExamNaviga
 
 La baseline funzionale attuale è quindi solida, verificata e dimostrabile su runtime SQL Server concreto. I commit `d366e18` (`fix(winforms): complete sql server runtime closure for desktop host`) e `2354e54` (`docs(sqlserver): add bootstrap guide and enrich demo seed`) hanno consolidato rispettivamente la runtime closure desktop reale del client WinForms e il bootstrap locale SQL Server della demo (`database/sql/sqlserver.md`, `database/sql/002_seed.sql`).
 
-Con questo riallineamento truth-first, `G6` risulta chiuso anche rispetto alla runtime closure desktop reale del client WinForms e il blocco attivo corretto torna `H — Preparazione consegna / rilascio / demo V1`. Restano ancora sospesi, fino a successiva esecuzione esplicita, tag, merge su `main`, release e consegna finale.
+Con questo riallineamento truth-first, `G6` risulta chiuso anche rispetto alla runtime closure desktop reale del client WinForms. Con il successivo completamento dei preflight `H0`-`H7`, anche `H` risulta chiuso sul piano del preflight/demo locale controllata e il blocco attivo corretto diventa `I — Preparazione colloquio #2`. Restano ancora non eseguiti, fino a successiva esecuzione esplicita, tag, merge su `main`, release e consegna finale.
 
 ## Documentazione owner
 

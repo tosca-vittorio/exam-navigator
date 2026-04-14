@@ -606,17 +606,17 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## H — 🟡 Preparazione consegna / rilascio / demo V1 (preflight svolto, blocco attivo corrente)
+## H — ☑️ Preparazione consegna / rilascio / demo V1 (chiusura preflight/demo locale controllata)
 
-**Obiettivo:** preparare il rilascio della baseline V1 nel formato più opportuno, con tag dedicato, merge su `main`, release e materiale di demo coerente con la richiesta cliente.
+**Obiettivo:** chiudere in modo truth-first la preparazione della demo V1 e congelare la sequenza operativa difendibile da mostrare, senza anticipare tag, merge su `main` o release.
 
-**Nota di stato:** i sotto-step `H0`-`H2` restano validi come preflight già consolidato di consegna/demo. Dopo la chiusura del docs sync gate owner e il push riuscito del riallineamento documentale, `H` è ora il blocco attivo corrente. Restano ancora sospesi, fino a successiva esecuzione esplicita, tag, merge su `main`, release e consegna finale.
+**Nota di stato:** i sotto-step `H0`-`H7` risultano chiusi su baseline `development` pulita, bootstrap SQL Server locale verificato, `dotnet build ExamNavigator.sln` verde, avvio host positivo e witness manuale finale positivo su WinForms e MVC. Tag, merge su `main`, release, installer e consegna finale non risultano eseguiti e non fanno parte della presente chiusura del blocco `H`.
 
 **Note operative congelate:**
-- valutare il formato di consegna più opportuno (`.exe`, script SQL, bundle demo, eventuale Docker solo se realmente utile);
-- creare tag dedicato alla consegna cliente;
-- eseguire merge + release su `main`;
-- usare questo punto come freeze del rilascio cliente prima di ulteriori ottimizzazioni su `development`.
+- la demo primaria difendibile resta WinForms;
+- l'host MVC resta dimostrazione secondaria della convertibilità web sulla stessa baseline SQL Server;
+- il playbook operativo della demo è congelato come: bootstrap SQL Server locale -> variabile ambiente condivisa -> WinForms -> MVC;
+- restano fuori da questa chiusura tag, merge su `main`, release, installer, archivio finale di consegna e Docker salvo necessità reale.
 
 ### ✅ H0 — Preflight formato consegna/demo V1
 **Obiettivo:** classificare in modo truth-first il formato di consegna/demo oggi realmente difendibile, sulla base della superficie già materializzata dal repository, senza anticipare tag, merge su `main` o release.
@@ -664,11 +664,59 @@ Quando la soluzione sarà più matura:
 
 **Esito:** il changeset minimo promuovibile della V1 è congelato come segue: host demo primario WinForms, host demo secondario MVC, bootstrap SQL Server locale attivo (`database/sql/*`), track PostgreSQL mantenuta solo come heritage/demo track e contratto operativo di demo documentato in `README.md`. Restano esplicitamente fuori da questo freeze: installer, archivio finale di consegna, Docker salvo necessità reale, EXTRA, nuove patch codice e qualunque riapertura di `G6`.
 
+### ✅ H4 — Preflight della sequenza di presentazione/demo cliente
+**Obiettivo:** verificare che la sequenza di presentazione della soluzione sia già difendibile rispetto ai requisiti del test e ai documenti owner correnti.
+
+**Evidenze (truth-first):**
+- `git status -sb` pulito e allineato a `origin/development`;
+- `docs/target/requirements/02_requirements_freeze.md` conferma come superficie della demo: tre pannelli, cascata, ricerca, griglia, `.ini` e convertibilità web;
+- `README.md` congela la sequenza operativa raccomandata: bootstrap SQL Server locale, WinForms come host primario, MVC come host secondario;
+- `docs/ARCHITECTURE.md` conferma che WinForms copre ricerca, cascata, griglia e `.ini` sul runtime SQL Server concreto e che MVC è wired alla stessa baseline SQL Server con navigazione incrementale senza full-page reload.
+
+**Esito:** la sequenza di presentazione cliente risulta coerente, difendibile e già allineata ai requisiti e ai documenti owner.
+
+### ✅ H5 — Freeze dell'operator playbook della demo
+**Obiettivo:** congelare il playbook operativo esatto della demo locale controllata.
+
+**Evidenze (truth-first):**
+- `database/sql/sqlserver.md` documenta creazione database, applicazione schema, seed, verifica dei conteggi, variabile ambiente condivisa e comandi di avvio dei due host;
+- `README.md` riallinea gli stessi prerequisiti, gli stessi comandi di avvio e la stessa checklist manuale minima;
+- il playbook operativo risulta quindi coerente tra documento tecnico SQL Server e documento owner di run/onboarding.
+
+**Esito:** il playbook della demo è congelato come: bootstrap SQL Server locale -> verifica conteggi -> export della connection string -> avvio WinForms -> avvio MVC.
+
+### ✅ H6 — Dry-run operativo finale della sequenza demo
+**Obiettivo:** verificare in modo end-to-end che il playbook della demo sia realmente eseguibile sulla baseline corrente.
+
+**Evidenze (truth-first):**
+- `git status -sb` pulito e branch allineato a `origin/development`;
+- `dotnet build ExamNavigator.sln` verde sull'intera solution;
+- bootstrap SQL Server locale rieseguito con successo;
+- conteggi verificati sul seed SQL Server corrente: `BodyPart = 4`, `Room = 11`, `Exam = 14`, `ExamRoom = 30`;
+- variabile ambiente `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING` valorizzata;
+- avvio positivo del client WinForms;
+- avvio positivo dell'host MVC su `http://localhost:5099`;
+- warning HTTPS MVC non bloccante rispetto al playbook locale documentato, che usa esplicitamente l'endpoint HTTP di demo.
+
+**Esito:** il preflight tecnico della demo risulta positivo e ripetibile sulla baseline corrente.
+
+### ✅ H7 — Witness finale della demo funzionale
+**Obiettivo:** chiudere con witness manuale positiva la superficie funzionale realmente mostrabile in demo.
+
+**Evidenze (truth-first):**
+- witness manuale positiva dichiarata su WinForms per: caricamento iniziale, cascata, ricerca con pulsante `Cerca`, ricerca con tasto `Invio`, reset `Vedi tutti`, conferma selezione in griglia, riordino e cancellazione riga;
+- witness manuale positiva dichiarata su MVC per: caricamento pagina, cascata, ricerca, conferma selezione, griglia, riordino/eliminazione riga;
+- confermata anche l'assenza di full-page reload percepibile / salto viewport evidente nella navigazione MVC.
+
+**Esito:** la demo funzionale WinForms-first / MVC-second risulta pronta e difendibile lato comportamento osservabile.
+
 ---
 
-## I — ⬜ Preparazione colloquio #2
+## I — 🟡 Preparazione colloquio #2 (blocco attivo corrente)
 
 **Obiettivo:** costruire il materiale di studio e presentazione dopo la chiusura completa della V1.
+
+**Nota di stato:** il blocco `I` si attiva ora come successivo avanzamento corretto, dopo la chiusura truth-first del blocco `H`. Non risultano ancora introdotti cambiamenti di codice o documentazione specialistica di studio oltre questa attivazione formale.
 
 **Note operative congelate:**
 - analizzare modo, scelte, logiche di sviluppo e relativa sintassi;

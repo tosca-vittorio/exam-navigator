@@ -17,12 +17,12 @@ Milestone già consolidate:
 8. chiusura V1 mission-critical su PostgreSQL runtime concreto, con divergenza SQL Server esplicitamente governata.
 9. final conformance/coherence gate pre-consegna sulla baseline V1 formalmente congelata.
 9.bis. materializzazione del runtime SQL Server concreto su entrambi gli host.
+10. preparazione consegna / rilascio / demo V1 sul piano del preflight/demo locale controllata.
 
 Milestone attiva:
-10. preparazione consegna / rilascio / demo V1.
+11. preparazione colloquio #2.
 
 Milestone successive:
-11. preparazione colloquio #2;
 12. EXTRA e sviluppi futuri post-colloquio.
 
 ## Sequenza strategica mission-critical
@@ -145,32 +145,35 @@ Stato operativo corrente:
 - il successivo avanzamento corretto è `10. Preparazione consegna / rilascio / demo V1`.
 
 ### 10. Preparazione consegna / rilascio / demo V1
-Stato: attiva.
+Stato: completata e archiviata sul piano del preflight/demo locale controllata.
 
 Obiettivo:
-- preparare il formato di consegna più opportuno (`.exe`, script SQL, bundle demo, eventuale Docker solo se realmente utile);
-- produrre tag dedicato alla consegna cliente;
-- eseguire merge su `main` e release di baseline;
-- congelare il punto di rilascio della richiesta cliente prima di ulteriori ottimizzazioni.
+- congelare il formato demo più difendibile;
+- fissare il playbook operativo SQL Server -> WinForms -> MVC;
+- verificare bootstrap dati, build, avvio host e witness funzionale minima;
+- chiudere la preparazione della demo senza anticipare tag, merge su `main` o release.
 
 Stato operativo corrente:
-- i preflight `H0`, `H1` e `H2` hanno già chiarito formato demo, superficie reale del bundle e contratto operativo minimo della demo;
-- la demo primaria più solida resta il client WinForms già materializzato con runtime closure locale;
-- l'host MVC resta parte della superficie dimostrativa come prova della convertibilità web già concretamente implementata;
-- gli artefatti `database/sql/*` costituiscono il bootstrap runtime locale attivo;
-- gli artefatti `database/postgresql/*` restano come heritage/demo track del pivot precedente;
-- il blocco attivo corrente è `H`; tag, merge su `main`, release e consegna finale restano sospesi fino a successiva esecuzione esplicita, ma non sono più bloccati dal docs sync gate owner.
-- il changeset minimo promuovibile della V1 è ora congelato truth-first come: host demo primario WinForms, host demo secondario MVC, bootstrap SQL Server locale attivo (`database/sql/*`), track PostgreSQL solo heritage/demo e contratto operativo documentato in `README.md`;
-- restano esplicitamente fuori dal freeze corrente installer, archivio finale di consegna, Docker salvo reale necessità, EXTRA, nuove patch codice e qualunque riapertura di `G6`.
+- i sotto-step `H0`-`H7` risultano chiusi;
+- il runtime SQL Server concreto resta la baseline attiva condivisa dai due host;
+- il bootstrap locale SQL Server è stato rieseguito con conteggi `BodyPart = 4`, `Room = 11`, `Exam = 14`, `ExamRoom = 30`;
+- `dotnet build ExamNavigator.sln` è verde;
+- la demo primaria resta WinForms, mentre l'host MVC resta la prova secondaria della convertibilità web già concretamente implementata;
+- restano esplicitamente fuori da questa chiusura tag, merge su `main`, release, installer, archivio finale di consegna, Docker salvo reale necessità e qualunque riapertura di `G6`.
 
 ### 11. Preparazione colloquio #2
-Stato: congelata, attivabile solo dopo la chiusura della V1 e la preparazione della consegna.
+Stato: attiva.
 
 Obiettivo:
 - costruire documentazione di studio, presentazione progetto e materiale di difesa tecnica;
 - spiegare timeline, scelte, sintassi, architettura, database, moduli e responsabilità;
 - preparare domande plausibili di colloquio e relative risposte;
 - usare la V1 come base di studio su MVC, controller, SQL e architettura.
+
+Stato operativo corrente:
+- il blocco `H` è chiuso sul piano della preparazione/demo locale controllata;
+- il focus corretto si sposta ora sul materiale di studio, spiegazione e difesa tecnica della V1;
+- gli EXTRA restano congelati e non attivati.
 
 ### 12. Sviluppi futuri / EXTRA post-colloquio
 Stato: congelati, attivabili solo dopo la fase di preparazione colloquio.
