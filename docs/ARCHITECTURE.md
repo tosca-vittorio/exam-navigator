@@ -73,6 +73,7 @@ Nota:
 - `database/sql/001_schema.sql` — schema SQL Server di riferimento
 - `database/sql/002_seed.sql` — dataset demo SQL Server di riferimento
 - `database/sql/003_navigation_queries.sql` — query SQL Server di riferimento per cascata e ricerca
+- `database/sql/sqlserver.md` — documento tecnico di bootstrap locale SQL Server del runtime attivo
 - `database/postgresql/001_schema.sql` — schema PostgreSQL heritage/demo
 - `database/postgresql/002_seed.sql` — seed PostgreSQL heritage/demo
 - `database/postgresql/postgresql.md` — documento tecnico del precedente pivot PostgreSQL locale
@@ -177,6 +178,7 @@ Responsabilità correnti:
 Stato attuale:
 - baseline SQL Server presente come riferimento dati coerente con il wiring runtime attivo degli host;
 - `database/sql/001_schema.sql`, `database/sql/002_seed.sql` e `database/sql/003_navigation_queries.sql` costituiscono il set di artefatti dati oggi allineato al runtime concreto SQL Server;
+- `database/sql/sqlserver.md` documenta il bootstrap locale SQL Server attivo, i comandi di setup/verifica e il wiring runtime condiviso dei due host;
 - `database/postgresql/001_schema.sql`, `database/postgresql/002_seed.sql` e `database/postgresql/postgresql.md` restano presenti come heritage/demo track del precedente pivot PostgreSQL locale;
 - gli artefatti PostgreSQL non costituiscono più il bootstrap runtime attivo degli host applicativi;
 - il repository mantiene quindi sia la baseline SQL Server concreta attiva sia il tracciato PostgreSQL storico/documentale, senza che quest’ultimo governi più il wiring runtime corrente.
@@ -221,6 +223,7 @@ Stato attuale:
 - il runtime entrypoint costruisce ora `SqlServerExamNavigationService` con connection string SQL Server letta da variabile ambiente `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`;
 - `Form1` mantiene ancora un costruttore parameterless che delega a `BootstrapNavigationService`; questo path costituisce un fallback legacy in-memory ancora raggiungibile, ma non il bootstrap runtime principale del client desktop;
 - il `.csproj` governa la runtime closure necessaria a `Microsoft.Data.SqlClient` per il client desktop su .NET Framework 4.8;
+- la runtime closure desktop governa anche le dipendenze transitive richieste da `Microsoft.Data.SqlClient` (`Microsoft.Data.SqlClient.Extensions.Abstractions`, `Microsoft.Data.SqlClient.Internal.Logging`, `System.Buffers`, `System.Memory`, `System.Numerics.Vectors`, `System.Runtime.CompilerServices.Unsafe`, `System.Threading.Tasks.Extensions`) con fallback `net462` / `net461` / `netstandard2.0` dove necessario;
 - `App.config` contiene i binding redirects espliciti necessari all'esecuzione WinForms su .NET Framework 4.8;
 - contiene caricamento iniziale dei tre pannelli, aggiornamento a cascata da ambulatorio a parte del corpo a esami, ricerca testuale wired tramite pulsante `Cerca`, tasto Invio e reset `Vedi tutti`, oltre alla conferma selezione con append alla griglia sul runtime SQL Server concreto;
 - contiene anche `Predefiniti_Ricerca` come primo contenitore statico dei default di `SearchText` e `SearchField`;
@@ -329,12 +332,12 @@ Rischi reali attuali:
 
 - test project e quality tooling dedicato ancora assenti dalla codebase;
 - il runtime WinForms dipende ora da una closure di assembly e binding redirects che devono restare governati dal sorgente senza regressioni;
-- il docs sync gate owner non è ancora concluso e la promozione finale resta sospesa fino a commit/push controllato del riallineamento documentale;
 - la permanenza nel repository del precedente track PostgreSQL può generare ambiguità di lettura se gli owner docs non restano esplicitamente allineati al fatto che esso non governa più il runtime attivo corrente;
 - configurazione `.ini` oggi limitata alla baseline della ricerca;
 - `BootstrapNavigationService` è ancora presente nel client WinForms come fallback legacy in-memory raggiungibile tramite il costruttore parameterless `Form1()`; non coincide con il bootstrap runtime principale, ma la sua presenza può ancora generare ambiguità di audit o lettura architetturale finché non viene governato o rimosso in modo esplicito;
 - nessun progetto test presente;
 - nessun lint / coverage / smoke automatizzato presente;
+- la fase `H` è ora il blocco attivo corrente, ma tag, merge su `main`, release e consegna finale non sono ancora stati eseguiti;
 - possibile drift documentale se gli owner docs non restano esplicitamente allineati al fatto che i requisiti sorgente sono locali e non versionati.
 
 ---

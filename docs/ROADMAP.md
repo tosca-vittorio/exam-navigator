@@ -19,10 +19,9 @@ Milestone già consolidate:
 9.bis. materializzazione del runtime SQL Server concreto su entrambi gli host.
 
 Milestone attiva:
-9.ter. completamento del docs sync gate owner e push controllato prima dello sblocco del blocco `H`.
+10. preparazione consegna / rilascio / demo V1.
 
 Milestone successive:
-10. preparazione consegna / rilascio / demo V1;
 11. preparazione colloquio #2;
 12. EXTRA e sviluppi futuri post-colloquio.
 
@@ -111,15 +110,14 @@ Stato operativo corrente:
 - l'audit `G5.4` ha classificato `BootstrapNavigationService` WinForms come fallback legacy in-memory ancora raggiungibile tramite il costruttore parameterless `Form1()`, ma non parte del bootstrap runtime principale, che passa da `Program.Main()` a `PostgreSqlExamNavigationService`;
 - con questa classificazione truth-first il gate `G5` risulta chiuso a documentazione riallineata; i preflight `H0`-`H2` restano validi come preparazione della demo, ma il prossimo blocco mission-critical corretto diventa `9.bis / G6`, cioè il riallineamento finale al requisito SQL Server, senza anticipare ancora merge su `main`, tag o release.
 
-
 ### 9.bis. SQL Server runtime conformance closure
-Stato: completata a codice.
+Stato: completata e archiviata.
 
 Obiettivo:
 - introdurre un runtime SQL Server concreto coerente con la missione originale;
 - collegare gli host applicativi a tale runtime;
 - chiudere il gap residuo tra baseline demo PostgreSQL difendibile e aderenza letterale alla richiesta;
-- sbloccare il passaggio successivo di riallineamento owner docs prima della preparazione finale della consegna.
+- abilitare la successiva preparazione finale della consegna.
 
 Stato operativo corrente:
 - il repository espone ora un layer `ExamNavigator.Infrastructure.SqlServer` concreto;
@@ -127,26 +125,27 @@ Stato operativo corrente:
 - il client WinForms è wired al runtime SQL Server concreto tramite `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`;
 - l'host MVC è wired allo stesso runtime SQL Server concreto tramite `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`;
 - il client desktop governa la runtime closure di `Microsoft.Data.SqlClient` nel `.csproj`;
+- il commit `d366e18` ha completato la runtime closure desktop reale WinForms, includendo le dipendenze transitive richieste dal provider SQL Server e uno smoke manuale positivo dell'eseguibile con `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`;
+- il commit `2354e54` (`docs(sqlserver): add bootstrap guide and enrich demo seed`) consolida `database/sql/sqlserver.md` come documento tecnico del bootstrap locale SQL Server e amplia `database/sql/002_seed.sql` con un dataset demo più ricco;
 - il quality gate minimo corrente è verde su `dotnet build ExamNavigator.sln`;
-- il lavoro codice di `G6` è quindi chiuso, ma il flusso non è ancora promosso perché resta aperto il docs sync gate owner e il push controllato del branch `development`.
+- il blocco `G6` risulta chiuso sul piano tecnico e non è più il focus operativo corrente.
 
 ### 9.ter. Docs sync gate owner + push controllato pre-H
-Stato: attiva.
+Stato: completata.
 
 Obiettivo:
 - riallineare truth-first i documenti owner dopo la materializzazione del runtime SQL Server concreto;
-- aggiornare la traiettoria documentale da “G6 ancora aperto” a “G6 chiuso a codice, H non ancora sbloccato fino a docs sync/push”;
-- completare il push controllato di `development` dopo l’allineamento owner docs.
+- registrare la chiusura del riallineamento post-push su `development`;
+- sbloccare formalmente il passaggio al blocco `H`.
 
 Stato operativo corrente:
-- `docs/TIMELINE.md` è stato riallineato alla chiusura di `G6.0` e `G6.1`;
-- `docs/CHANGELOG.md` è stato aggiornato con l’entry del commit `e42a783`;
-- `README.md`, `docs/ARCHITECTURE.md` e `docs/ROADMAP.md` sono allineati nel working tree al runtime SQL Server concreto e al docs sync gate attivo;
-- finché il docs sync gate non è chiuso a commit e `e42a783` non è pushato su `origin/development`, il blocco `H` resta sospeso per governance;
-- il prossimo avanzamento corretto, dopo commit e push controllato del riallineamento owner docs, è la preparazione consegna / rilascio / demo V1.
+- `README.md`, `docs/TIMELINE.md` e `docs/CHANGELOG.md` sono stati riallineati allo stato post-push del runtime SQL Server concreto;
+- il commit documentale `d1fa273` risulta pubblicato su `origin/development`;
+- il docs sync gate owner non è più il blocco attivo corrente;
+- il successivo avanzamento corretto è `10. Preparazione consegna / rilascio / demo V1`.
 
 ### 10. Preparazione consegna / rilascio / demo V1
-Stato: pronta per sblocco dopo chiusura del docs sync gate owner e push controllato.
+Stato: attiva.
 
 Obiettivo:
 - preparare il formato di consegna più opportuno (`.exe`, script SQL, bundle demo, eventuale Docker solo se realmente utile);
@@ -158,9 +157,9 @@ Stato operativo corrente:
 - i preflight `H0`, `H1` e `H2` hanno già chiarito formato demo, superficie reale del bundle e contratto operativo minimo della demo;
 - la demo primaria più solida resta il client WinForms già materializzato con runtime closure locale;
 - l'host MVC resta parte della superficie dimostrativa come prova della convertibilità web già concretamente implementata;
-- gli artefatti `database/sql/*` costituiscono ora il bootstrap runtime locale attivo;
+- gli artefatti `database/sql/*` costituiscono il bootstrap runtime locale attivo;
 - gli artefatti `database/postgresql/*` restano come heritage/demo track del pivot precedente;
-- tag, merge su `main` e release restano sospesi fino alla chiusura del docs sync gate owner e al push controllato del branch `development`.
+- il blocco attivo corrente è `H`; tag, merge su `main`, release e consegna finale restano sospesi fino a successiva esecuzione esplicita, ma non sono più bloccati dal docs sync gate owner.
 
 ### 11. Preparazione colloquio #2
 Stato: congelata, attivabile solo dopo la chiusura della V1 e la preparazione della consegna.

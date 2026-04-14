@@ -1,10 +1,27 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **sql server runtime materialized on development branch, with owner docs sync in progress before H unlock / push / final promotion**
+> Scope corrente: **runtime SQL Server concreto consolidato anche a smoke reale desktop WinForms, con bootstrap locale SQL Server documentato e blocco H riattivato come percorso corrente**
 
 #### G6 — SQL Server runtime conformance closure
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`2354e54` — docs(sqlserver): add bootstrap guide and enrich demo seed**
+  - **Type:** ADDED · **Categoria:** Database/SQL Server Bootstrap
+  - **Cosa cambia:** versiona `database/sql/sqlserver.md` come documento tecnico di bootstrap locale SQL Server e amplia `database/sql/002_seed.sql` con ulteriori ambulatori, esami e relazioni per una demo locale più ricca.
+  - **Impatto:** consolida la superficie bootstrap locale SQL Server usata dalla demo e completa in modo truth-first gli artefatti dati/documentali del blocco `G6`.
+
+
+- **`d366e18` — fix(winforms): complete sql server runtime closure for desktop host**
+  - **Type:** FIXED · **Categoria:** WinForms/Runtime/SQL Server
+  - **Cosa cambia:** completa la runtime closure desktop del client WinForms per il percorso SQL Server concreto, aggiungendo nel `.csproj` i package e la copia runtime delle dipendenze transitive richieste da `Microsoft.Data.SqlClient` (`Microsoft.Data.SqlClient.Extensions.Abstractions`, `Microsoft.Data.SqlClient.Internal.Logging`, `System.Buffers`, `System.Memory`, `System.Numerics.Vectors`, `System.Runtime.CompilerServices.Unsafe`, `System.Threading.Tasks.Extensions`) con fallback `net462` / `net461` / `netstandard2.0`.
+  - **Impatto:** chiude il gap residuo emerso nello smoke reale WinForms del runtime SQL Server concreto e rende l'eseguibile desktop avviabile con `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`.
+
+
+- **`d1fa273` — docs(project): realign owner docs after sql server runtime closure**
+  - **Type:** CHANGED · **Categoria:** Docs/Governance
+  - **Cosa cambia:** aggiorna i documenti owner impattati dal passaggio al runtime SQL Server concreto per riflettere lo stato reale post-push su `development`, chiudendo semanticamente il docs sync gate rimasto aperto dopo `e42a783`.
+  - **Impatto:** completa il riallineamento truth-first del blocco `G6`, registra che `origin/development` contiene ora sia il wiring SQL Server concreto sia il commit documentale di chiusura, e sblocca `H` come blocco operativo corrente senza anticipare ancora tag, merge su `main` o release.
 
 - **`e42a783` — feat(sqlserver): wire concrete sql server runtime across hosts**
   - **Type:** ADDED · **Categoria:** Infrastructure/Runtime

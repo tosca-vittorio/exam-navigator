@@ -539,7 +539,7 @@ Quando la soluzione sarà più matura:
 ---
 
 
-## G6 — 🟡 SQL Server runtime conformance closure
+## G6 — ☑️ SQL Server runtime conformance closure
 
 **Obiettivo:** chiudere il gap residuo rispetto alla formulazione letterale della missione introducendo un runtime SQL Server concreto, così da sbloccare in modo pieno la chiusura V1 e la successiva promozione del blocco `H`.
 
@@ -583,18 +583,34 @@ Quando la soluzione sarà più matura:
   - `ExamNavigator.WinForms`
   - `ExamNavigator.Mvc`
 
+
+### ✅ G6.2 — Runtime closure desktop finale + bootstrap SQL Server locale
+**Obiettivo:** chiudere il gap residuo emerso nello smoke reale WinForms del runtime SQL Server concreto e consolidare gli artefatti bootstrap locali SQL Server utili alla demo finale.
+
+**Evidenze (truth-first):**
+- commit `d366e18` presente;
+- `src/ExamNavigator.WinForms/ExamNavigator.WinForms.csproj` completa la runtime closure desktop di `Microsoft.Data.SqlClient` includendo anche `Microsoft.Data.SqlClient.Extensions.Abstractions`, `Microsoft.Data.SqlClient.Internal.Logging`, `System.Buffers`, `System.Memory`, `System.Numerics.Vectors`, `System.Runtime.CompilerServices.Unsafe` e `System.Threading.Tasks.Extensions`;
+- la copia runtime WinForms usa fallback `net462` / `net461` / `netstandard2.0` dove necessario per i package coinvolti;
+- verifica forte eseguita con purge di `bin/` e `obj/` su WinForms e Infrastructure SQL Server, seguita da `dotnet build ExamNavigator.sln` con esito verde;
+- verifica runtime positiva del client `ExamNavigator.WinForms.exe` con `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING` valorizzata su SQL Server locale;
+- commit `2354e54` presente;
+- `database/sql/sqlserver.md` è presente come documento tecnico di bootstrap locale SQL Server del runtime attivo;
+- `database/sql/002_seed.sql` è stato ampliato con ulteriori ambulatori, esami e relazioni per una demo SQL Server locale più ricca e difendibile.
+
 **Nota di stato (G6):**
 - il gap mission-critical sul runtime SQL Server concreto è stato materializzato a codice e verificato al quality gate minimo corrente (`dotnet build ExamNavigator.sln`);
-- il prossimo passo corretto non è ancora `H`, ma il completamento del docs sync gate owner (`TIMELINE` → `CHANGELOG` → documenti impattati) e il successivo push del commit `e42a783`;
-- fino a quel momento il blocco `H` resta sospeso per governance, pur essendo ora presente un runtime SQL Server concreto wired a entrambi gli host.
+- il precedente docs sync gate owner successivo a `e42a783` è stato chiuso con il commit documentale `d1fa273`;
+- i commit `d366e18` e `2354e54` hanno consolidato rispettivamente la runtime closure desktop reale e il bootstrap locale SQL Server del blocco `G6`;
+- con il presente riallineamento owner docs il blocco `G6` risulta chiuso anche rispetto alla verifica reale del client desktop;
+- il prossimo blocco attivo corretto diventa quindi `H — Preparazione consegna / rilascio / demo V1`.
 
 ---
 
-## H — 🟡 Preparazione consegna / rilascio / demo V1 (preflight svolto, blocco sospeso fino a chiusura del docs sync gate owner e push controllato)
+## H — 🟡 Preparazione consegna / rilascio / demo V1 (preflight svolto, blocco attivo corrente)
 
 **Obiettivo:** preparare il rilascio della baseline V1 nel formato più opportuno, con tag dedicato, merge su `main`, release e materiale di demo coerente con la richiesta cliente.
 
-**Nota di stato:** i sotto-step `H0`-`H2` restano validi come preflight di consegna/demo, ma `H` non è il blocco attivo corrente. La prosecuzione verso tag, merge su `main`, release e consegna finale resta sospesa fino alla chiusura del docs sync gate owner e al push controllato del branch `development`.
+**Nota di stato:** i sotto-step `H0`-`H2` restano validi come preflight già consolidato di consegna/demo. Dopo la chiusura del docs sync gate owner e il push riuscito del riallineamento documentale, `H` è ora il blocco attivo corrente. Restano ancora sospesi, fino a successiva esecuzione esplicita, tag, merge su `main`, release e consegna finale.
 
 **Note operative congelate:**
 - valutare il formato di consegna più opportuno (`.exe`, script SQL, bundle demo, eventuale Docker solo se realmente utile);
@@ -609,7 +625,7 @@ Quando la soluzione sarà più matura:
 - `dotnet build ExamNavigator.sln` verde sulla baseline corrente;
 - runtime WinForms reale materializzato in `src/ExamNavigator.WinForms/bin/Debug/` con `ExamNavigator.WinForms.exe` e relativa runtime closure SQL Server;
 - artefatti database presenti sia in `database/sql/` sia in `database/postgresql/`;
-- owner docs in corso di riallineamento truth-first al runtime SQL Server concreto.
+- owner docs riallineati truth-first al runtime SQL Server concreto fino alla chiusura documentale post-push del blocco `G6`.
 
 **Esito:** il formato oggi più difendibile è un **bundle demo locale controllato** composto da repository, guida di run, bootstrap SQL Server locale, host WinForms come demo primaria e host MVC come dimostrazione secondaria della convertibilità web. Non risultano ancora autorizzati tag, merge su `main`, release o consegna finale automatica.
 
@@ -619,7 +635,7 @@ Quando la soluzione sarà più matura:
 **Evidenze (truth-first):**
 - `src/ExamNavigator.WinForms/bin/Debug/` contiene `ExamNavigator.WinForms.exe`, `ExamNavigator.WinForms.exe.config`, `Microsoft.Data.SqlClient.dll` e i binari `Microsoft.Data.SqlClient.SNI.*` richiesti dalla runtime closure desktop;
 - `src/ExamNavigator.Mvc/bin/Debug/net9.0/` contiene l’host MVC compilato e i relativi artifact runtime ASP.NET Core;
-- `database/sql/` contiene `001_schema.sql`, `002_seed.sql` e `003_navigation_queries.sql` come bootstrap runtime locale attivo;
+- `database/sql/` contiene `001_schema.sql`, `002_seed.sql`, `003_navigation_queries.sql` e `sqlserver.md` come bootstrap runtime locale attivo;
 - `database/postgresql/` contiene `001_schema.sql`, `002_seed.sql` e `postgresql.md` come heritage/demo track del pivot precedente;
 - `README.md` contiene prerequisiti, comandi di run e checklist minima di verifica manuale per i due host.
 
@@ -632,7 +648,7 @@ Quando la soluzione sarà più matura:
 - `README.md` richiede istanza SQL Server locale disponibile, schema/seed applicati e variabile ambiente `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`;
 - `README.md` documenta i comandi di avvio sia dell'host WinForms sia dell'host MVC;
 - il wiring dei due host legge la stessa variabile ambiente `EXAM_NAVIGATOR_SQLSERVER_CONNECTION_STRING`;
-- `database/sql/*` costituisce il bootstrap runtime attivo, mentre `database/postgresql/*` resta il tracciato heritage/demo del pivot precedente;
+- `database/sql/*`, incluso `database/sql/sqlserver.md`, costituisce il bootstrap runtime attivo, mentre `database/postgresql/*` resta il tracciato heritage/demo del pivot precedente;
 - la classificazione del bundle demo già consolidata in `H0` e `H1` rende difendibile una sequenza di demo con WinForms primario e MVC secondario.
 
 **Esito:** il contratto operativo minimo della demo risulta: bootstrap SQL Server locale, impostazione della variabile ambiente condivisa, avvio del client WinForms come host primario e successiva verifica dell'host MVC come prova secondaria della convertibilità web sulla stessa baseline runtime.
