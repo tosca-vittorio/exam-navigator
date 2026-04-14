@@ -1,7 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **runtime SQL Server concreto consolidato anche a smoke reale desktop WinForms, con bootstrap locale SQL Server documentato e blocco H riattivato come percorso corrente**
+> Scope corrente: **blocco H attivo con changeset minimo promuovibile della demo/consegna V1 congelato truth-first su `development`**
+
+#### H — Delivery/demo promotable changeset freeze
+> Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`a9b674a` — docs(project): freeze h3 minimum promotable v1 delivery changeset**
+  - **Type:** CHANGED · **Categoria:** Docs/Governance
+  - **Cosa cambia:** aggiorna `docs/TIMELINE.md` e `docs/ROADMAP.md` per congelare truth-first il changeset minimo promuovibile della V1 dentro il blocco `H`, esplicitando cosa entra nel checkpoint di consegna/demo e cosa resta fuori dal freeze corrente.
+  - **Impatto:** rende auditabile su `development` il perimetro minimo promuovibile della consegna/demo V1 e prepara i successivi passi di tag, merge su `main` e release senza anticiparli impropriamente.
 
 #### G6 — SQL Server runtime conformance closure
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
