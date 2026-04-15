@@ -171,7 +171,7 @@ Obiettivo:
 - chiudere il doc sync gate finale che prepara la promozione formale della V1.
 
 Stato operativo corrente:
-- commit `071c565` presente;
+- commit `c0ea7ee` presente;
 - bundle documentale tecnico `docs/release/v1.0.0/` consolidato;
 - `docs/release/README.md` e owner docs riallineati;
 - non residuano micro-task operative nel blocco 11.

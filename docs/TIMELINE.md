@@ -45,7 +45,7 @@ Quando la soluzione sarà più matura:
 
 **Evidenze (truth-first):**
 - commit `b9323ac` presente come introduzione del bundle documentale tecnico;
-- commit `071c565` presente come consolidamento documentale tecnico del bundle;
+- commit `c0ea7ee` presente come consolidamento documentale tecnico del bundle;
 - `docs/release/README.md` presente;
 - bundle documentale `docs/release/v1.0.0/` presente con i documenti:
   - `01_Mission_Requirements_And_Implementation_Coverage.md`
@@ -734,7 +734,7 @@ Quando la soluzione sarà più matura:
 **Obiettivo:** consolidare e neutralizzare il bundle documentale tecnico della V1, riallineandolo in modo coerente ai requisiti, all’architettura reale e alla superficie effettivamente promuovibile.
 
 **Evidenze (truth-first):**
-- commit `071c565` presente;
+- commit `c0ea7ee` presente;
 - `docs/release/README.md` aggiornato;
 - bundle documentale `docs/release/v1.0.0/` riallineato con naming tecnico neutro:
   - `01_Mission_Requirements_And_Implementation_Coverage.md`

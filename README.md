@@ -234,7 +234,7 @@ Il commit `e42a783` ha chiuso il lavoro codice di `G6`, introducendo `ExamNaviga
 
 La baseline funzionale attuale è quindi solida, verificata e dimostrabile su runtime SQL Server concreto. I commit `d366e18` (`fix(winforms): complete sql server runtime closure for desktop host`) e `2354e54` (`docs(sqlserver): add bootstrap guide and enrich demo seed`) hanno consolidato rispettivamente la runtime closure desktop reale del client WinForms e il bootstrap locale SQL Server della demo (`database/sql/sqlserver.md`, `database/sql/002_seed.sql`).
 
-Con questo riallineamento truth-first, `G6` risulta chiuso anche rispetto alla runtime closure desktop reale del client WinForms. Con il successivo completamento dei preflight `H0`-`H7`, anche `H` risulta chiuso sul piano del preflight/demo locale controllata. Con il consolidamento documentale tecnico materializzato nel bundle `docs/release/v1.0.0/` e nel commit `071c565`, anche `I` risulta chiuso. Il blocco attivo corretto diventa quindi `J — Promozione formale V1 / freeze su main`.
+Con questo riallineamento truth-first, `G6` risulta chiuso anche rispetto alla runtime closure desktop reale del client WinForms. Con il successivo completamento dei preflight `H0`-`H7`, anche `H` risulta chiuso sul piano del preflight/demo locale controllata. Con il consolidamento documentale tecnico materializzato nel bundle `docs/release/v1.0.0/` e nel commit `c0ea7ee`, anche `I` risulta chiuso. Il blocco attivo corretto diventa quindi `J — Promozione formale V1 / freeze su main`.
 
 ## Documentazione owner
 

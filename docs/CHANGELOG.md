@@ -1,7 +1,15 @@
 ## Branch: [development]
 
 ### [Unreleased]
-> Scope corrente: **blocco I attivo: chiusura truth-first del preflight/demo locale controllata di `H` consolidata su `development`, con avvio della preparazione colloquio #2**
+> Scope corrente: **blocco J attivo: promozione formale V1 / freeze su `main` dopo la chiusura del consolidamento documentale tecnico V1**
+
+#### I — Technical V1 documentation bundle consolidation
+> Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
+
+- **`c0ea7ee` — docs(project): consolidate technical v1 documentation bundle**
+  - **Type:** CHANGED · **Categoria:** Docs/Governance
+  - **Cosa cambia:** riallinea `README.md`, `docs/TIMELINE.md`, `docs/ROADMAP.md` e `docs/ARCHITECTURE.md`, consolida il bundle `docs/release/v1.0.0/`, neutralizza il naming tecnico dei documenti del bundle e chiude truth-first il blocco `I`.
+  - **Impatto:** archivia il consolidamento documentale tecnico della V1 su `development` e attiva come blocco operativo corrente `J — Promozione formale V1 / freeze su main`.
 
 #### I — Interview prep activation after H closure
 > Ordinamento: **git log (più recente → più vecchio)** · principio **truth-first**: qui è riportato solo ciò che è committato.
