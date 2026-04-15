@@ -51,12 +51,17 @@ docs/**
 # Eccezioni
 !docs/
 !docs/target/
+!docs/release/
+!docs/release/v1.0.0/
 
 !docs/CHANGELOG.md
 !docs/ARCHITECTURE.md
 !docs/TIMELINE.md
 !docs/ROADMAP.md
 # !docs/toDo.md
+
+!docs/release/*.md
+!docs/release/v1.0.0/*.md
 
 # ============================================================
 # TEMPORARY FILES
