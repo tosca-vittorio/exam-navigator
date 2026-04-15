@@ -1,4 +1,4 @@
-# 04 — Timeline estesa, storia progettuale completa e narrativa tecnica del progetto
+# 04 — Timeline tecnica estesa ed evoluzione del progetto
 
 ## Finalità del documento
 

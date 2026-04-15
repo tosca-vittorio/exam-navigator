@@ -337,7 +337,7 @@ Rischi reali attuali:
 - `BootstrapNavigationService` è ancora presente nel client WinForms come fallback legacy in-memory raggiungibile tramite il costruttore parameterless `Form1()`; non coincide con il bootstrap runtime principale, ma la sua presenza può ancora generare ambiguità di audit o lettura architetturale finché non viene governato o rimosso in modo esplicito;
 - nessun progetto test presente;
 - nessun lint / coverage / smoke automatizzato presente;
-- il blocco `H` è chiuso sul piano del preflight/demo locale controllata; il blocco attivo corrente è `I — Preparazione colloquio #2`, mentre tag, merge su `main`, release e consegna finale non sono ancora stati eseguiti;
+- il blocco `H` è chiuso sul piano del preflight/demo locale controllata; il blocco `I` è chiuso sul piano del consolidamento documentale tecnico V1; il blocco attivo corrente è `J — Promozione formale V1 / freeze su main`, mentre merge su `main`, tag e release restano ancora non eseguiti;
 - possibile drift documentale se gli owner docs non restano esplicitamente allineati al fatto che i requisiti sorgente sono locali e non versionati.
 
 ---

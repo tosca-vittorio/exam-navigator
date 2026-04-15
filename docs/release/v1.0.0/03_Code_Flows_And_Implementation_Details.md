@@ -1,4 +1,4 @@
-# 03 — Walkthrough sintattico-tecnico del codice, flussi principali e ragionamento implementativo
+# 03 — Flussi principali, sintassi rilevante e ragionamento implementativo
 
 ## Finalità del documento
 
@@ -527,7 +527,7 @@ Questa separazione è architetturalmente coerente, perché consente una UI più 
 
 ---
 
-## 9. Sintassi JavaScript utile da sapere per MVC
+## 9. Elementi JavaScript rilevanti nell’host MVC
 
 Nell’host MVC esiste una parte di logica lato browser che vale la pena approfondire almeno a livello concettuale.
 

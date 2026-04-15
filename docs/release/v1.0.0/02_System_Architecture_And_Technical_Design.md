@@ -419,7 +419,7 @@ L’intero progetto mostra una chiara separazione tra:
 
 ## 10. Struttura MVC dell’host web
 
-Il progetto è molto utile anche per ripassare MVC in modo concreto.
+Il progetto consente anche di leggere MVC in modo concreto attraverso un caso reale.
 
 ### 10.1 Model
 

@@ -560,7 +560,7 @@ I punti forti più importanti sono:
 
 ## 8. Limiti e rischi residui
 
-Una difesa tecnica forte non nasconde i limiti residui.
+Una descrizione tecnica corretta non nasconde i limiti residui.
 
 I principali punti ancora aperti sono:
 

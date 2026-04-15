@@ -5,10 +5,10 @@ Questa directory contiene la documentazione tecnica di rilascio della baseline V
 ## Struttura
 
 - `v1.0.0/`
-  - `01_Mission_To_Implementation_Defense.md`
-  - `02_Architecture_Design_And_Technical_Choices.md`
-  - `03_Syntax_Technical_Walkthrough_And_Code_Reasoning.md`
-  - `04_Extended_Timeline_And_Project_Evolution_Narrative.md`
+  - `01_Mission_Requirements_And_Implementation_Coverage.md`
+  - `02_System_Architecture_And_Technical_Design.md`
+  - `03_Code_Flows_And_Implementation_Details.md`
+  - `04_Project_Timeline_And_Evolution.md`
 
 ## Note
 

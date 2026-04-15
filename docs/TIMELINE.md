@@ -40,8 +40,19 @@ Quando la soluzione sarà più matura:
 - non sovrascrivono la priorità della missione corrente;
 - restano non attivati finché la baseline mission-critical non giustifica la loro apertura operativa.
 
-### ⬜ EXTRA_0 — Documentazione estesa A→Z per preparazione colloquio
-**Obiettivo:** produrre una documentazione estesa, difendibile e studiabile su requisiti, sintassi, struttura, architettura, logica e funzionamento del progetto.
+### ☑️ EXTRA_0 — Bundle documentale tecnico esteso V1
+**Obiettivo:** produrre un bundle documentale tecnico esteso, difendibile e riusabile su requisiti, struttura, architettura, logica, flussi e funzionamento del progetto.
+
+**Evidenze (truth-first):**
+- commit `b9323ac` presente come introduzione del bundle documentale tecnico;
+- commit `071c565` presente come consolidamento documentale tecnico del bundle;
+- `docs/release/README.md` presente;
+- bundle documentale `docs/release/v1.0.0/` presente con i documenti:
+  - `01_Mission_Requirements_And_Implementation_Coverage.md`
+  - `02_System_Architecture_And_Technical_Design.md`
+  - `03_Code_Flows_And_Implementation_Details.md`
+  - `04_Project_Timeline_And_Evolution.md`
+- il bundle documentale copre requisiti, modellazione, architettura, sintassi rilevante, flussi implementativi ed evoluzione del progetto.
 
 ### ⬜ EXTRA_1 — Congelamento formale requisiti + riverifica futura
 **Obiettivo:** mantenere un tracciamento esplicito dei requisiti della missione e introdurre una successiva riverifica implementativa/funzionale.
@@ -63,6 +74,12 @@ Quando la soluzione sarà più matura:
 
 ### ⬜ EXTRA_7 — Ambiente isolato / centralizzazione dipendenze
 **Obiettivo:** valutare e introdurre un ambiente isolato coerente con lo stack per contenere dipendenze e tooling di progetto.
+
+### ⬜ EXTRA_8 — Surface distributiva aggiuntiva post-freeze
+**Obiettivo:** valutare e materializzare, solo quando opportuno, un’eventuale superficie di distribuzione aggiuntiva della V1 già promossa (es. archivio, installer, package demo o bundle operativo dedicato) senza alterare il perimetro funzionale congelato.
+
+### ⬜ EXTRA_9 — Provider selector per adapter dati multipli
+**Obiettivo:** introdurre un selector/factory configurabile per scegliere l'adapter dati attivo (es. SQL Server, PostgreSQL, future data sources) mantenendo stabile il boundary `IExamNavigationService`.
 
 ---
 
@@ -712,28 +729,54 @@ Quando la soluzione sarà più matura:
 
 ---
 
-## I — 🟡 Preparazione colloquio #2 (blocco attivo corrente)
+## I — ☑️ Consolidamento documentale tecnico V1
 
-**Obiettivo:** costruire il materiale di studio e presentazione dopo la chiusura completa della V1.
+**Obiettivo:** consolidare e neutralizzare il bundle documentale tecnico della V1, riallineandolo in modo coerente ai requisiti, all’architettura reale e alla superficie effettivamente promuovibile.
 
-**Nota di stato:** il blocco `I` si attiva ora come successivo avanzamento corretto, dopo la chiusura truth-first del blocco `H`. Non risultano ancora introdotti cambiamenti di codice o documentazione specialistica di studio oltre questa attivazione formale.
+**Evidenze (truth-first):**
+- commit `071c565` presente;
+- `docs/release/README.md` aggiornato;
+- bundle documentale `docs/release/v1.0.0/` riallineato con naming tecnico neutro:
+  - `01_Mission_Requirements_And_Implementation_Coverage.md`
+  - `02_System_Architecture_And_Technical_Design.md`
+  - `03_Code_Flows_And_Implementation_Details.md`
+  - `04_Project_Timeline_And_Evolution.md`
+- `README.md`, `docs/TIMELINE.md`, `docs/ROADMAP.md` e `docs/ARCHITECTURE.md` riallineati al consolidamento documentale tecnico della V1;
+- non risultano introdotte nuove feature nel perimetro applicativo.
 
-**Note operative congelate:**
-- analizzare modo, scelte, logiche di sviluppo e relativa sintassi;
-- spiegare passi temporali e percorso in timeline in modo esteso e dettagliato;
-- creare domande plausibili sulla base del codice realizzato;
-- descrivere ideazione, progettazione, analisi, scelte e architettura;
-- descrivere moduli, responsabilità e mansioni;
-- analizzare e spiegare `database/sql/*.sql`, `database/postgresql/*.sql`, relazioni ed entità, e la logica del backend sviluppato con particolare attenzione al riallineamento finale verso SQL Server;
-- spiegare architettura, pattern e scelte riconducibili;
-- ripassare MVC usando il codice della V1 come caso di studio;
-- chiarire esempi base su controller MVC e sui concetti di stato in UI moderne.
+**Esito:** il blocco `I` risulta chiuso e archiviato. Il successivo blocco attivo corretto diventa `J — Promozione formale V1 / freeze su main`.
 
 ---
 
-## J — ⬜ Sviluppi futuri / EXTRA post-colloquio
+## J — 🟡 Promozione formale V1 / freeze su `main`
 
-**Obiettivo:** continuare a migliorare la soluzione solo dopo la fase di preparazione colloquio.
+**Obiettivo:** promuovere formalmente la V1 già chiusa e consolidata, congelandola in modo permanente come baseline ufficiale.
+
+**DoD (J):**
+- owner docs e bundle documentale tecnicamente allineati e chiusi;
+- working tree pulita su `development`;
+- merge controllato su `main` eseguito;
+- tag V1 creato;
+- release formale creata;
+- baseline V1 congelata senza introdurre nuove modifiche funzionali.
+
+**Note operative congelate:**
+- eseguire la promozione solo dopo la chiusura completa del blocco `I`;
+- non introdurre feature, refactor o ampliamenti di scope dentro il freeze della V1;
+- usare `main` come ramo di congelamento definitivo della baseline V1;
+- lasciare ogni evoluzione successiva ai blocchi post-freeze.
+
+Stato operativo corrente:
+- questo è ora il blocco operativo corrente;
+- la baseline V1 risulta già chiusa e consolidata su `development`;
+- restano da eseguire in modo esplicito merge su `main`, tag e release;
+- ogni ampliamento, refactor o nuova feature resta fuori da questa promozione.
+
+---
+
+## K — ⬜ Sviluppi futuri / EXTRA post-freeze
+
+**Obiettivo:** continuare a migliorare la soluzione solo dopo la promozione formale e il congelamento definitivo della V1.
 
 **Note operative congelate:**
 - refactor pulito e possibile introduzione di pattern GOF o equivalenti;

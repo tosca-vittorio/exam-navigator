@@ -2,7 +2,7 @@
 # ROADMAP — Exam Navigator System
 
 ## Obiettivo generale
-Consegnare una soluzione tecnicamente corretta, architetturalmente difendibile e già predisposta alla conversione web, con documentazione owner abbastanza solida da sostenere spiegazione tecnica, revisione e colloquio.
+Consegnare una soluzione tecnicamente corretta, architetturalmente difendibile e già predisposta alla conversione web, con documentazione owner abbastanza solida da sostenere spiegazione tecnica, revisione e trasferibilità progettuale.
 
 ## Stato milestone corrente
 
@@ -20,10 +20,10 @@ Milestone già consolidate:
 10. preparazione consegna / rilascio / demo V1 sul piano del preflight/demo locale controllata.
 
 Milestone attiva:
-11. preparazione colloquio #2.
+12. promozione formale V1 / freeze su `main`.
 
 Milestone successive:
-12. EXTRA e sviluppi futuri post-colloquio.
+13. EXTRA e sviluppi futuri post-freeze.
 
 ## Sequenza strategica mission-critical
 
@@ -161,22 +161,38 @@ Stato operativo corrente:
 - la demo primaria resta WinForms, mentre l'host MVC resta la prova secondaria della convertibilità web già concretamente implementata;
 - restano esplicitamente fuori da questa chiusura tag, merge su `main`, release, installer, archivio finale di consegna, Docker salvo reale necessità e qualunque riapertura di `G6`.
 
-### 11. Preparazione colloquio #2
+### 11. Consolidamento documentale tecnico V1
+Stato: completata e archiviata.
+
+Obiettivo:
+- consolidare il bundle documentale tecnico partendo da missione sorgente e freeze requisiti;
+- riallineare copertura implementativa, architettura, moduli, SQL, MVC e flussi principali in forma neutra e riusabile;
+- neutralizzare naming, titoli e formulazioni ancora troppo orientati a finalità non tecniche;
+- chiudere il doc sync gate finale che prepara la promozione formale della V1.
+
+Stato operativo corrente:
+- commit `071c565` presente;
+- bundle documentale tecnico `docs/release/v1.0.0/` consolidato;
+- `docs/release/README.md` e owner docs riallineati;
+- non residuano micro-task operative nel blocco 11.
+
+### 12. Promozione formale V1 / freeze su `main`
 Stato: attiva.
 
 Obiettivo:
-- costruire documentazione di studio, presentazione progetto e materiale di difesa tecnica;
-- spiegare timeline, scelte, sintassi, architettura, database, moduli e responsabilità;
-- preparare domande plausibili di colloquio e relative risposte;
-- usare la V1 come base di studio su MVC, controller, SQL e architettura.
+- promuovere formalmente la baseline V1 già chiusa e consolidata;
+- eseguire merge controllato su `main`, tag e release;
+- congelare definitivamente la V1 senza alterarne il perimetro funzionale;
+- separare in modo netto la baseline V1 dalle evoluzioni successive.
 
 Stato operativo corrente:
-- il blocco `H` è chiuso sul piano della preparazione/demo locale controllata;
-- il focus corretto si sposta ora sul materiale di studio, spiegazione e difesa tecnica della V1;
-- gli EXTRA restano congelati e non attivati.
+- questo è ora il blocco operativo corrente;
+- la baseline V1 risulta già chiusa e consolidata su `development`;
+- restano da eseguire in modo esplicito merge su `main`, tag e release;
+- ogni ampliamento, refactor o nuova feature resta fuori da questa promozione.
 
-### 12. Sviluppi futuri / EXTRA post-colloquio
-Stato: congelati, attivabili solo dopo la fase di preparazione colloquio.
+### 13. Sviluppi futuri / EXTRA post-freeze
+Stato: congelati, attivabili solo dopo la promozione formale della V1.
 
 Obiettivo:
 - refactor pulito e possibile introduzione di pattern GOF o equivalenti;
@@ -188,7 +204,6 @@ Obiettivo:
 
 Questi blocchi sono formalizzati ma **non prioritari** rispetto alla missione corrente:
 
-- documentazione estesa A→Z per studio, spiegazione e preparazione colloquio;
 - congelamento formale requisiti e futura riverifica implementativa/funzionale;
 - lint;
 - test unitari minimi;
@@ -196,6 +211,8 @@ Questi blocchi sono formalizzati ma **non prioritari** rispetto alla missione co
 - smoke test;
 - quality campaign su baseline stabile;
 - eventuale ambiente isolato / contenimento dipendenze.
+- eventuale superficie di distribuzione aggiuntiva della V1 già promossa (archivio, installer, package demo o bundle operativo dedicato);
+- provider selector/factory per scegliere a configurazione l'adapter dati attivo (es. SQL Server, PostgreSQL, future data sources).
 
 ## Decisioni guida
 
